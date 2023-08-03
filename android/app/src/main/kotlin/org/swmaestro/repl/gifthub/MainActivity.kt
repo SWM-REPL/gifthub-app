@@ -1,4 +1,4 @@
-package com.example.gifthub
+package org.swmaestro.repl.gifthub
 
 import io.flutter.embedding.android.FlutterActivity
 
