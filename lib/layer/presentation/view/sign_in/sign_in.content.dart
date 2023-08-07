@@ -39,7 +39,7 @@ class _SignInContentState extends ConsumerState<SignInContent> {
     }
 
     final result = await ref.read(signInProvider)(username, password);
-    if (result) {
+    if (result && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('로그인에 성공했습니다.'),

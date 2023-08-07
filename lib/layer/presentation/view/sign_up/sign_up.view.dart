@@ -18,6 +18,6 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    return SignUpContent();
+    return const SignUpContent();
   }
 }
