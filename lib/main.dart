@@ -11,8 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/firebase_options.dart';
 import 'package:gifthub/layer/presentation/app.dart';
-import 'firebase_options.dart';
 
 late SharedPreferences sharedPref;
 
