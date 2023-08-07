@@ -1,3 +1,4 @@
+// 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 
 class VoucherDto extends Voucher {

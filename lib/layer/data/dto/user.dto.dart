@@ -1,3 +1,4 @@
+// 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/user.entity.dart';
 
 class UserDto extends User {
