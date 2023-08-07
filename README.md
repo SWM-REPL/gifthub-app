@@ -1,4 +1,4 @@
-# gifthub
+# app
 
 A new Flutter project.
 
