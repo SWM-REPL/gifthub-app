@@ -6,7 +6,7 @@ on:
 
 jobs:
   analysis:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup Flutter
