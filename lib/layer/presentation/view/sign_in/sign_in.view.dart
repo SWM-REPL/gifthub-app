@@ -17,6 +17,6 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    return SignInContent();
+    return const SignInContent();
   }
 }
