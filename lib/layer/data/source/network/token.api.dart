@@ -1,5 +1,7 @@
+// 📦 Package imports:
 import 'package:dio/dio.dart';
 
+// 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/token.dto.dart';
 
 mixin TokenApiMixin {

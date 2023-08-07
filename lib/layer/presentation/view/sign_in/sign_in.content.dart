@@ -1,7 +1,11 @@
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gifthub/layer/presentation/provider/domain.provider.dart';
 
+// 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 🌎 Project imports:
+import 'package:gifthub/layer/presentation/provider/domain.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_up/sign_up.page.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.page.dart';
 

@@ -1,5 +1,8 @@
-import 'package:gifthub/layer/data/dto/token.dto.dart';
+// 📦 Package imports:
 import 'package:jwt_decoder/jwt_decoder.dart';
+
+// 🌎 Project imports:
+import 'package:gifthub/layer/data/dto/token.dto.dart';
 
 mixin TokenCacheMixin {
   String? get accessToken;
