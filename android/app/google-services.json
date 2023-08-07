@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "892051218725",
-    "project_id": "gifthub-21e0a",
-    "storage_bucket": "gifthub-21e0a.appspot.com"
+    "project_number": "932658035694",
+    "project_id": "gifthub-b2dcb",
+    "storage_bucket": "gifthub-b2dcb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:892051218725:android:8db347a332b953b5ffbacc",
+        "mobilesdk_app_id": "1:932658035694:android:c1b076af07f7d1ad09ecff",
         "android_client_info": {
-          "package_name": "org.swmaestro.repl.gifthub"
+          "package_name": "org.swmaestro.repl.GiftHub"
         }
       },
       "oauth_client": [
         {
-          "client_id": "892051218725-kfd5tvm9do4t0mq41hsph78ioar67f4f.apps.googleusercontent.com",
+          "client_id": "932658035694-hgqkkmbts60ofg8da398ttc0hi72j36i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCj54GM1cfl0GP4OkHz7QSUjSuDfi4Vwls"
+          "current_key": "AIzaSyDCTLBFgpXap-IugweOtNvdwLoh0S6aa4g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "892051218725-kfd5tvm9do4t0mq41hsph78ioar67f4f.apps.googleusercontent.com",
+              "client_id": "932658035694-hgqkkmbts60ofg8da398ttc0hi72j36i.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "892051218725-f43hi9l408ktto9dr2kecupfk2kegmr3.apps.googleusercontent.com",
+              "client_id": "932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "org.swmaestro.repl.GiftHub"

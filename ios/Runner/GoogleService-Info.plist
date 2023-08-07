@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>892051218725-vjkpg53fbtgbndscjchdvao39eqpdmrt.apps.googleusercontent.com</string>
+	<string>932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.892051218725-vjkpg53fbtgbndscjchdvao39eqpdmrt</string>
+	<string>com.googleusercontent.apps.932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r</string>
 	<key>API_KEY</key>
-	<string>AIzaSyANoFytzTtfP7NPYri7EN2vFBtu_LdtA7Q</string>
+	<string>AIzaSyDIlb1wPkhXrb8dKslwyyxdSbug2ShCiVQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>892051218725</string>
+	<string>932658035694</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.swmaestro.repl.gifthub</string>
+	<string>org.swmaestro.repl.GiftHub</string>
 	<key>PROJECT_ID</key>
-	<string>gifthub-21e0a</string>
+	<string>gifthub-b2dcb</string>
 	<key>STORAGE_BUCKET</key>
-	<string>gifthub-21e0a.appspot.com</string>
+	<string>gifthub-b2dcb.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:892051218725:ios:46f4f2d8121c342fffbacc</string>
+	<string>1:932658035694:ios:9b94c86e1843572209ecff</string>
 </dict>
 </plist>
