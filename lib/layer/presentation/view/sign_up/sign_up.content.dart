@@ -71,7 +71,8 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
       password: password,
       nickname: nickname,
     );
-    if (result) {
+
+    if (result && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('회원가입에 성공했습니다.'),
