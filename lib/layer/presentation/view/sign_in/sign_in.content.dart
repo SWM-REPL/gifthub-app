@@ -49,8 +49,7 @@ class _SignInContentState extends ConsumerState<SignInContent> {
           content: Text('로그인에 성공했습니다.'),
         ),
       );
-      Navigator.push(
-        context,
+      Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const VoucherListPage(),
         ),
