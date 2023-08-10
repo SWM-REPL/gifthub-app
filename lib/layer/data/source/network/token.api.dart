@@ -22,6 +22,14 @@ mixin TokenApiMixin {
 class TokenApi with TokenApiMixin {
   TokenApi({Dio? dio}) : _dio = dio ?? Dio() {
     _dio.options.baseUrl = 'https://api.gifthub.kr';
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (options, handler) async {
+          options.data = options.data['data'];
+          return handler.next(options);
+        },
+      ),
+    );
     _dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,

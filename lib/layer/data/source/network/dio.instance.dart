@@ -70,6 +70,14 @@ class _TokenInterceptor extends Interceptor {
     options.headers['Authorization'] = 'Bearer ${_tokenCache.accessToken}';
     return handler.next(options);
   }
+
+  @override
+  Future<void> onResponse(options, handler) async {
+    if (options.statusCode == 200) {
+      options.data = options.data['data'];
+    }
+    return handler.next(options);
+  }
 }
 
 mixin DioMixin {
