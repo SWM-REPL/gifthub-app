@@ -1,4 +1,4 @@
-mixin TokenRepositoryMixin {
+mixin AuthRepositoryMixin {
   Future<bool> signIn({required String username, required String password});
   Future<bool> signUp({
     required String username,

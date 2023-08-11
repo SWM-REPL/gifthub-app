@@ -1,17 +1,17 @@
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/token.dto.dart';
 import 'package:gifthub/layer/data/source/local/token.storage.dart';
-import 'package:gifthub/layer/data/source/network/token.api.dart';
-import 'package:gifthub/layer/domain/repository/token.repository.dart';
+import 'package:gifthub/layer/data/source/network/auth.api.dart';
+import 'package:gifthub/layer/domain/repository/auth.repository.dart';
 
-class TokenRepository with TokenRepositoryMixin {
-  TokenRepository({
-    required TokenApiMixin api,
+class AuthRepository with AuthRepositoryMixin {
+  AuthRepository({
+    required AuthApiMixin api,
     required TokenStorageMixin storage,
   })  : _api = api,
         _storage = storage;
 
-  final TokenApiMixin _api;
+  final AuthApiMixin _api;
   final TokenStorageMixin _storage;
 
   Future<TokenDto?> get token => _storage.loadToken();

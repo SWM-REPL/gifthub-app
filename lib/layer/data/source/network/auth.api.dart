@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/token.dto.dart';
 
-mixin TokenApiMixin {
+mixin AuthApiMixin {
   Future<TokenDto> signin({
     required String username,
     required String password,
@@ -19,8 +19,8 @@ mixin TokenApiMixin {
   });
 }
 
-class TokenApi with TokenApiMixin {
-  TokenApi({Dio? dio}) : _dio = dio ?? Dio() {
+class AuthApi with AuthApiMixin {
+  AuthApi({Dio? dio}) : _dio = dio ?? Dio() {
     _dio.options.baseUrl = 'https://api.gifthub.kr';
     _dio.interceptors.add(
       InterceptorsWrapper(

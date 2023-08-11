@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/data/source/local/token.cache.dart';
 import 'package:gifthub/layer/data/source/local/token.storage.dart';
-import 'package:gifthub/layer/data/source/network/token.api.dart';
+import 'package:gifthub/layer/data/source/network/auth.api.dart';
 
 class SingleDio {
   SingleDio._(String subdomain) : _dio = Dio() {
@@ -28,17 +28,11 @@ class SingleDio {
 }
 
 class _TokenInterceptor extends Interceptor {
-  _TokenInterceptor({
-    TokenCacheMixin? tokenCache,
-    TokenStorageMixin? tokenStorage,
-    TokenApi? tokenApi,
-  })  : _tokenCache = tokenCache ?? TokenCache.instance,
-        _tokenStorage = tokenStorage ?? TokenStorage(),
-        _tokenApi = tokenApi ?? TokenApi();
+  _TokenInterceptor();
 
-  final TokenCacheMixin _tokenCache;
-  final TokenStorageMixin _tokenStorage;
-  final TokenApi _tokenApi;
+  final TokenCacheMixin _tokenCache = TokenCache.instance;
+  final TokenStorageMixin _tokenStorage = TokenStorage();
+  final AuthApi _tokenApi = AuthApi();
 
   @override
   Future<void> onRequest(options, handler) async {
