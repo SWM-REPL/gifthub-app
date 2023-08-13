@@ -3,16 +3,11 @@ import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 
 class VoucherDto extends Voucher {
   VoucherDto({
-    required int id,
-    required int productId,
-    required String barcode,
-    required DateTime expiredDate,
-  }) : super(
-          id: id,
-          productId: productId,
-          barcode: barcode,
-          expiredDate: expiredDate,
-        );
+    required super.id,
+    required super.productId,
+    required super.barcode,
+    required super.expiredDate,
+  });
 
   factory VoucherDto.fromJson(Map<String, dynamic> json) {
     return VoucherDto(

@@ -6,33 +6,70 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
-import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.page.dart';
+import 'package:gifthub/layer/presentation/notifier/products.notifier.dart';
+import 'package:gifthub/layer/presentation/notifier/vouchers.notifier.dart';
+import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.widget.dart';
 
 class VoucherCard extends ConsumerStatefulWidget {
   const VoucherCard({
-    required this.voucher,
+    required this.voucherId,
     super.key,
   });
 
-  final Voucher voucher;
+  final int voucherId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _VoucherCardState();
 }
 
 class _VoucherCardState extends ConsumerState<VoucherCard> {
+  @override
+  Widget build(BuildContext context) {
+    final id = widget.voucherId;
+    final voucher = ref.watch(voucherProvider(id));
+
+    return voucher.when(
+      data: (voucher) {
+        final product = ref.watch(productProvider(voucher.productId));
+        return product.when(
+          data: (product) => _VoucherCard(
+            voucher: voucher,
+            product: product,
+          ),
+          loading: () => const Placeholder(),
+          error: (error, stackTrace) => Text(error.toString()),
+        );
+      },
+      loading: () => const Placeholder(),
+      error: (error, stackTrace) => Text(error.toString()),
+    );
+  }
+}
+
+class _VoucherCard extends StatelessWidget {
+  const _VoucherCard({
+    required this.voucher,
+    required this.product,
+  });
+
+  final Voucher voucher;
+  final Product product;
+
   void openVoucherDetail(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => VoucherDetailPage(voucher: widget.voucher),
+        builder: (context) => VoucherDetail(
+          voucher: voucher,
+          product: product,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final expiredDate = widget.voucher.expiredDate;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
@@ -51,7 +88,7 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
                     fit: BoxFit.cover,
-                    widget.voucher.imageUrl!,
+                    product.imageUrl,
                     width: 80,
                     height: 80,
                   ),
@@ -68,7 +105,7 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.voucher.name!,
+                            product.name,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Container(
@@ -93,11 +130,11 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${NumberFormat('#,##0', 'en-US').format(widget.voucher.price)}원',
+                            '${NumberFormat('#,##0', 'en-US').format(product.price)}원',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           Text(
-                            '${expiredDate.year}년 ${expiredDate.month}월 ${expiredDate.day}일 까지',
+                            '${voucher.expiredDate.year}년 ${voucher.expiredDate.month}월 ${voucher.expiredDate.day}일 까지',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],

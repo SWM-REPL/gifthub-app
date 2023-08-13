@@ -2,21 +2,21 @@
 import 'package:dio/dio.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/data/dto/token.dto.dart';
+import 'package:gifthub/layer/data/dto/tokens.dto.dart';
 
 mixin AuthApiMixin {
-  Future<TokenDto> signin({
+  Future<TokensDto> signin({
     required String username,
     required String password,
   });
-  Future<TokenDto> signup({
+  Future<TokensDto> signup({
     required String username,
     required String password,
     required String nickname,
   });
-  Future<TokenDto> refresh({
-    required String token,
-  });
+  Future<TokensDto> refreshTokens(
+    String token,
+  );
 }
 
 class AuthApi with AuthApiMixin {
@@ -39,7 +39,7 @@ class AuthApi with AuthApiMixin {
   final Dio _dio;
 
   @override
-  Future<TokenDto> signin({
+  Future<TokensDto> signin({
     required String username,
     required String password,
   }) async {
@@ -52,11 +52,11 @@ class AuthApi with AuthApiMixin {
         'password': password,
       },
     );
-    return TokenDto.fromJson(response.data);
+    return TokensDto.fromJson(response.data);
   }
 
   @override
-  Future<TokenDto> signup({
+  Future<TokensDto> signup({
     required String username,
     required String password,
     required String nickname,
@@ -71,13 +71,11 @@ class AuthApi with AuthApiMixin {
         'nickname': nickname,
       },
     );
-    return TokenDto.fromJson(response.data);
+    return TokensDto.fromJson(response.data);
   }
 
   @override
-  Future<TokenDto> refresh({
-    required String token,
-  }) async {
+  Future<TokensDto> refreshTokens(String token) async {
     const String endpoint = '/auth/refresh';
 
     final response = await _dio.post(
@@ -86,6 +84,6 @@ class AuthApi with AuthApiMixin {
         headers: {'Authorization': 'Bearer $token'},
       ),
     );
-    return TokenDto.fromJson(response.data);
+    return TokensDto.fromJson(response.data);
   }
 }

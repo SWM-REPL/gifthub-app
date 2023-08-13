@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.page.dart';
+import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -26,7 +26,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: theme(Brightness.light),
       darkTheme: theme(Brightness.dark),
-      home: const VoucherListPage(),
+      home: const VoucherList(),
     );
   }
 }

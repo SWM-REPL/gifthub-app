@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 
 class VoucherDetailContent extends ConsumerStatefulWidget {
   const VoucherDetailContent({
     required this.voucher,
+    required this.product,
     super.key,
   });
 
   final Voucher voucher;
+  final Product product;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,6 +27,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   @override
   Widget build(BuildContext context) {
     final voucher = widget.voucher;
+    final product = widget.product;
+
     return Column(
       children: [
         Flexible(
@@ -31,7 +36,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
           child: AspectRatio(
             aspectRatio: 1,
             child: Image.network(
-              voucher.imageUrl!,
+              product.imageUrl,
               fit: BoxFit.cover,
             ),
           ),
@@ -42,11 +47,11 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
             children: [
               const SizedBox(height: 20),
               Text(
-                voucher.name!,
+                product.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               Text(
-                '${voucher.price!}원',
+                '${product.price}원',
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall!
