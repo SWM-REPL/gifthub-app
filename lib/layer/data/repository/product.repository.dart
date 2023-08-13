@@ -1,3 +1,4 @@
+// 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/product.dto.dart';
 import 'package:gifthub/layer/data/source/network/product.api.dart';
 import 'package:gifthub/layer/domain/repository/product.repository.dart';

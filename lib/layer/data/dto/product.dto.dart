@@ -1,23 +1,16 @@
+// 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 
 class ProductDto extends Product {
   const ProductDto({
-    required int id,
-    required int brandId,
-    required String name,
-    required String description,
-    required bool isReusable,
-    required int price,
-    required String imageUrl,
-  }) : super(
-          id: id,
-          brandId: brandId,
-          name: name,
-          description: description,
-          isReusable: isReusable,
-          price: price,
-          imageUrl: imageUrl,
-        );
+    required super.id,
+    required super.brandId,
+    required super.name,
+    required super.description,
+    required super.isReusable,
+    required super.price,
+    required super.imageUrl,
+  });
 
   factory ProductDto.fromJson(Map<String, dynamic> json) {
     return ProductDto(

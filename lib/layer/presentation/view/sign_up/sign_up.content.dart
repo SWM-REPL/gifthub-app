@@ -1,6 +1,11 @@
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gifthub/layer/presentation/provider/domain.provider.dart';
+
+// 🌎 Project imports:
+import 'package:gifthub/layer/presentation/provider/usecase/sign_up.provider.dart';
 
 class SignUpContent extends ConsumerStatefulWidget {
   const SignUpContent({super.key});

@@ -1,13 +1,19 @@
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+// 🌎 Project imports:
 import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_card.dart';
 
 class VoucherListContent extends ConsumerStatefulWidget {
-  const VoucherListContent({required this.vouchers, super.key});
+  const VoucherListContent({
+    required this.voucherIds,
+    super.key,
+  });
 
-  final List<Voucher> vouchers;
+  final List<int> voucherIds;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -17,6 +23,7 @@ class VoucherListContent extends ConsumerStatefulWidget {
 class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
+    final ids = widget.voucherIds;
     return Container(
       color: const Color(0xFFF7F8FA),
       child: Column(
@@ -37,9 +44,9 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                   children: [
                     Text('보유 기프티콘 목록',
                         style: Theme.of(context).textTheme.titleSmall),
-                    for (final voucher in widget.vouchers)
+                    for (final id in ids)
                       VoucherCard(
-                        voucher: voucher,
+                        voucherId: id,
                       ),
                   ],
                 ),

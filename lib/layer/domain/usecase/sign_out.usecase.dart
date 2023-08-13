@@ -1,10 +1,10 @@
-import 'package:gifthub/layer/domain/repository/token.repository.dart';
+// 🌎 Project imports:
+import 'package:gifthub/layer/domain/repository/auth.repository.dart';
 
 class SignOut {
-  SignOut({required TokenRepositoryMixin repository})
-      : _repository = repository;
+  SignOut({required AuthRepositoryMixin repository}) : _repository = repository;
 
-  final TokenRepositoryMixin _repository;
+  final AuthRepositoryMixin _repository;
 
   Future<bool> call() async {
     return await _repository.signOut();

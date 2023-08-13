@@ -1,9 +1,11 @@
+// 📦 Package imports:
 import 'package:dio/dio.dart';
 
-import 'package:gifthub/exception/unauthorized.exception.dart';
-import 'package:gifthub/layer/data/source/local/token.cache.dart';
-import 'package:gifthub/layer/data/source/local/token.storage.dart';
-import 'package:gifthub/layer/data/source/network/token.api.dart';
+// 🌎 Project imports:
+import 'package:gifthub/layer/data/repository/tokens.repository.dart';
+import 'package:gifthub/layer/data/source/network/auth.api.dart';
+import 'package:gifthub/layer/domain/repository/tokens.repository.dart';
+import 'package:gifthub/main.dart';
 
 class SingleDio {
   SingleDio._(String subdomain) : _dio = Dio() {
@@ -19,24 +21,20 @@ class SingleDio {
     ));
   }
   static final SingleDio api = SingleDio._('api');
-  static final SingleDio storage = SingleDio._('storage');
+  static final SingleDio storage = SingleDio._('dev.storage');
 
   final Dio _dio;
   Dio get dio => _dio;
 }
 
 class _TokenInterceptor extends Interceptor {
-  _TokenInterceptor({
-    TokenCacheMixin? tokenCache,
-    TokenStorageMixin? tokenStorage,
-    TokenApi? tokenApi,
-  })  : _tokenCache = tokenCache ?? TokenCache.instance,
-        _tokenStorage = tokenStorage ?? TokenStorage(),
-        _tokenApi = tokenApi ?? TokenApi();
+  _TokenInterceptor();
 
-  final TokenCacheMixin _tokenCache;
-  final TokenStorageMixin _tokenStorage;
-  final TokenApi _tokenApi;
+  final TokensRepositoryMixin _tokensRepository = TokensRepository(
+    tokensCache: tokensCache,
+    tokensStorage: tokensStorage,
+    authApi: AuthApi(),
+  );
 
   @override
   Future<void> onRequest(options, handler) async {
@@ -45,27 +43,16 @@ class _TokenInterceptor extends Interceptor {
       return handler.next(options);
     }
 
-    // If token is empty, load token from storage if possible.
-    if (_tokenCache.isEmpty) {
-      _tokenCache.token = await _tokenStorage.loadToken();
-    }
+    final tokens = await _tokensRepository.loadTokens();
+    options.headers['Authorization'] = 'Bearer ${tokens?.accessToken}';
+    return handler.next(options);
+  }
 
-    // If token is expired, refresh token if possible.
-    if (!_tokenCache.isEmpty && _tokenCache.isExpired) {
-      try {
-        _tokenCache.token =
-            await _tokenApi.refresh(token: _tokenCache.refreshToken!);
-      } catch (_) {
-        _tokenCache.token = null;
-      }
+  @override
+  Future<void> onResponse(options, handler) async {
+    if (options.statusCode == 200) {
+      options.data = options.data['data'];
     }
-
-    // If token is still empty or expired, throw exception.
-    if (_tokenCache.isExpired) {
-      return handler.reject(UnauthorizedException(requestOptions: options));
-    }
-
-    options.headers['Authorization'] = 'Bearer ${_tokenCache.accessToken}';
     return handler.next(options);
   }
 }

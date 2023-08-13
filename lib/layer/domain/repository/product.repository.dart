@@ -1,3 +1,4 @@
+// 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 
 mixin ProductRepositoryMixin {
