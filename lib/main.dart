@@ -12,14 +12,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/firebase_options.dart';
+import 'package:gifthub/layer/data/source/local/tokens.cache.dart';
+import 'package:gifthub/layer/data/source/local/tokens.storage.dart';
 import 'package:gifthub/layer/presentation/app.dart';
 
 late SharedPreferences sharedPref;
+late TokensCache tokensCache; // TODO: Remove this.
+late TokensStorage tokensStorage; // TODO: Remove this.
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   sharedPref = await SharedPreferences.getInstance();
+  tokensCache = TokensCache();
+  tokensStorage = TokensStorage();
+
+  tokensStorage.deleteTokens(); // TODO: For debug. Remove this.
+  tokensCache.deleteTokens(); // TODO: For debug. Remove this.
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

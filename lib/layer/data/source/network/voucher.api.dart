@@ -6,7 +6,9 @@ mixin VoucherApiMixin {
   Future<VoucherDto> loadVoucher({
     required int id,
   });
-  Future<List<int>> loadVoucherIds();
+  Future<List<int>> loadVoucherIds({
+    required int userId,
+  });
 }
 
 class VoucherApi with DioMixin, VoucherApiMixin {
@@ -21,10 +23,17 @@ class VoucherApi with DioMixin, VoucherApiMixin {
   }
 
   @override
-  Future<List<int>> loadVoucherIds() async {
+  Future<List<int>> loadVoucherIds({
+    required int userId,
+  }) async {
     const String endpoint = '/vouchers';
 
-    final response = await dio.get(endpoint);
+    final response = await dio.get(
+      endpoint,
+      queryParameters: {
+        'user_id': userId,
+      },
+    );
     return (response.data as List).cast<int>();
   }
 }

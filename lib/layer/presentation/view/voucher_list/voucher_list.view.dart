@@ -6,12 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
-import 'package:gifthub/layer/presentation/provider/presentation.provider.dart';
-import 'package:gifthub/layer/presentation/view/sign_in/sign_in.page.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
+import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.content.dart';
 
 class VoucherListView extends ConsumerStatefulWidget {
-  const VoucherListView({super.key});
+  const VoucherListView({
+    super.key,
+  });
 
   @override
   ConsumerState<VoucherListView> createState() => _VoucherListViewState();
@@ -25,24 +27,27 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
 
   @override
   Widget build(BuildContext context) {
-    final vouchers = ref.watch(vouchersProvider);
+    final ids = ref.watch(voucherIdsProvider);
 
-    return vouchers.when(
-      data: (vouchers) => VoucherListContent(vouchers: vouchers),
+    return ids.when(
+      data: (ids) => VoucherListContent(
+        voucherIds: ids,
+      ),
       loading: () => const Text('Loading...'),
       error: (error, stackTrace) {
         if (error is UnauthorizedException) {
           Future.microtask(
-            () => Navigator.pushAndRemoveUntil(
-              context,
+            () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const SignInPage(),
+                builder: (context) => const SignIn(),
               ),
-              (route) => false,
             ),
           );
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
-        return Text(error.toString());
+        throw error;
       },
     );
   }

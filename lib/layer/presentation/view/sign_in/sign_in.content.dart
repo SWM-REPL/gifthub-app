@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/presentation/provider/domain.provider.dart';
+import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/sign_in.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_up/sign_up.page.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.page.dart';
+import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 
 class SignInContent extends ConsumerStatefulWidget {
   const SignInContent({super.key});
@@ -44,15 +45,15 @@ class _SignInContentState extends ConsumerState<SignInContent> {
 
     final result = await ref.read(signInProvider)(username, password);
     if (result && context.mounted) {
+      ref.watch(appUserProvider.notifier).reload();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('로그인에 성공했습니다.'),
         ),
       );
-      Navigator.push(
-        context,
+      Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const VoucherListPage(),
+          builder: (context) => const VoucherList(),
         ),
       );
     } else {
@@ -123,8 +124,10 @@ class _SignInContentState extends ConsumerState<SignInContent> {
                       builder: (context) => const SignUpPage(),
                     ),
                   ),
-                  child: Text('회원이 아니라면 회원가입 하러가기',
-                      style: Theme.of(context).textTheme.bodyMedium),
+                  child: Text(
+                    '회원이 아니라면 회원가입 하러가기',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
               ],
             ),
