@@ -51,6 +51,7 @@ class _TokenInterceptor extends Interceptor {
   @override
   Future<void> onResponse(options, handler) async {
     if (options.statusCode == 200) {
+      // ignore: avoid_dynamic_calls
       options.data = options.data['data'];
     }
     return handler.next(options);
