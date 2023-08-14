@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       return ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: brightness,
-          seedColor: const Color.fromARGB(255, 227, 73, 88),
+          seedColor: const Color(0xFFF73653),
         ),
         textTheme: GoogleFonts.notoSansGothicTextTheme(),
       );

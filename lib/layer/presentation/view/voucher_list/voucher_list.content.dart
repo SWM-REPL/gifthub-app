@@ -42,8 +42,10 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('보유 기프티콘 목록',
-                        style: Theme.of(context).textTheme.titleSmall),
+                    Text(
+                      '보유 기프티콘 목록',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                     for (final id in ids)
                       VoucherCard(
                         voucherId: id,
