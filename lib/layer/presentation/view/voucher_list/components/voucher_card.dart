@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+import 'package:gifthub/layer/presentation/notifier/brands.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/products.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vouchers.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.widget.dart';
@@ -34,10 +36,20 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
       data: (voucher) {
         final product = ref.watch(productProvider(voucher.productId));
         return product.when(
-          data: (product) => _VoucherCard(
-            voucher: voucher,
-            product: product,
-          ),
+          data: (product) {
+            final brand = ref.watch(brandProvider(product.brandId));
+            return brand.when(
+              data: (brand) {
+                return _VoucherCard(
+                  voucher: voucher,
+                  product: product,
+                  brand: brand,
+                );
+              },
+              loading: () => const Placeholder(),
+              error: (error, stackTrace) => Text(error.toString()),
+            );
+          },
           loading: () => const Placeholder(),
           error: (error, stackTrace) => Text(error.toString()),
         );
@@ -52,10 +64,12 @@ class _VoucherCard extends StatelessWidget {
   const _VoucherCard({
     required this.voucher,
     required this.product,
+    required this.brand,
   });
 
   final Voucher voucher;
   final Product product;
+  final Brand brand;
 
   void openVoucherDetail(BuildContext context) {
     Navigator.of(context).push(
@@ -63,6 +77,7 @@ class _VoucherCard extends StatelessWidget {
         builder: (context) => VoucherDetail(
           voucher: voucher,
           product: product,
+          brand: brand,
         ),
       ),
     );
