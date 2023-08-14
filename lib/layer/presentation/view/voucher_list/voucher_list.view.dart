@@ -9,6 +9,7 @@ import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.content.dart';
+import 'package:gifthub/utility/navigate_route.dart';
 
 class VoucherListView extends ConsumerStatefulWidget {
   const VoucherListView({
@@ -36,12 +37,10 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
       loading: () => const Text('Loading...'),
       error: (error, stackTrace) {
         if (error is UnauthorizedException) {
-          Future.microtask(
-            () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SignIn(),
-              ),
-            ),
+          navigate(
+            context: context,
+            widget: const SignIn(),
+            predicate: (_) => false,
           );
           return const Center(
             child: CircularProgressIndicator(),

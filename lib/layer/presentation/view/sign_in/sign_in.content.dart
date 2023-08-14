@@ -9,6 +9,7 @@ import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/sign_in.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_up/sign_up.page.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
+import 'package:gifthub/utility/navigate_route.dart';
 
 class SignInContent extends ConsumerStatefulWidget {
   const SignInContent({super.key});
@@ -51,10 +52,9 @@ class _SignInContentState extends ConsumerState<SignInContent> {
           content: Text('로그인에 성공했습니다.'),
         ),
       );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const VoucherList(),
-        ),
+      navigate(
+        context: context,
+        widget: const VoucherList(),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -118,11 +118,9 @@ class _SignInContentState extends ConsumerState<SignInContent> {
                   child: const Text('로그인'),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpPage(),
-                    ),
+                  onPressed: () => navigate(
+                    context: context,
+                    widget: const SignUpPage(),
                   ),
                   child: Text(
                     '회원이 아니라면 회원가입 하러가기',
