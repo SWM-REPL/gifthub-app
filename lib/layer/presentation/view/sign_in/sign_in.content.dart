@@ -55,6 +55,7 @@ class _SignInContentState extends ConsumerState<SignInContent> {
       navigate(
         context: context,
         widget: const VoucherList(),
+        predicate: (_) => false,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
