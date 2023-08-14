@@ -36,22 +36,31 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
           ),
           Flexible(
             flex: 3,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '보유 기프티콘 목록',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    for (final id in ids)
-                      VoucherCard(
-                        voucherId: id,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: MediaQuery.of(context).padding.left + 20,
+                right: MediaQuery.of(context).padding.right + 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '보유 기프티콘 목록',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(0),
+                      itemCount: ids.length,
+                      itemBuilder: (context, index) => VoucherCard(
+                        voucherId: ids[index],
                       ),
-                  ],
-                ),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

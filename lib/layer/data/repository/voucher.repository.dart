@@ -21,4 +21,9 @@ class VoucherRepository with VoucherRepositoryMixin {
     final fetchedVoucherIds = await _api.loadVoucherIds(userId: userId);
     return fetchedVoucherIds;
   }
+
+  @override
+  Future<void> setVoucher(int id, Voucher voucher) async {
+    return await _api.updateVoucher(id: id);
+  }
 }

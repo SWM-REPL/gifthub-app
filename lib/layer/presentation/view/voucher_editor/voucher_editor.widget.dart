@@ -5,31 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
-import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.view.dart';
+import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.view.dart';
 
-class VoucherDetail extends StatelessWidget {
-  const VoucherDetail({
+class VoucherEditor extends StatelessWidget {
+  const VoucherEditor({
+    super.key,
     required this.voucher,
     required this.product,
     required this.brand,
-    super.key,
   });
 
-  final Voucher voucher;
-  final Product product;
   final Brand brand;
+  final Product product;
+  final Voucher voucher;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
       ),
-      extendBodyBehindAppBar: true,
-      body: VoucherDetailView(
-        voucher: voucher,
-        product: product,
-        brand: brand,
+      body: Center(
+        child: VoucherEditorView(
+          brand: brand,
+          product: product,
+          voucher: voucher,
+        ),
       ),
     );
   }
