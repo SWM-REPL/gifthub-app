@@ -9,6 +9,9 @@ mixin VoucherApiMixin {
   Future<List<int>> loadVoucherIds({
     required int userId,
   });
+  Future<void> updateVoucher({
+    required int id,
+  });
 }
 
 class VoucherApi with DioMixin, VoucherApiMixin {
@@ -35,5 +38,19 @@ class VoucherApi with DioMixin, VoucherApiMixin {
       },
     );
     return (response.data as List).cast<int>();
+  }
+
+  @override
+  Future<void> updateVoucher({
+    required int id,
+  }) async {
+    final String endpoint = '/vouchers/$id';
+
+    await dio.patch(
+      endpoint,
+      data: {
+        'id': id,
+      },
+    );
   }
 }
