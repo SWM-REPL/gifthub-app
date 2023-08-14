@@ -25,6 +25,7 @@ class AuthApi with AuthApiMixin {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onResponse: (options, handler) async {
+          // ignore: avoid_dynamic_calls
           options.data = options.data['data'];
           return handler.next(options);
         },
