@@ -13,6 +13,7 @@ import 'package:gifthub/layer/presentation/notifier/brands.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/products.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vouchers.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.widget.dart';
+import 'package:gifthub/utility/navigate_route.dart';
 
 class VoucherCard extends ConsumerStatefulWidget {
   const VoucherCard({
@@ -72,13 +73,12 @@ class _VoucherCard extends StatelessWidget {
   final Brand brand;
 
   void openVoucherDetail(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => VoucherDetail(
-          voucher: voucher,
-          product: product,
-          brand: brand,
-        ),
+    navigate(
+      context: context,
+      widget: VoucherDetail(
+        voucher: voucher,
+        product: product,
+        brand: brand,
       ),
     );
   }
