@@ -6,15 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/brand.entity.dart';
+import 'package:gifthub/layer/domain/entity/product.entity.dart';
+import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 
 class VoucherEditorContent extends ConsumerStatefulWidget {
-  const VoucherEditorContent(
-    this.vpb, {
+  VoucherEditorContent(
+    VPB data, {
     super.key,
-  });
+  })  : voucher = data.voucher,
+        product = data.product,
+        brand = data.brand;
 
-  final VPB vpb;
+  final Voucher voucher;
+  final Product product;
+  final Brand brand;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -34,7 +41,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
     BuildContext context,
     List<TextEditingController> controllers,
   ) {
-    final vpbNotifier = ref.read(vpbProvider(widget.vpb.voucher.id).notifier);
+    final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
     vpbNotifier.editVoucher(
       brandName: controllers[0].text,
       productName: controllers[1].text,
@@ -54,10 +61,10 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
       '바코드',
     ];
     final placeholders = [
-      widget.vpb.brand.name,
-      widget.vpb.product.name,
-      DateFormat('yyyy.MM.dd').format(widget.vpb.voucher.expiredDate),
-      widget.vpb.voucher.barcode,
+      widget.brand.name,
+      widget.product.name,
+      DateFormat('yyyy.MM.dd').format(widget.voucher.expiredDate),
+      widget.voucher.barcode,
     ];
     final controllers =
         placeholders.map((text) => TextEditingController(text: text)).toList();
@@ -80,11 +87,11 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.vpb.brand.name,
+                        widget.brand.name,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        widget.vpb.product.name,
+                        widget.product.name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 10),
@@ -92,7 +99,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                         NumberFormat.currency(
                           locale: 'ko',
                           customPattern: '#,###원',
-                        ).format(widget.vpb.product.price),
+                        ).format(widget.product.price),
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
                       const SizedBox(height: 45),

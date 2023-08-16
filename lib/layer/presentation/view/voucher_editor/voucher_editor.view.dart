@@ -10,11 +10,11 @@ import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.co
 
 class VoucherEditorView extends ConsumerStatefulWidget {
   const VoucherEditorView(
-    this.vpb, {
+    this.voucherId, {
     super.key,
   });
 
-  final VPB vpb;
+  final int voucherId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,6 +24,11 @@ class VoucherEditorView extends ConsumerStatefulWidget {
 class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
   @override
   Widget build(BuildContext context) {
-    return VoucherEditorContent(widget.vpb);
+    final vpb = ref.watch(vpbProvider(widget.voucherId));
+    return vpb.when(
+      data: (data) => VoucherEditorContent(data),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => throw error,
+    );
   }
 }

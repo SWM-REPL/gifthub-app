@@ -90,7 +90,7 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${NumberFormat('#,##0', 'en-US').format(widget.vpb.product.price)}원',
+                          '${NumberFormat('#,##0', 'en-US').format(widget.vpb.voucher.balance)}원',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Text(
