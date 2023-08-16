@@ -77,20 +77,22 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
       password: password,
       nickname: nickname,
     );
-    if (result && context.mounted) {
-      ref.invalidate(appUserProvider);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('회원가입에 성공했습니다.'),
-        ),
-      );
-      Navigator.of(context).pop();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('회원가입에 실패했습니다.'),
-        ),
-      );
+    if (context.mounted) {
+      if (result) {
+        ref.invalidate(appUserProvider);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('회원가입에 성공했습니다.'),
+          ),
+        );
+        Navigator.of(context).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('회원가입에 실패했습니다.'),
+          ),
+        );
+      }
     }
   }
 

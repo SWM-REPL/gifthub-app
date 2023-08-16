@@ -45,24 +45,26 @@ class _SignInContentState extends ConsumerState<SignInContent> {
     }
 
     final result = await ref.read(signInProvider)(username, password);
-    if (result && context.mounted) {
-      ref.invalidate(appUserProvider);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('로그인에 성공했습니다.'),
-        ),
-      );
-      navigate(
-        context: context,
-        widget: const VoucherList(),
-        predicate: (_) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('로그인에 실패했습니다.'),
-        ),
-      );
+    if (context.mounted) {
+      if (result) {
+        ref.invalidate(appUserProvider);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인에 성공했습니다.'),
+          ),
+        );
+        navigate(
+          context: context,
+          widget: const VoucherList(),
+          predicate: (_) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인에 실패했습니다.'),
+          ),
+        );
+      }
     }
   }
 

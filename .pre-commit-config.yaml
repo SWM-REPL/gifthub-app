@@ -3,3 +3,8 @@ repos:
   rev: "f350497a11b1285c695595049e95a420068e7a9f"
   hooks:
     - id: flutter-import-sorter
+- repo: https://github.com/dluksza/flutter-analyze-pre-commit
+  rev: "4afcaa82fc368d40d486256bf4edba329bf667bb"
+  hooks:
+    - id: flutter-analyze
+      args: [lib/*]
