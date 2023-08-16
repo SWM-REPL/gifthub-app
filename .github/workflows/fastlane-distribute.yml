@@ -16,6 +16,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with: 
           ruby-version: '2.7.2'
+      - name: Setup plugins
+        run: |
+          cd android
+          bundle install
       - name: Fastlane Action
         uses: maierj/fastlane-action@v3.0.0
         with:
@@ -32,6 +36,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with: 
           ruby-version: '2.7.2'
+      - name: Setup plugins
+        run: |
+          cd ios
+          bundle install
       - name: Fastlane Action
         uses: maierj/fastlane-action@v3.0.0
         with:
