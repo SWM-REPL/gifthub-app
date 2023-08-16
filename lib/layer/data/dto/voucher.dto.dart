@@ -7,6 +7,7 @@ class VoucherDto extends Voucher {
     required super.productId,
     required super.barcode,
     required super.expiredDate,
+    required super.balance,
   });
 
   factory VoucherDto.fromJson(Map<String, dynamic> json) {
@@ -15,6 +16,7 @@ class VoucherDto extends Voucher {
       productId: json['product_id'] as int,
       barcode: json['barcode'] as String,
       expiredDate: DateTime.parse(json['expires_at'] as String),
+      balance: json['balance'] as int,
     );
   }
 
@@ -24,6 +26,7 @@ class VoucherDto extends Voucher {
       'product_id': productId,
       'barcode': barcode,
       'expired_at': expiredDate.toIso8601String(),
+      'balance': balance,
     };
   }
 }

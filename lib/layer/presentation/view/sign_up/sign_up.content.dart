@@ -99,7 +99,7 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
     return Column(
       children: [
         Flexible(
-          flex: 1,
+          flex: 2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -111,57 +111,65 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
             ],
           ),
         ),
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: MediaQuery.of(context).padding.add(
-                  const EdgeInsets.symmetric(horizontal: 20),
-                ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: '아이디',
-                      border: OutlineInputBorder(),
-                    ),
+        Expanded(
+          flex: 3,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: MediaQuery.of(context).padding.add(
+                    const EdgeInsets.symmetric(horizontal: 20),
                   ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: '비밀번호',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _confirmPasswordController,
-                    decoration: const InputDecoration(
-                      labelText: '비밀번호 확인',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _nicknameController,
-                    decoration: const InputDecoration(
-                      labelText: '닉네임',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => _onSignUpPressed(context),
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(
-                        const Size(double.infinity, 48),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: '아이디',
+                        border: OutlineInputBorder(),
                       ),
                     ),
-                    child: const Text('회원가입'),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: '비밀번호',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _confirmPasswordController,
+                      decoration: const InputDecoration(
+                        labelText: '비밀번호 확인',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _nicknameController,
+                      decoration: const InputDecoration(
+                        labelText: '닉네임',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => _onSignUpPressed(context),
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all(
+                          const Size(double.infinity, 48),
+                        ),
+                      ),
+                      child: const Text('회원가입'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
