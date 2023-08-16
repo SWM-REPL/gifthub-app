@@ -43,7 +43,7 @@ dependencies:
   dio: ^5.3.2
   shared_preferences: ^2.2.0
   flutter_secure_storage: ^8.0.0
-  material_color_utilities: ^0.2.0
+  material_color_utilities: ^0.5.0
   google_fonts: ^5.1.0
   jwt_decoder: ^2.0.1
   intl: ^0.18.1
