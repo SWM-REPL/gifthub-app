@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/exception/unauthorized.exception.dart';
+import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.content.dart';
+import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 
 class SignInView extends ConsumerStatefulWidget {
   const SignInView({super.key});
@@ -22,6 +25,19 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    return const SignInContent();
+    final appUser = ref.watch(appUserProvider);
+    return appUser.when(
+      data: (appUser) => const VoucherList(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) {
+        if (error is UnauthorizedException) {
+          return const SignInContent();
+        } else {
+          return Center(
+            child: Text(error.toString()),
+          );
+        }
+      },
+    );
   }
 }

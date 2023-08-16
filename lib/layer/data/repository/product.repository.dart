@@ -11,7 +11,7 @@ class ProductRepository with ProductRepositoryMixin {
   final ProductApiMixin _api;
 
   @override
-  Future<ProductDto> getProduct({required int id}) async {
+  Future<ProductDto> getProduct(int id) async {
     final fetchedProduct = await _api.loadProduct(id: id);
     return fetchedProduct;
   }

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class User with EquatableMixin {
   const User({
-    this.id = 42,
+    required this.id,
     required this.nickname,
   });
 

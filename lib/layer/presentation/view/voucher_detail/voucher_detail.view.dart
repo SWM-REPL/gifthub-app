@@ -5,22 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/brand.entity.dart';
-import 'package:gifthub/layer/domain/entity/product.entity.dart';
-import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.content.dart';
 
 class VoucherDetailView extends ConsumerStatefulWidget {
-  const VoucherDetailView({
-    required this.voucher,
-    required this.product,
-    required this.brand,
+  const VoucherDetailView(
+    this.id, {
     super.key,
   });
 
-  final Voucher voucher;
-  final Product product;
-  final Brand brand;
+  final int id;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -30,10 +24,15 @@ class VoucherDetailView extends ConsumerStatefulWidget {
 class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
   @override
   Widget build(BuildContext context) {
-    return VoucherDetailContent(
-      voucher: widget.voucher,
-      product: widget.product,
-      brand: widget.brand,
+    final vpb = ref.watch(vpbProvider(widget.id));
+    return vpb.when(
+      data: (data) => VoucherDetailContent(data),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stackTrace) {
+        throw error;
+      },
     );
   }
 }

@@ -11,8 +11,23 @@ class VoucherList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: VoucherListView(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Image.asset('assets/logo.png', width: 150),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_outlined),
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.menu),
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ],
+      ),
+      body: const VoucherListView(),
     );
   }
 }

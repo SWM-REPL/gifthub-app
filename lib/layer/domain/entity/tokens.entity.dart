@@ -8,6 +8,9 @@ class Tokens with EquatableMixin {
     required this.refreshToken,
   });
 
+  final String accessToken;
+  final String refreshToken;
+
   factory Tokens.fromJson(Map<String, dynamic> json) {
     return Tokens(
       accessToken: json['accessToken'],
@@ -22,12 +25,14 @@ class Tokens with EquatableMixin {
     };
   }
 
-  final String accessToken;
-  final String refreshToken;
-
   String get nickname {
     final payload = JwtDecoder.decode(accessToken);
     return payload['sub'];
+  }
+
+  int get userId {
+    final payload = JwtDecoder.decode(accessToken);
+    return payload['user_id'] ?? 2; // TODO: FIXIT
   }
 
   @override

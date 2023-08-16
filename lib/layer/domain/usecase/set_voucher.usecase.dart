@@ -1,5 +1,4 @@
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/domain/repository/voucher.repository.dart';
 
 class SetVoucher {
@@ -7,7 +6,19 @@ class SetVoucher {
 
   final VoucherRepositoryMixin _voucherRepository;
 
-  Future<void> call(int id, Voucher voucher) async {
-    return await _voucherRepository.setVoucher(id, voucher);
+  Future<void> call(
+    int id, {
+    String? brandName,
+    String? productName,
+    DateTime? expiresAt,
+    String? barcode,
+  }) async {
+    return await _voucherRepository.setVoucher(
+      id,
+      brandName: brandName,
+      productName: productName,
+      expiresAt: expiresAt,
+      barcode: barcode,
+    );
   }
 }

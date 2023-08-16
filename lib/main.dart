@@ -27,9 +27,6 @@ Future<void> main() async {
   tokensCache = TokensCache();
   tokensStorage = TokensStorage();
 
-  tokensStorage.deleteTokens(); // TODO: For debug. Remove this.
-  tokensCache.deleteTokens(); // TODO: For debug. Remove this.
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

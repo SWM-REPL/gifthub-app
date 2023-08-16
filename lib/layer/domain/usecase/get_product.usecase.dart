@@ -9,7 +9,7 @@ class GetProduct {
   final ProductRepositoryMixin _repository;
 
   Future<Product> call(int id) async {
-    final product = await _repository.getProduct(id: id);
+    final product = await _repository.getProduct(id);
     return product;
   }
 }

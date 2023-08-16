@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/sign_up.provider.dart';
 
 class SignUpContent extends ConsumerStatefulWidget {
@@ -76,8 +77,8 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
       password: password,
       nickname: nickname,
     );
-
     if (result && context.mounted) {
+      ref.invalidate(appUserProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('회원가입에 성공했습니다.'),
@@ -112,51 +113,56 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
         ),
         Flexible(
           flex: 1,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: '아이디',
-                    border: OutlineInputBorder(),
-                  ),
+          child: Padding(
+            padding: MediaQuery.of(context).padding.add(
+                  const EdgeInsets.symmetric(horizontal: 20),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: '비밀번호',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _confirmPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: '비밀번호 확인',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _nicknameController,
-                  decoration: const InputDecoration(
-                    labelText: '닉네임',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => _onSignUpPressed(context),
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(
-                      const Size(double.infinity, 48),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: '아이디',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                  child: const Text('회원가입'),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: '비밀번호',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _confirmPasswordController,
+                    decoration: const InputDecoration(
+                      labelText: '비밀번호 확인',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _nicknameController,
+                    decoration: const InputDecoration(
+                      labelText: '닉네임',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => _onSignUpPressed(context),
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                        const Size(double.infinity, 48),
+                      ),
+                    ),
+                    child: const Text('회원가입'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
