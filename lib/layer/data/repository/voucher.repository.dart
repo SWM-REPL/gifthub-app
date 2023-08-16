@@ -23,7 +23,27 @@ class VoucherRepository with VoucherRepositoryMixin {
   }
 
   @override
-  Future<void> setVoucher(int id, Voucher voucher) async {
-    return await _api.updateVoucher(id: id);
+  Future<void> setVoucher(
+    int id, {
+    String? brandName,
+    String? productName,
+    DateTime? expiresAt,
+    String? barcode,
+  }) async {
+    return await _api.updateVoucher(
+      id,
+      brandName: brandName,
+      productName: productName,
+      expiresAt: expiresAt,
+      barcode: barcode,
+    );
+  }
+
+  @override
+  Future<void> useVoucher(int id, int amount) async {
+    return await _api.useVoucher(
+      id: id,
+      amount: amount,
+    );
   }
 }

@@ -1,3 +1,6 @@
+// 📦 Package imports:
+import 'package:dio/dio.dart';
+
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/data/source/local/tokens.cache.dart';
@@ -33,8 +36,15 @@ class TokensRepository with TokensRepositoryMixin {
     }
 
     if (tokensCache.isEmpty == false && tokensCache.isStaled) {
-      tokensCache
-          .saveTokens(await authApi.refreshTokens(tokensCache.refreshToken!));
+      try {
+        tokensCache
+            .saveTokens(await authApi.refreshTokens(tokensCache.refreshToken!));
+      } on DioException catch (e) {
+        final data = e.response?.data as Map<String, dynamic>?;
+        if (data != null && data['status_code'] == 401) {
+          throw UnauthorizedException();
+        }
+      }
     }
 
     if (tokensCache.isExpired) {

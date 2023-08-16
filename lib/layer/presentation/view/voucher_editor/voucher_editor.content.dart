@@ -6,21 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/brand.entity.dart';
-import 'package:gifthub/layer/domain/entity/product.entity.dart';
-import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 
 class VoucherEditorContent extends ConsumerStatefulWidget {
-  const VoucherEditorContent({
-    required this.brand,
-    required this.product,
-    required this.voucher,
+  const VoucherEditorContent(
+    this.vpb, {
     super.key,
   });
 
-  final Brand brand;
-  final Product product;
-  final Voucher voucher;
+  final VPB vpb;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -28,6 +22,27 @@ class VoucherEditorContent extends ConsumerStatefulWidget {
 }
 
 class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
+  void onDeletePressed(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('삭제 버튼이 클릭되었습니다.'), // TODO
+      ),
+    );
+  }
+
+  void onSavePressed(
+    BuildContext context,
+    List<TextEditingController> controllers,
+  ) {
+    final vpbNotifier = ref.read(vpbProvider(widget.vpb.voucher.id).notifier);
+    vpbNotifier.editVoucher(
+      brandName: controllers[0].text,
+      productName: controllers[1].text,
+      expiresAt: DateFormat('yyyy.MM.dd').parse(controllers[2].text),
+      barcode: controllers[3].text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final secondaryColor = Theme.of(context).colorScheme.secondary;
@@ -39,11 +54,13 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
       '바코드',
     ];
     final placeholders = [
-      widget.brand.name,
-      widget.product.name,
-      DateFormat('yyyy.MM.dd').format(widget.voucher.expiredDate),
-      widget.voucher.barcode,
+      widget.vpb.brand.name,
+      widget.vpb.product.name,
+      DateFormat('yyyy.MM.dd').format(widget.vpb.voucher.expiredDate),
+      widget.vpb.voucher.barcode,
     ];
+    final controllers =
+        placeholders.map((text) => TextEditingController(text: text)).toList();
 
     return Container(
       decoration: const BoxDecoration(
@@ -63,16 +80,19 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '스타벅스',
+                        widget.vpb.brand.name,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        '아이스 카페 아메리카노',
+                        widget.vpb.product.name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '18,500원',
+                        NumberFormat.currency(
+                          locale: 'ko',
+                          customPattern: '#,###원',
+                        ).format(widget.vpb.product.price),
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
                       const SizedBox(height: 45),
@@ -81,7 +101,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                           itemBuilder: (context, index) => _buildTextFormField(
                             context: context,
                             label: labels[index],
-                            placeholder: placeholders[index],
+                            controller: controllers[index],
                           ),
                           separatorBuilder: (context, index) => const Divider(
                             height: 1,
@@ -99,7 +119,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     width: 50,
                     height: 50,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () => onDeletePressed(context),
                       child: Icon(
                         Icons.delete_outline,
                         color: secondaryColor,
@@ -111,7 +131,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     child: SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => onSavePressed(context, controllers),
                         child: const Text('저장'),
                       ),
                     ),
@@ -129,9 +149,8 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
 Widget _buildTextFormField({
   required BuildContext context,
   required String label,
-  required String placeholder,
+  required TextEditingController controller,
 }) {
-  final controller = TextEditingController(text: placeholder);
   return Row(
     children: [
       Flexible(

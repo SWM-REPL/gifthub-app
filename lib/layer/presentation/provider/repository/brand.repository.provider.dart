@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/repository/brand.repository.dart';
-import 'package:gifthub/layer/presentation/provider/repository/brand.api.provider.dart';
+import 'package:gifthub/layer/presentation/provider/source/brand.api.provider.dart';
 
 final brandRepositoryProvider = Provider<BrandRepository>(
   (ref) => BrandRepository(

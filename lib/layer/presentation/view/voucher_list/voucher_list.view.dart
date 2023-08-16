@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
-import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.content.dart';
 import 'package:gifthub/utility/navigate_route.dart';
@@ -28,13 +28,13 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
 
   @override
   Widget build(BuildContext context) {
-    final ids = ref.watch(voucherIdsProvider);
+    final vpbs = ref.watch(vpbsProvider);
 
-    return ids.when(
-      data: (ids) => VoucherListContent(
-        voucherIds: ids,
+    return vpbs.when(
+      data: (vpbs) => VoucherListContent(vpbs),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
       ),
-      loading: () => const Text('Loading...'),
       error: (error, stackTrace) {
         if (error is UnauthorizedException) {
           navigate(

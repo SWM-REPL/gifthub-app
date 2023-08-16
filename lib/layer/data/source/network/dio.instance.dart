@@ -51,8 +51,10 @@ class _TokenInterceptor extends Interceptor {
   @override
   Future<void> onResponse(options, handler) async {
     if (options.statusCode == 200) {
-      // ignore: avoid_dynamic_calls
-      options.data = options.data['data'];
+      final data = options.data as Map<String, dynamic>?;
+      if (data != null && data.containsKey('data')) {
+        options.data = data['data'];
+      }
     }
     return handler.next(options);
   }

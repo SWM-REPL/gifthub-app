@@ -5,23 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/brand.entity.dart';
-import 'package:gifthub/layer/domain/entity/product.entity.dart';
-import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
 
 class VoucherDetailContent extends ConsumerStatefulWidget {
-  const VoucherDetailContent({
-    required this.voucher,
-    required this.product,
-    required this.brand,
+  const VoucherDetailContent(
+    this.vpb, {
     super.key,
   });
 
-  final Voucher voucher;
-  final Product product;
-  final Brand brand;
+  final VPB vpb;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -40,11 +34,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   void onEditPressed(BuildContext context) {
     navigate(
       context: context,
-      widget: VoucherEditor(
-        brand: widget.brand,
-        product: widget.product,
-        voucher: widget.voucher,
-      ),
+      widget: VoucherEditor(widget.vpb),
     );
   }
 
@@ -57,19 +47,12 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   }
 
   void onUsePressed(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('사용 버튼이 클릭되었습니다.'), // TODO
-      ),
-    );
+    final vpbNotifier = ref.read(vpbProvider(widget.vpb.voucher.id).notifier);
+    vpbNotifier.useVoucher(5000);
   }
 
   @override
   Widget build(BuildContext context) {
-    final voucher = widget.voucher;
-    final product = widget.product;
-    final brand = widget.brand;
-
     return Column(
       children: [
         Flexible(
@@ -77,7 +60,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
           child: AspectRatio(
             aspectRatio: 2 / 1,
             child: Image.network(
-              product.imageUrl,
+              widget.vpb.product.imageUrl,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -92,16 +75,16 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                 child: Column(
                   children: [
                     Text(
-                      brand.name,
+                      widget.vpb.brand.name,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      product.name,
+                      widget.vpb.product.name,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Text(
-                      '${product.price}원',
+                      '${widget.vpb.product.price}원',
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
@@ -109,7 +92,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                     ),
                     const SizedBox(height: 20),
                     Image.network(
-                      'https://barcode.tec-it.com/barcode.ashx?data=${voucher.barcode}&translate-esc=on&imagetype=Png',
+                      'https://barcode.tec-it.com/barcode.ashx?data=${widget.vpb.voucher.barcode}&translate-esc=on&imagetype=Png',
                       fit: BoxFit.cover,
                     ),
                     Column(
@@ -187,7 +170,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      product.description,
+                      widget.vpb.product.description,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
