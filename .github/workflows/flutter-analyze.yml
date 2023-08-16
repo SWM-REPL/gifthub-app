@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Flutter Analysis
 
 on:
   pull_request:
