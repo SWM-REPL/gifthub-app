@@ -1,3 +1,6 @@
+// 📦 Package imports:
+import 'package:intl/intl.dart';
+
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/voucher.dto.dart';
 import 'package:gifthub/layer/data/source/network/dio.instance.dart';
@@ -9,8 +12,16 @@ mixin VoucherApiMixin {
   Future<List<int>> loadVoucherIds({
     required int userId,
   });
-  Future<void> updateVoucher({
+  Future<void> updateVoucher(
+    int id, {
+    String? brandName,
+    String? productName,
+    DateTime? expiresAt,
+    String? barcode,
+  });
+  Future<void> useVoucher({
     required int id,
+    required int amount,
   });
 }
 
@@ -41,15 +52,39 @@ class VoucherApi with DioMixin, VoucherApiMixin {
   }
 
   @override
-  Future<void> updateVoucher({
-    required int id,
+  Future<void> updateVoucher(
+    int id, {
+    String? brandName,
+    String? productName,
+    DateTime? expiresAt,
+    String? barcode,
   }) async {
     final String endpoint = '/vouchers/$id';
+    final dateFormatter = DateFormat('yyyy-MM-dd');
 
     await dio.patch(
       endpoint,
       data: {
-        'id': id,
+        'brand_name': brandName,
+        'product_name': productName,
+        if (expiresAt != null) 'expires_at': dateFormatter.format(expiresAt),
+        'barcode': barcode,
+      },
+    );
+  }
+
+  @override
+  Future<void> useVoucher({
+    required int id,
+    required int amount,
+  }) async {
+    final String endpoint = '/vouchers/$id/usage';
+
+    await dio.post(
+      endpoint,
+      data: {
+        'amount': amount,
+        'place': 'Not specified',
       },
     );
   }

@@ -11,7 +11,7 @@ class BrandRepository with BrandRepositoryMixin {
   final BrandApiMixin _api;
 
   @override
-  Future<BrandDto> getBrand({required int id}) async {
+  Future<BrandDto> getBrand(int id) async {
     final fetchedBrand = await _api.loadBrand(id: id);
     return fetchedBrand;
   }

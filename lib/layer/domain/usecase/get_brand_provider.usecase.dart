@@ -9,7 +9,7 @@ class GetBrand {
   final BrandRepositoryMixin _repository;
 
   Future<Brand> call(int id) async {
-    final brand = await _repository.getBrand(id: id);
+    final brand = await _repository.getBrand(id);
     return brand;
   }
 }

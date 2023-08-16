@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_card.dart';
 
 class VoucherListContent extends ConsumerStatefulWidget {
-  const VoucherListContent({
-    required this.voucherIds,
+  const VoucherListContent(
+    this.vpbs, {
     super.key,
   });
 
-  final List<int> voucherIds;
+  final List<VPB> vpbs;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -23,19 +24,24 @@ class VoucherListContent extends ConsumerStatefulWidget {
 class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
-    final ids = widget.voucherIds;
     return Container(
-      color: const Color(0xFFF7F8FA),
+      color: Theme.of(context).colorScheme.background,
       child: Column(
         children: [
           Flexible(
             flex: 1,
             child: Container(
-              color: Colors.grey,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 4,
             child: Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).padding.left + 20,
@@ -44,16 +50,22 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     '보유 기프티콘 목록',
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                   Expanded(
                     child: ListView.separated(
                       padding: const EdgeInsets.all(0),
-                      itemCount: ids.length,
+                      itemCount: widget.vpbs.length,
                       itemBuilder: (context, index) => VoucherCard(
-                        voucherId: ids[index],
+                        widget.vpbs[index],
                       ),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 10,
