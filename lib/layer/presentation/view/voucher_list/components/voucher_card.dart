@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -63,27 +64,32 @@ class _VoucherCardState extends ConsumerState<VoucherCard> {
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.vpb.product.name,
-                          style: Theme.of(context).textTheme.titleMedium,
+                        Expanded(
+                          child: AutoSizeText(
+                            widget.vpb.product.name,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            maxLines: 2,
+                          ),
                         ),
                         Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFAE36F7),
-                              borderRadius: BorderRadius.circular(100),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFAE36F7),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 12,
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 4,
-                                horizontal: 12,
-                              ),
-                              child: Text(
-                                'NEW',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
-                            )),
+                            child: Text(
+                              'NEW',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
