@@ -56,10 +56,10 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   }
 
   void onUsePressed(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
+    navigate(
       context: context,
-      builder: (context) => _amountSheet(context),
+      widget: _amountSheet(context),
+      bottomModal: true,
     );
   }
 
@@ -67,12 +67,6 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     if (amountFormKey.currentState!.validate()) {
       final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
       vpbNotifier.useVoucher(amount).then(Navigator.of(context).pop);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('사용하기 버튼이 클릭되었습니다.'), // TODO
-        ),
-      );
     }
   }
 
@@ -263,7 +257,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
               keyboardType: TextInputType.number,
               autofocus: true,
               validator: (value) =>
-                  int.parse(value ?? '0') > widget.voucher.balance
+                  (int.tryParse(value ?? '0') ?? 0) > widget.voucher.balance
                       ? '잔액(${widget.voucher.balance}원) 이하로 입력해주세요'
                       : null,
             ),

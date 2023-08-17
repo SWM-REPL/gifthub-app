@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/presentation/view/voucher_add/voucher_add.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.view.dart';
+import 'package:gifthub/layer/presentation/view/voucher_register/voucher_register.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
 
 class VoucherList extends StatelessWidget {
@@ -11,6 +11,7 @@ class VoucherList extends StatelessWidget {
     navigate(
       context: context,
       widget: const VoucherRegister(),
+      bottomModal: true,
     );
   }
 
