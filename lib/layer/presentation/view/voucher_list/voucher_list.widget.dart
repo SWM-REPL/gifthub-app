@@ -2,9 +2,18 @@
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/view/voucher_add/voucher_add.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.view.dart';
+import 'package:gifthub/utility/navigate_route.dart';
 
 class VoucherList extends StatelessWidget {
+  void _openVoucherRegisterWidget(BuildContext context) {
+    navigate(
+      context: context,
+      widget: const VoucherRegister(),
+    );
+  }
+
   const VoucherList({
     super.key,
   });
@@ -28,6 +37,14 @@ class VoucherList extends StatelessWidget {
         ],
       ),
       body: const VoucherListView(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        onPressed: () => _openVoucherRegisterWidget(context),
+        tooltip: 'Register Voucher',
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
     );
   }
 }
