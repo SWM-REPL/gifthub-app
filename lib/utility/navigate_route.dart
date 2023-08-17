@@ -5,13 +5,22 @@ void navigate({
   required BuildContext context,
   required Widget widget,
   RoutePredicate? predicate,
+  bool bottomModal = false,
 }) {
   Future.microtask(() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
+    if (bottomModal) {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
         builder: (context) => widget,
-      ),
-      predicate ?? (route) => true,
-    );
+      );
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => widget,
+        ),
+        predicate ?? (route) => true,
+      );
+    }
   });
 }
