@@ -2,23 +2,23 @@
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/domain/entity/user.entity.dart';
 import 'package:gifthub/layer/domain/repository/tokens.repository.dart';
+import 'package:gifthub/layer/domain/repository/user.repository.dart';
 
 class GetAppUser {
   GetAppUser({
-    required this.repository,
+    required this.tokensRepository,
+    required this.userRepository,
   });
 
-  final TokensRepositoryMixin repository;
+  final TokensRepositoryMixin tokensRepository;
+  final UserRepositoryMixin userRepository;
 
   Future<User> call() async {
-    final tokens = await repository.loadTokens();
+    final tokens = await tokensRepository.loadTokens();
     if (tokens == null) {
       throw UnauthorizedException();
     }
 
-    return User(
-      id: tokens.userId,
-      nickname: tokens.nickname,
-    );
+    return await userRepository.getUser(id: tokens.userId);
   }
 }

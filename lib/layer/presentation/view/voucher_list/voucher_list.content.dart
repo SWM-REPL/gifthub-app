@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_card.dart';
 
@@ -24,6 +26,8 @@ class VoucherListContent extends ConsumerStatefulWidget {
 class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
+    final appuser = ref.watch(appUserProvider);
+
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: Column(
@@ -38,10 +42,50 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                   bottomRight: Radius.circular(20),
                 ),
               ),
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '안녕하세요. ${appuser.asData?.value.nickname}님',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          WordBreakText(
+                            '만료 예정 기프티콘을 확인하세요!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 0,
+                      child: Image.asset('assets/icon-circle.png'),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           Flexible(
-            flex: 4,
+            flex: 3,
             child: Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).padding.left + 20,
@@ -55,7 +99,10 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                   ),
                   Text(
                     '보유 기프티콘 목록',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 15,
@@ -66,6 +113,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                       itemCount: widget.vpbs.length,
                       itemBuilder: (context, index) => VoucherCard(
                         widget.vpbs[index],
+                        usable: widget.vpbs[index].voucher.balance > 0,
                       ),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 10,

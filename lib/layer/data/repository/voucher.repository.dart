@@ -46,4 +46,26 @@ class VoucherRepository with VoucherRepositoryMixin {
       amount: amount,
     );
   }
+
+  @override
+  Future<String> uploadImage(String imagePath) async {
+    return await _api.uploadImage(imagePath: imagePath);
+  }
+
+  @override
+  Future<int> registVoucher({
+    required String barcode,
+    required DateTime expiresAt,
+    required String productName,
+    required String brandName,
+    required String imageUrl,
+  }) async {
+    return await _api.registVoucher(
+      barcode: barcode,
+      expiresAt: expiresAt,
+      productName: productName,
+      brandName: brandName,
+      imageUrl: imageUrl,
+    );
+  }
 }

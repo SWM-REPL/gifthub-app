@@ -31,6 +31,7 @@ class VoucherDetailContent extends ConsumerStatefulWidget {
 
 class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   final amountFormKey = GlobalKey<FormState>();
+  bool usable = true;
 
   void onSavePressed(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -43,7 +44,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   void onEditPressed(BuildContext context) {
     navigate(
       context: context,
-      widget: VoucherEditor(widget.voucher.id),
+      widget: VoucherEditor(voucherId: widget.voucher.id),
+      bottomModal: true,
     );
   }
 
@@ -56,10 +58,10 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   }
 
   void onUsePressed(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
+    navigate(
       context: context,
-      builder: (context) => _amountSheet(context),
+      widget: _amountSheet(context),
+      bottomModal: true,
     );
   }
 
@@ -67,26 +69,26 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     if (amountFormKey.currentState!.validate()) {
       final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
       vpbNotifier.useVoucher(amount).then(Navigator.of(context).pop);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('사용하기 버튼이 클릭되었습니다.'), // TODO
-        ),
-      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.voucher.balance == 0) {
+      setState(() => usable = false);
+    }
     return Column(
       children: [
         Flexible(
           flex: 0,
           child: AspectRatio(
             aspectRatio: 2 / 1,
-            child: Image.network(
-              widget.product.imageUrl,
-              fit: BoxFit.fitWidth,
+            child: Opacity(
+              opacity: usable ? 1 : 0.5,
+              child: Image.network(
+                widget.product.imageUrl,
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ),
         ),
@@ -241,7 +243,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     final amountController = TextEditingController();
     return Padding(
       padding: MediaQuery.of(context).viewInsets.add(
-            const EdgeInsets.only(top: 20, left: 20, right: 20),
+            const EdgeInsets.all(20),
           ),
       child: Form(
         key: amountFormKey,
@@ -263,7 +265,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
               keyboardType: TextInputType.number,
               autofocus: true,
               validator: (value) =>
-                  int.parse(value ?? '0') > widget.voucher.balance
+                  (int.tryParse(value ?? '0') ?? 0) > widget.voucher.balance
                       ? '잔액(${widget.voucher.balance}원) 이하로 입력해주세요'
                       : null,
             ),
