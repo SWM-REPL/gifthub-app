@@ -31,6 +31,7 @@ class VoucherDetailContent extends ConsumerStatefulWidget {
 
 class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   final amountFormKey = GlobalKey<FormState>();
+  bool usable = true;
 
   void onSavePressed(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -73,15 +74,21 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.voucher.balance == 0) {
+      setState(() => usable = false);
+    }
     return Column(
       children: [
         Flexible(
           flex: 0,
           child: AspectRatio(
             aspectRatio: 2 / 1,
-            child: Image.network(
-              widget.product.imageUrl,
-              fit: BoxFit.fitWidth,
+            child: Opacity(
+              opacity: usable ? 1 : 0.5,
+              child: Image.network(
+                widget.product.imageUrl,
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ),
         ),
