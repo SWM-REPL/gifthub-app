@@ -52,6 +52,9 @@ dependencies:
     git:
       url: https://github.com/AyushmanG26/receive_sharing_intent.git
       ref: abedc3d6d5b80df396e9c300fd1a052cbab08827
+  google_mlkit_text_recognition: ^0.10.0
+  uuid: ^3.0.7
+  word_break_text: ^0.1.0
 
 dev_dependencies:
   flutter_test:

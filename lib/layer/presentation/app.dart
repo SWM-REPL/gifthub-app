@@ -5,22 +5,25 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/provider/usecase/regist_voucher.provider.dart';
+import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/color.theme.dart';
 
-class App extends StatefulWidget {
+class App extends ConsumerStatefulWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
+  ConsumerState<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends ConsumerState<App> {
   late StreamSubscription _mediaStreamSubscription;
   late StreamSubscription _textStreamSubscription;
 
@@ -67,8 +70,16 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
+      ref.watch(registVoucherProvider(_sharedFiles.first.path));
+      setState(() {
+        _sharedFiles = [];
+        _sharedText = '';
+      });
+    }
+
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       theme: ThemeData(
         scaffoldBackgroundColor: background,
         colorScheme: const GifthubColorScheme(),
@@ -77,25 +88,7 @@ class _AppState extends State<App> {
         outlinedButtonTheme: const GifthubOutlinedButtonThemeData(),
         elevatedButtonTheme: const GifthubElevatedButtonThemeData(),
       ),
-      // home: const VoucherList(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              const Text('Shared files:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(_sharedFiles.map((f) => f.path).join(',')),
-              const SizedBox(height: 100),
-              const Text('Shared urls/text:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(_sharedText)
-            ],
-          ),
-        ),
-      ),
+      home: const VoucherList(),
     );
   }
 }

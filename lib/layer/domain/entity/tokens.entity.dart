@@ -25,14 +25,9 @@ class Tokens with EquatableMixin {
     };
   }
 
-  String get nickname {
-    final payload = JwtDecoder.decode(accessToken);
-    return payload['sub'];
-  }
-
   int get userId {
     final payload = JwtDecoder.decode(accessToken);
-    return payload['user_id'] ?? 2; // TODO: FIXIT
+    return payload['userId'];
   }
 
   @override

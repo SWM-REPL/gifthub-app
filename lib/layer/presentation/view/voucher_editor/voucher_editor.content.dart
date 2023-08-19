@@ -12,16 +12,16 @@ import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 
 class VoucherEditorContent extends ConsumerStatefulWidget {
-  VoucherEditorContent(
-    VPB data, {
+  VoucherEditorContent({
+    VPB? data,
     super.key,
-  })  : voucher = data.voucher,
-        product = data.product,
-        brand = data.brand;
+  })  : voucher = data?.voucher,
+        product = data?.product,
+        brand = data?.brand;
 
-  final Voucher voucher;
-  final Product product;
-  final Brand brand;
+  final Voucher? voucher;
+  final Product? product;
+  final Brand? brand;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -41,13 +41,16 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
     BuildContext context,
     List<TextEditingController> controllers,
   ) {
-    final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
-    vpbNotifier.editVoucher(
-      brandName: controllers[0].text,
-      productName: controllers[1].text,
-      expiresAt: DateFormat('yyyy.MM.dd').parse(controllers[2].text),
-      barcode: controllers[3].text,
-    );
+    if (widget.voucher == null) {
+    } else {
+      final vpbNotifier = ref.read(vpbProvider(widget.voucher!.id).notifier);
+      vpbNotifier.editVoucher(
+        brandName: controllers[0].text,
+        productName: controllers[1].text,
+        expiresAt: DateFormat('yyyy.MM.dd').parse(controllers[2].text),
+        barcode: controllers[3].text,
+      );
+    }
   }
 
   @override
@@ -61,92 +64,61 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
       '바코드',
     ];
     final placeholders = [
-      widget.brand.name,
-      widget.product.name,
-      DateFormat('yyyy.MM.dd').format(widget.voucher.expiredDate),
-      widget.voucher.barcode,
+      widget.brand?.name ?? '',
+      widget.product?.name ?? '',
+      DateFormat('yyyy.MM.dd')
+          .format(widget.voucher?.expiredDate ?? DateTime.now()),
+      widget.voucher?.barcode ?? '',
     ];
     final controllers =
         placeholders.map((text) => TextEditingController(text: text)).toList();
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: MediaQuery.of(context).padding.add(
-              const EdgeInsets.all(20),
+    return Padding(
+      padding: MediaQuery.of(context).padding.add(
+            const EdgeInsets.all(20),
+          ),
+      child: Form(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) => _buildTextFormField(
+                context: context,
+                label: labels[index],
+                controller: controllers[index],
+              ),
+              separatorBuilder: (context, index) => const Divider(
+                height: 1,
+              ),
+              itemCount: labels.length,
             ),
-        child: Form(
-          child: Column(
-            children: [
-              Flexible(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.brand.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        widget.product.name,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        NumberFormat.currency(
-                          locale: 'ko',
-                          customPattern: '#,###원',
-                        ).format(widget.product.price),
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      const SizedBox(height: 45),
-                      Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (context, index) => _buildTextFormField(
-                            context: context,
-                            label: labels[index],
-                            controller: controllers[index],
-                          ),
-                          separatorBuilder: (context, index) => const Divider(
-                            height: 1,
-                          ),
-                          itemCount: labels.length,
-                        ),
-                      )
-                    ],
+            Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: OutlinedButton(
+                    onPressed: () => onDeletePressed(context),
+                    child: Icon(
+                      Icons.delete_outline,
+                      color: secondaryColor,
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 50,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SizedBox(
                     height: 50,
-                    child: OutlinedButton(
-                      onPressed: () => onDeletePressed(context),
-                      child: Icon(
-                        Icons.delete_outline,
-                        color: secondaryColor,
-                      ),
+                    child: ElevatedButton(
+                      onPressed: () => onSavePressed(context, controllers),
+                      child: const Text('저장'),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () => onSavePressed(context, controllers),
-                        child: const Text('저장'),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
