@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -29,6 +30,23 @@ class VoucherEditorContent extends ConsumerStatefulWidget {
 }
 
 class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
+  late TextEditingController brandNameController;
+  late TextEditingController productNameController;
+  late TextEditingController expiresAtController;
+  late TextEditingController barcodeController;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  bool showDatePicker = false;
+
   void onDeletePressed(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -39,16 +57,15 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
 
   void onSavePressed(
     BuildContext context,
-    List<TextEditingController> controllers,
   ) {
     if (widget.voucher == null) {
     } else {
       final vpbNotifier = ref.read(vpbProvider(widget.voucher!.id).notifier);
       vpbNotifier.editVoucher(
-        brandName: controllers[0].text,
-        productName: controllers[1].text,
-        expiresAt: DateFormat('yyyy.MM.dd').parse(controllers[2].text),
-        barcode: controllers[3].text,
+        brandName: brandNameController.text,
+        productName: productNameController.text,
+        expiresAt: DateTime.tryParse(expiresAtController.text),
+        barcode: barcodeController.text,
       );
     }
   }
@@ -57,41 +74,116 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   Widget build(BuildContext context) {
     final secondaryColor = Theme.of(context).colorScheme.secondary;
 
-    final labels = [
-      '브랜드명',
-      '상품명',
-      '만료일자',
-      '바코드',
-    ];
-    final placeholders = [
-      widget.brand?.name ?? '',
-      widget.product?.name ?? '',
-      DateFormat('yyyy.MM.dd')
+    brandNameController = TextEditingController(
+      text: widget.brand?.name ?? '',
+    );
+    productNameController = TextEditingController(
+      text: widget.product?.name ?? '',
+    );
+    expiresAtController = TextEditingController(
+      text: DateFormat('yyyy.MM.dd')
           .format(widget.voucher?.expiredDate ?? DateTime.now()),
-      widget.voucher?.barcode ?? '',
-    ];
-    final controllers =
-        placeholders.map((text) => TextEditingController(text: text)).toList();
+    );
+    barcodeController = TextEditingController(
+      text: widget.voucher?.barcode ?? '',
+    );
 
     return Padding(
-      padding: MediaQuery.of(context).padding.add(
-            const EdgeInsets.all(20),
+      padding: MediaQuery.of(context).viewInsets.add(
+            MediaQuery.of(context).padding.add(
+                  const EdgeInsets.symmetric(horizontal: 20),
+                ),
           ),
       child: Form(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) => _buildTextFormField(
-                context: context,
-                label: labels[index],
-                controller: controllers[index],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: [
+                  _wrapTextField(
+                    context: context,
+                    label: '브랜드명',
+                    child: TextField(
+                      controller: brandNameController,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                  _wrapTextField(
+                    context: context,
+                    label: '상품명',
+                    child: TextField(
+                      controller: productNameController,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                  TapRegion(
+                    onTapInside: (event) {
+                      setState(() => showDatePicker = true);
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    onTapOutside: (event) =>
+                        setState(() => showDatePicker = false),
+                    child: Column(
+                      children: [
+                        _wrapTextField(
+                          context: context,
+                          label: '만료일자',
+                          child: TextField(
+                            controller: expiresAtController,
+                            enabled: false,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        if (showDatePicker)
+                          SizedBox(
+                            height: 200,
+                            child: CupertinoDatePicker(
+                              mode: CupertinoDatePickerMode.date,
+                              onDateTimeChanged: (DateTime value) {
+                                expiresAtController.value = TextEditingValue(
+                                  text: DateFormat('yyyy.MM.dd').format(value),
+                                );
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                  _wrapTextField(
+                    context: context,
+                    label: '바코드',
+                    child: TextField(
+                      controller: barcodeController,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      enableInteractiveSelection: false,
+                      showCursor: false,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              separatorBuilder: (context, index) => const Divider(
-                height: 1,
-              ),
-              itemCount: labels.length,
             ),
             Row(
               children: [
@@ -111,7 +203,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                   child: SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () => onSavePressed(context, controllers),
+                      onPressed: () => onSavePressed(context),
                       child: const Text('저장'),
                     ),
                   ),
@@ -123,40 +215,34 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
       ),
     );
   }
-}
 
-Widget _buildTextFormField({
-  required BuildContext context,
-  required String label,
-  required TextEditingController controller,
-}) {
-  return Row(
-    children: [
-      Flexible(
-        flex: 3,
-        fit: FlexFit.tight,
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ),
-      Flexible(
-        flex: 7,
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintStyle: Theme.of(context).textTheme.bodySmall,
-            border: InputBorder.none,
+  Widget _wrapTextField({
+    required BuildContext context,
+    required String label,
+    required TextField child,
+  }) {
+    return Row(
+      children: [
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
-      ),
-      Flexible(
-        flex: 1,
-        child: Icon(
-          Icons.keyboard_arrow_right,
-          color: Theme.of(context).colorScheme.secondary,
+        Flexible(
+          flex: 7,
+          child: child,
         ),
-      )
-    ],
-  );
+        Flexible(
+          flex: 1,
+          child: Icon(
+            Icons.keyboard_arrow_right,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        )
+      ],
+    );
+  }
 }
