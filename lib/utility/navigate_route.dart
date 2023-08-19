@@ -10,9 +10,15 @@ void navigate({
   Future.microtask(() {
     if (bottomModal) {
       showModalBottomSheet(
-        isScrollControlled: true,
         context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
         builder: (context) => widget,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        isScrollControlled: true,
       );
     } else {
       Navigator.of(context).pushAndRemoveUntil(

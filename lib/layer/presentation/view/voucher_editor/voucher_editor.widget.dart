@@ -5,20 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.view.dart';
 
 class VoucherEditor extends StatelessWidget {
-  const VoucherEditor(
-    this.voucherId, {
+  const VoucherEditor({
+    this.voucherId,
     super.key,
   });
 
-  final int voucherId;
+  final int? voucherId;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: VoucherEditorView(voucherId),
-      ),
-    );
+    return VoucherEditorView(voucherId: voucherId);
   }
 }

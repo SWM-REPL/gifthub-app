@@ -1,5 +1,7 @@
 // 📦 Package imports:
+import 'package:dio/dio.dart' as dio_library;
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/dto/voucher.dto.dart';
@@ -22,6 +24,16 @@ mixin VoucherApiMixin {
   Future<void> useVoucher({
     required int id,
     required int amount,
+  });
+  Future<String> uploadImage({
+    required String imagePath,
+  });
+  Future<int> registVoucher({
+    required String barcode,
+    required DateTime expiresAt,
+    required String productName,
+    required String brandName,
+    required String imageUrl,
   });
 }
 
@@ -87,5 +99,48 @@ class VoucherApi with DioMixin, VoucherApiMixin {
         'place': 'Not specified',
       },
     );
+  }
+
+  @override
+  Future<String> uploadImage({
+    required String imagePath,
+  }) async {
+    const String endpoint = '/vouchers/images';
+
+    final imageFile = await dio_library.MultipartFile.fromFile(imagePath,
+        filename: const Uuid().v4());
+    final response = await dio.post(
+      endpoint,
+      data: {
+        'image_file': imageFile,
+      },
+    );
+    final data = response.data as Map<String, dynamic>;
+    return data['url'];
+  }
+
+  @override
+  Future<int> registVoucher({
+    required String barcode,
+    required DateTime expiresAt,
+    required String productName,
+    required String brandName,
+    required String imageUrl,
+  }) async {
+    const String endpoint = '/vouchers';
+    final dateFormatter = DateFormat('yyyy-MM-dd');
+
+    final response = await dio.post(
+      endpoint,
+      data: {
+        'barcode': barcode,
+        'expires_at': dateFormatter.format(expiresAt),
+        'product_name': productName,
+        'brand_name': brandName,
+        'image_url': imageUrl,
+      },
+    );
+    final data = response.data as Map<String, dynamic>;
+    return data['id'];
   }
 }

@@ -43,7 +43,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   void onEditPressed(BuildContext context) {
     navigate(
       context: context,
-      widget: VoucherEditor(widget.voucher.id),
+      widget: VoucherEditor(voucherId: widget.voucher.id),
+      bottomModal: true,
     );
   }
 
@@ -235,7 +236,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     final amountController = TextEditingController();
     return Padding(
       padding: MediaQuery.of(context).viewInsets.add(
-            const EdgeInsets.only(top: 20, left: 20, right: 20),
+            const EdgeInsets.all(20),
           ),
       child: Form(
         key: amountFormKey,
