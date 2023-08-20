@@ -157,9 +157,8 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                             child: CupertinoDatePicker(
                               mode: CupertinoDatePickerMode.date,
                               onDateTimeChanged: (DateTime value) {
-                                expiresAtController.value = TextEditingValue(
-                                  text: DateFormat('yyyy.MM.dd').format(value),
-                                );
+                                expiresAtController.text =
+                                    DateFormat('yyyy.MM.dd').format(value);
                               },
                             ),
                           ),
