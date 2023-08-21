@@ -28,7 +28,7 @@ mixin VoucherApiMixin {
   Future<String> uploadImage({
     required String imagePath,
   });
-  Future<int> registVoucher({
+  Future<int> registerVoucher({
     required String barcode,
     required DateTime expiresAt,
     required String productName,
@@ -107,20 +107,22 @@ class VoucherApi with DioMixin, VoucherApiMixin {
   }) async {
     const String endpoint = '/vouchers/images';
 
-    final imageFile = await dio_library.MultipartFile.fromFile(imagePath,
-        filename: const Uuid().v4());
+    final imageFile = await dio_library.MultipartFile.fromFile(
+      imagePath,
+      filename: const Uuid().v4(),
+    );
     final response = await dio.post(
       endpoint,
-      data: {
+      data: dio_library.FormData.fromMap({
         'image_file': imageFile,
-      },
+      }),
     );
     final data = response.data as Map<String, dynamic>;
-    return data['url'];
+    return data['upload_file_name'];
   }
 
   @override
-  Future<int> registVoucher({
+  Future<int> registerVoucher({
     required String barcode,
     required DateTime expiresAt,
     required String productName,

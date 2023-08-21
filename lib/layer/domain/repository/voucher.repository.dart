@@ -18,7 +18,7 @@ mixin VoucherRepositoryMixin {
   Future<String> uploadImage(
     String imagePath,
   );
-  Future<int> registVoucher({
+  Future<int> registerVoucher({
     required String barcode,
     required DateTime expiresAt,
     required String productName,

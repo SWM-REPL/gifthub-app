@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/presentation/provider/usecase/regist_voucher.provider.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/register_voucher.provider.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
@@ -71,7 +71,7 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
-      ref.watch(registVoucherProvider(_sharedFiles.first.path));
+      ref.watch(registerVoucherProvider(_sharedFiles.first.path));
       setState(() {
         _sharedFiles = [];
         _sharedText = '';
