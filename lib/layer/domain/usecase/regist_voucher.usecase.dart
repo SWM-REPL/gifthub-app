@@ -4,8 +4,8 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/repository/voucher.repository.dart';
 
-class RegistVoucher {
-  RegistVoucher({
+class RegisterVoucher {
+  RegisterVoucher({
     required VoucherRepositoryMixin voucherRepository,
     TextRecognizer? textRecognizer,
   })  : _voucherRepository = voucherRepository,
@@ -20,7 +20,7 @@ class RegistVoucher {
     final result = await _textRecognizer.processImage(image);
 
     final imageUrl = await _voucherRepository.uploadImage(imagePath);
-    final id = await _voucherRepository.registVoucher(
+    final id = await _voucherRepository.registerVoucher(
       barcode: _getBarcode(result),
       expiresAt: _getExpireDate(result),
       productName: _getProductName(result),

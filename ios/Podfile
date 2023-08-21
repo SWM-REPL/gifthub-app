@@ -27,6 +27,7 @@ end
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
 flutter_ios_podfile_setup
+pod 'GoogleMLKit/TextRecognitionKorean', '~> 4.0.0'
 
 target 'Runner' do
   use_frameworks!

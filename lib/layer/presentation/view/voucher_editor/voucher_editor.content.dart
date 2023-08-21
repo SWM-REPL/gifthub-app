@@ -38,6 +38,21 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   @override
   void initState() {
     super.initState();
+
+    brandNameController = TextEditingController(
+      text: widget.brand?.name ?? '',
+    );
+    productNameController = TextEditingController(
+      text: widget.product?.name ?? '',
+    );
+    expiresAtController = TextEditingController(
+      text: widget.voucher?.expiredDate != null
+          ? DateFormat('yyyy-MM-dd').format(widget.voucher!.expiredDate)
+          : '',
+    );
+    barcodeController = TextEditingController(
+      text: widget.voucher?.barcode ?? '',
+    );
   }
 
   @override
@@ -74,24 +89,10 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   Widget build(BuildContext context) {
     final secondaryColor = Theme.of(context).colorScheme.secondary;
 
-    brandNameController = TextEditingController(
-      text: widget.brand?.name ?? '',
-    );
-    productNameController = TextEditingController(
-      text: widget.product?.name ?? '',
-    );
-    expiresAtController = TextEditingController(
-      text: DateFormat('yyyy.MM.dd')
-          .format(widget.voucher?.expiredDate ?? DateTime.now()),
-    );
-    barcodeController = TextEditingController(
-      text: widget.voucher?.barcode ?? '',
-    );
-
     return Padding(
       padding: MediaQuery.of(context).viewInsets.add(
             MediaQuery.of(context).padding.add(
-                  const EdgeInsets.symmetric(horizontal: 20),
+                  const EdgeInsets.all(20),
                 ),
           ),
       child: Form(
@@ -99,7 +100,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Column(
                 children: [
                   _wrapTextField(
@@ -144,7 +145,6 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                           label: '만료일자',
                           child: TextField(
                             controller: expiresAtController,
-                            enabled: false,
                             style: Theme.of(context).textTheme.bodyLarge,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -157,9 +157,8 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                             child: CupertinoDatePicker(
                               mode: CupertinoDatePickerMode.date,
                               onDateTimeChanged: (DateTime value) {
-                                expiresAtController.value = TextEditingValue(
-                                  text: DateFormat('yyyy.MM.dd').format(value),
-                                );
+                                expiresAtController.text =
+                                    DateFormat('yyyy-MM-dd').format(value);
                               },
                             ),
                           ),
@@ -219,7 +218,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   Widget _wrapTextField({
     required BuildContext context,
     required String label,
-    required TextField child,
+    required Widget child,
   }) {
     return Row(
       children: [

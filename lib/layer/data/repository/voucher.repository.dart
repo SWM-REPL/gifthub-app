@@ -53,14 +53,14 @@ class VoucherRepository with VoucherRepositoryMixin {
   }
 
   @override
-  Future<int> registVoucher({
+  Future<int> registerVoucher({
     required String barcode,
     required DateTime expiresAt,
     required String productName,
     required String brandName,
     required String imageUrl,
   }) async {
-    return await _api.registVoucher(
+    return await _api.registerVoucher(
       barcode: barcode,
       expiresAt: expiresAt,
       productName: productName,
