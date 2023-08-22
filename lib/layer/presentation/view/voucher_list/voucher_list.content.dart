@@ -27,6 +27,12 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
     final appuser = ref.watch(appUserProvider);
+    final cards = widget.vpbs.map(
+      (vpb) => VoucherCard(
+        vpb,
+        usable: vpb.voucher.isUsable,
+      ),
+    );
 
     return Container(
       color: Theme.of(context).colorScheme.background,
@@ -111,10 +117,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                     child: ListView.separated(
                       padding: const EdgeInsets.all(0),
                       itemCount: widget.vpbs.length,
-                      itemBuilder: (context, index) => VoucherCard(
-                        widget.vpbs[index],
-                        usable: widget.vpbs[index].voucher.balance > 0,
-                      ),
+                      itemBuilder: (context, index) => cards.elementAt(index),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 10,
                       ),

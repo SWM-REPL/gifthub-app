@@ -88,6 +88,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
         balance: int.tryParse(balanceController.text),
       );
     }
+    Navigator.of(context).pop();
   }
 
   @override
