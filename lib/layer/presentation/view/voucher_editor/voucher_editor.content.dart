@@ -32,6 +32,7 @@ class VoucherEditorContent extends ConsumerStatefulWidget {
 class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   late TextEditingController brandNameController;
   late TextEditingController productNameController;
+  late TextEditingController balanceController;
   late TextEditingController expiresAtController;
   late TextEditingController barcodeController;
 
@@ -44,6 +45,9 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
     );
     productNameController = TextEditingController(
       text: widget.product?.name ?? '',
+    );
+    balanceController = TextEditingController(
+      text: widget.voucher?.balance.toString() ?? '',
     );
     expiresAtController = TextEditingController(
       text: widget.voucher?.expiredDate != null
@@ -81,6 +85,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
         productName: productNameController.text,
         expiresAt: DateTime.tryParse(expiresAtController.text),
         barcode: barcodeController.text,
+        balance: int.tryParse(balanceController.text),
       );
     }
   }
@@ -122,6 +127,20 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     label: '상품명',
                     child: TextField(
                       controller: productNameController,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                  _wrapTextField(
+                    context: context,
+                    label: '잔액',
+                    child: TextField(
+                      controller: balanceController,
                       style: Theme.of(context).textTheme.bodyLarge,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
