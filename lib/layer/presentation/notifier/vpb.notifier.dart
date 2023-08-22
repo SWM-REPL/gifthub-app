@@ -47,6 +47,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
+    int? balance,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -57,6 +58,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
         productName: productName,
         expiresAt: expiresAt,
         barcode: barcode,
+        balance: balance,
       );
       return await fetchVPB();
     });
