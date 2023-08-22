@@ -29,6 +29,7 @@ class VoucherRepository with VoucherRepositoryMixin {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
+    int? balance,
   }) async {
     return await _api.updateVoucher(
       id,
@@ -36,6 +37,7 @@ class VoucherRepository with VoucherRepositoryMixin {
       productName: productName,
       expiresAt: expiresAt,
       barcode: barcode,
+      balance: balance,
     );
   }
 
