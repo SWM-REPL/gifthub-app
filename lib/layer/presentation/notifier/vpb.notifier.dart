@@ -38,6 +38,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
     state = await AsyncValue.guard(() async {
       final useVoucher = ref.watch(useVoucherProvider);
       await useVoucher(_voucherId, amount);
+      ref.invalidate(voucherProvider(_voucherId));
       return await fetchVPB();
     });
   }
@@ -60,6 +61,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
         barcode: barcode,
         balance: balance,
       );
+      ref.invalidate(voucherProvider(_voucherId));
       return await fetchVPB();
     });
   }
