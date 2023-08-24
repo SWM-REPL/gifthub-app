@@ -2,7 +2,7 @@
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 
 class BrandDto extends Brand {
-  const BrandDto({
+  BrandDto({
     required super.id,
     required super.name,
     required super.imageUrl,

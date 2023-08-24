@@ -11,6 +11,7 @@ import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
+import 'package:gifthub/layer/presentation/notifier/vpbs.dart';
 
 class VoucherEditorContent extends ConsumerStatefulWidget {
   VoucherEditorContent({
@@ -32,6 +33,7 @@ class VoucherEditorContent extends ConsumerStatefulWidget {
 class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
   late TextEditingController brandNameController;
   late TextEditingController productNameController;
+  late TextEditingController balanceController;
   late TextEditingController expiresAtController;
   late TextEditingController barcodeController;
 
@@ -44,6 +46,9 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
     );
     productNameController = TextEditingController(
       text: widget.product?.name ?? '',
+    );
+    balanceController = TextEditingController(
+      text: widget.voucher?.balance.toString() ?? '',
     );
     expiresAtController = TextEditingController(
       text: widget.voucher?.expiredDate != null
@@ -74,6 +79,13 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
     BuildContext context,
   ) {
     if (widget.voucher == null) {
+      final vpbsNotifier = ref.read(vpbsProvider.notifier);
+      vpbsNotifier.addVoucher(
+        brandName: brandNameController.text,
+        productName: productNameController.text,
+        expiresAt: DateTime.tryParse(expiresAtController.text),
+        barcode: barcodeController.text,
+      );
     } else {
       final vpbNotifier = ref.read(vpbProvider(widget.voucher!.id).notifier);
       vpbNotifier.editVoucher(
@@ -81,8 +93,10 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
         productName: productNameController.text,
         expiresAt: DateTime.tryParse(expiresAtController.text),
         barcode: barcodeController.text,
+        balance: int.tryParse(balanceController.text),
       );
     }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -131,6 +145,22 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                   const Divider(
                     height: 1,
                   ),
+                  if (widget.voucher != null)
+                    _wrapTextField(
+                      context: context,
+                      label: '잔액',
+                      child: TextField(
+                        controller: balanceController,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  if (widget.voucher != null)
+                    const Divider(
+                      height: 1,
+                    ),
                   TapRegion(
                     onTapInside: (event) {
                       setState(() => showDatePicker = true);
