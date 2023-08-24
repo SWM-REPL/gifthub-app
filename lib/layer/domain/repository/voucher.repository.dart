@@ -24,6 +24,6 @@ mixin VoucherRepositoryMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    required String imageUrl,
+    String? imageUrl,
   });
 }

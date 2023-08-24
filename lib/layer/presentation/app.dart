@@ -73,8 +73,8 @@ class _AppState extends ConsumerState<App> {
   Widget build(BuildContext context) {
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
       Future.sync(() async {
-        await ref
-            .watch(registerVoucherProvider(_sharedFiles.first.path).future);
+        final registerVoucher = ref.watch(registerVoucherProvider);
+        await registerVoucher(imagePath: _sharedFiles.first.path);
         ref.invalidate(voucherIdsProvider);
         setState(() {
           _sharedFiles = [];

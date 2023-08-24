@@ -34,7 +34,7 @@ mixin VoucherApiMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    required String imageUrl,
+    String? imageUrl,
   });
 }
 
@@ -130,7 +130,7 @@ class VoucherApi with DioMixin, VoucherApiMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    required String imageUrl,
+    String? imageUrl,
   }) async {
     const String endpoint = '/vouchers';
     final dateFormatter = DateFormat('yyyy-MM-dd');
@@ -142,7 +142,7 @@ class VoucherApi with DioMixin, VoucherApiMixin {
         'expires_at': dateFormatter.format(expiresAt),
         'product_name': productName,
         'brand_name': brandName,
-        'image_url': imageUrl,
+        'image_url': imageUrl ?? 'logo.png', // TODO: remove default value
       },
     );
     final data = response.data as Map<String, dynamic>;
