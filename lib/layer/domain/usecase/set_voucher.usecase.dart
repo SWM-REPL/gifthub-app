@@ -12,7 +12,6 @@ class SetVoucher {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
-    int? balance,
   }) async {
     return await _voucherRepository.setVoucher(
       id,
@@ -20,7 +19,6 @@ class SetVoucher {
       productName: productName,
       expiresAt: expiresAt,
       barcode: barcode,
-      balance: balance,
     );
   }
 }

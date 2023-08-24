@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
-import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.content.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
@@ -29,7 +28,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
     final appUser = ref.watch(appUserProvider);
     return appUser.when(
       data: (appUser) => const VoucherList(),
-      loading: () => const InProgress(),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) {
         if (error is UnauthorizedException) {
           return const SignInContent();

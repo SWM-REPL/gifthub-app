@@ -16,15 +16,6 @@ class Voucher with EquatableMixin {
   final DateTime expiredDate;
   final int balance;
 
-  bool get isUsable =>
-      balance > 0 &&
-      expiredDate.isAfter(DateTime.now().add(const Duration(days: 1)).copyWith(
-            hour: 0,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-          ));
-
   @override
   List<Object?> get props => [id];
 }

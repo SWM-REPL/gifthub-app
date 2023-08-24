@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.content.dart';
 
@@ -31,9 +30,7 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
       final vpb = ref.watch(vpbProvider(widget.voucherId!));
       return vpb.when(
         data: (data) => VoucherEditorContent(data: data),
-        loading: () => vpb.hasValue
-            ? VoucherEditorContent(data: vpb.value!)
-            : const InProgress(),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => throw error,
       );
     }

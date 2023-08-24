@@ -8,8 +8,7 @@ import 'package:word_break_text/word_break_text.dart';
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/components/brand_list.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_list.dart';
+import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_card.dart';
 
 class VoucherListContent extends ConsumerStatefulWidget {
   const VoucherListContent(
@@ -82,31 +81,21 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           Flexible(
-            flex: 4,
+            flex: 3,
             child: Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).padding.left + 20,
                 right: MediaQuery.of(context).padding.right + 20,
               ),
-              child: ListView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '보유 브랜드 목록',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(
                     height: 15,
-                  ),
-                  const BrandList(),
-                  const SizedBox(
-                    height: 20,
                   ),
                   Text(
                     '보유 기프티콘 목록',
@@ -118,7 +107,19 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const VoucherList(),
+                  Expanded(
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(0),
+                      itemCount: widget.vpbs.length,
+                      itemBuilder: (context, index) => VoucherCard(
+                        widget.vpbs[index],
+                        usable: widget.vpbs[index].voucher.balance > 0,
+                      ),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

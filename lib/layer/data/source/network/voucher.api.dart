@@ -20,7 +20,6 @@ mixin VoucherApiMixin {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
-    int? balance,
   });
   Future<void> useVoucher({
     required int id,
@@ -34,7 +33,7 @@ mixin VoucherApiMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    String? imageUrl,
+    required String imageUrl,
   });
 }
 
@@ -71,7 +70,6 @@ class VoucherApi with DioMixin, VoucherApiMixin {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
-    int? balance,
   }) async {
     final String endpoint = '/vouchers/$id';
     final dateFormatter = DateFormat('yyyy-MM-dd');
@@ -83,7 +81,6 @@ class VoucherApi with DioMixin, VoucherApiMixin {
         'product_name': productName,
         if (expiresAt != null) 'expires_at': dateFormatter.format(expiresAt),
         'barcode': barcode,
-        'balance': balance,
       },
     );
   }
@@ -130,7 +127,7 @@ class VoucherApi with DioMixin, VoucherApiMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    String? imageUrl,
+    required String imageUrl,
   }) async {
     const String endpoint = '/vouchers';
     final dateFormatter = DateFormat('yyyy-MM-dd');
@@ -142,7 +139,7 @@ class VoucherApi with DioMixin, VoucherApiMixin {
         'expires_at': dateFormatter.format(expiresAt),
         'product_name': productName,
         'brand_name': brandName,
-        'image_url': imageUrl ?? 'logo.png', // TODO: remove default value
+        'image_url': imageUrl,
       },
     );
     final data = response.data as Map<String, dynamic>;

@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
-import 'package:gifthub/layer/presentation/component/in_progress.dart';
-import 'package:gifthub/layer/presentation/notifier/vpbs.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.content.dart';
 import 'package:gifthub/utility/navigate_route.dart';
@@ -33,13 +32,9 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
 
     return vpbs.when(
       data: (vpbs) => VoucherListContent(vpbs),
-      loading: () {
-        if (vpbs.hasValue) {
-          return VoucherListContent(vpbs.value!);
-        } else {
-          return const InProgress();
-        }
-      },
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
       error: (error, stackTrace) {
         if (error is UnauthorizedException) {
           navigate(
@@ -47,7 +42,9 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
             widget: const SignIn(),
             predicate: (_) => false,
           );
-          return const InProgress();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
         throw error;
       },

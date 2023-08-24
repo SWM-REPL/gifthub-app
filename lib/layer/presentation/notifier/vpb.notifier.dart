@@ -9,6 +9,7 @@ import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/presentation/provider/entity/brand.provider.dart';
 import 'package:gifthub/layer/presentation/provider/entity/product.provider.dart';
 import 'package:gifthub/layer/presentation/provider/entity/voucher.provider.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/set_voucher.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/use_voucher.provider.dart';
 
@@ -29,7 +30,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
   @override
   Future<VPB> build(final int arg) async {
     _voucherId = arg;
-    return await _fetch();
+    return await fetchVPB();
   }
 
   Future<void> useVoucher(int amount) async {
@@ -37,8 +38,7 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
     state = await AsyncValue.guard(() async {
       final useVoucher = ref.watch(useVoucherProvider);
       await useVoucher(_voucherId, amount);
-      ref.invalidate(voucherProvider(_voucherId));
-      return await _fetch();
+      return await fetchVPB();
     });
   }
 
@@ -47,7 +47,6 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
-    int? balance,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -58,14 +57,12 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
         productName: productName,
         expiresAt: expiresAt,
         barcode: barcode,
-        balance: balance,
       );
-      ref.invalidate(voucherProvider(_voucherId));
-      return await _fetch();
+      return await fetchVPB();
     });
   }
 
-  Future<VPB> _fetch() async {
+  Future<VPB> fetchVPB() async {
     final voucher = await ref.watch(voucherProvider(_voucherId).future);
     final product = await ref.watch(productProvider(voucher.productId).future);
     final brand = await ref.watch(brandProvider(product.brandId).future);
@@ -76,4 +73,10 @@ class VPBNotifier extends FamilyAsyncNotifier<VPB, int> {
 
 final vpbProvider = AsyncNotifierProvider.family<VPBNotifier, VPB, int>(() {
   return VPBNotifier();
+});
+
+final vpbsProvider = FutureProvider<List<VPB>>((ref) async {
+  final ids = await ref.watch(voucherIdsProvider.future);
+  final vpbFutures = ids.map((id) => ref.watch(vpbProvider(id).future));
+  return await Future.wait(vpbFutures);
 });

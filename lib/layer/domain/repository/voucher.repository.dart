@@ -10,7 +10,6 @@ mixin VoucherRepositoryMixin {
     String? productName,
     DateTime? expiresAt,
     String? barcode,
-    int? balance,
   });
   Future<void> useVoucher(
     int id,
@@ -24,6 +23,6 @@ mixin VoucherRepositoryMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    String? imageUrl,
+    required String imageUrl,
   });
 }
