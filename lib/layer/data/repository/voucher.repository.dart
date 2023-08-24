@@ -60,7 +60,7 @@ class VoucherRepository with VoucherRepositoryMixin {
     required DateTime expiresAt,
     required String productName,
     required String brandName,
-    required String imageUrl,
+    String? imageUrl,
   }) async {
     return await _api.registerVoucher(
       barcode: barcode,
