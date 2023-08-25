@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
@@ -41,7 +42,9 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
         }
       },
       error: (error, stackTrace) {
-        if (error is UnauthorizedException) {
+        if ((error is UnauthorizedException) ||
+            // Remove this 401 error
+            (error is DioException && error.response!.statusCode == 401)) {
           navigate(
             context: context,
             widget: const SignIn(),

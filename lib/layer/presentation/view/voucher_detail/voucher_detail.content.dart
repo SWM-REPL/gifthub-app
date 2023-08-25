@@ -142,10 +142,15 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                     ),
                     const SizedBox(height: 20),
                     Image.network(
-                      'https://barcode.tec-it.com/barcode.ashx?data=${widget.voucher.barcode}&translate-esc=on&imagetype=Png',
+                      'https://barcode.tec-it.com/barcode.ashx?data=${widget.voucher.barcode}',
                       fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) =>
-                          const InProgress(),
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return const InProgress();
+                        }
+                      },
                     ),
                     Column(
                       children: [

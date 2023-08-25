@@ -55,7 +55,7 @@ class _SignInContentState extends ConsumerState<SignInContent> {
         );
         navigate(
           context: context,
-          widget: const VoucherList(),
+          widget: VoucherList(),
           predicate: (_) => false,
         );
       } else {
