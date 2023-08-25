@@ -33,7 +33,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   final amountFormKey = GlobalKey<FormState>();
   bool usable = true;
 
-  void onSavePressed(BuildContext context) {
+  void _onSavePressed(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('저장 버튼이 클릭되었습니다.'), // TODO
@@ -41,7 +41,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     );
   }
 
-  void onEditPressed(BuildContext context) {
+  void _onEditPressed(BuildContext context) {
     navigate(
       context: context,
       widget: VoucherEditor(voucherId: widget.voucher.id),
@@ -49,7 +49,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     );
   }
 
-  void onSharePressed(BuildContext context) {
+  void _onSharePressed(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('공유 버튼이 클릭되었습니다.'), // TODO
@@ -57,19 +57,37 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
     );
   }
 
-  void onUsePressed(BuildContext context) {
-    navigate(
-      context: context,
-      widget: _amountSheet(context),
-      bottomModal: true,
-    );
+  void _onUsePressed(BuildContext context) {
+    if (widget.product.isReusable) {
+      navigate(
+        context: context,
+        widget: _AmountSheet(
+          formKey: amountFormKey,
+          voucher: widget.voucher,
+          onUsePressed: _useVoucher,
+        ),
+        bottomModal: true,
+      );
+    } else {
+      _useVoucher(context, widget.product.price);
+    }
   }
 
-  void onAmountUsePressed(BuildContext context, int amount) {
-    if (amountFormKey.currentState!.validate()) {
-      final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
-      vpbNotifier.useVoucher(amount).then(Navigator.of(context).pop);
+  void _useVoucher(BuildContext context, int amount) {
+    if (widget.product.isReusable &&
+        amountFormKey.currentState!.validate() == false) {
+      return;
     }
+
+    final vpbNotifier = ref.read(vpbProvider(widget.voucher.id).notifier);
+    vpbNotifier.useVoucher(amount).then((_) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('사용되었습니다.'),
+        ),
+      );
+    });
   }
 
   @override
@@ -132,7 +150,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: () => onSavePressed(context),
+                            onPressed: () => _onSavePressed(context),
                             icon: const Icon(
                               Icons.file_download,
                               color: Colors.grey,
@@ -159,7 +177,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton.icon(
-                                onPressed: () => onEditPressed(context),
+                                onPressed: () => _onEditPressed(context),
                                 icon: const Icon(
                                   Icons.edit,
                                   color: Colors.grey,
@@ -173,7 +191,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                               ),
                               const VerticalDivider(),
                               TextButton.icon(
-                                onPressed: () => onSharePressed(context),
+                                onPressed: () => _onSharePressed(context),
                                 icon: const Icon(
                                   Icons.share,
                                   color: Colors.grey,
@@ -216,7 +234,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed:
-                  widget.voucher.isUsable ? () => onUsePressed(context) : null,
+                  widget.voucher.isUsable ? () => _onUsePressed(context) : null,
               style: ButtonStyle(
                 padding: MaterialStateProperty.resolveWith<EdgeInsets>(
                   (states) => const EdgeInsets.only(
@@ -237,15 +255,28 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
       ],
     );
   }
+}
 
-  Widget _amountSheet(BuildContext context) {
+class _AmountSheet extends StatelessWidget {
+  const _AmountSheet({
+    required this.formKey,
+    required this.voucher,
+    required this.onUsePressed,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final Voucher voucher;
+  final void Function(BuildContext, int) onUsePressed;
+
+  @override
+  Widget build(BuildContext context) {
     final amountController = TextEditingController();
     return Padding(
       padding: MediaQuery.of(context).viewInsets.add(
             const EdgeInsets.all(20),
           ),
       child: Form(
-        key: amountFormKey,
+        key: formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -256,7 +287,7 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             Text(
-              '잔액: ${widget.voucher.balance}원',
+              '잔액: ${voucher.balance}원',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             TextFormField(
@@ -264,15 +295,15 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
               keyboardType: TextInputType.number,
               autofocus: true,
               validator: (value) =>
-                  (int.tryParse(value ?? '0') ?? 0) > widget.voucher.balance
-                      ? '잔액(${widget.voucher.balance}원) 이하로 입력해주세요'
+                  (int.tryParse(value ?? '0') ?? 0) > voucher.balance
+                      ? '잔액(${voucher.balance}원) 이하로 입력해주세요'
                       : null,
             ),
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => onAmountUsePressed(
+                onPressed: () => onUsePressed(
                   context,
                   int.parse(amountController.text),
                 ),
