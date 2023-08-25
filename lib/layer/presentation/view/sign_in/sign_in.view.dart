@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
@@ -28,10 +29,12 @@ class _SignInViewState extends ConsumerState<SignInView> {
   Widget build(BuildContext context) {
     final appUser = ref.watch(appUserProvider);
     return appUser.when(
-      data: (appUser) => const VoucherList(),
+      data: (appUser) => VoucherList(),
       loading: () => const InProgress(),
       error: (error, stackTrace) {
-        if (error is UnauthorizedException) {
+        if ((error is UnauthorizedException) ||
+            // TODO: Remove this 401 error
+            (error is DioException && error.response!.statusCode == 401)) {
           return const SignInContent();
         } else {
           return Center(

@@ -14,6 +14,9 @@ mixin AuthApiMixin {
     required String password,
     required String nickname,
   });
+  Future<void> signout(
+    String token,
+  );
   Future<TokensDto> refreshTokens(
     String token,
   );
@@ -73,6 +76,18 @@ class AuthApi with AuthApiMixin {
       },
     );
     return TokensDto.fromJson(response.data);
+  }
+
+  @override
+  Future<void> signout(String token) async {
+    const String endpoint = '/auth/sign-out';
+
+    await _dio.post(
+      endpoint,
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
   }
 
   @override

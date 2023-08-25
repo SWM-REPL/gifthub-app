@@ -27,7 +27,10 @@ class TokensRepository with TokensRepositoryMixin {
   }
 
   @override
-  Future<void> deleteTokens() async {}
+  Future<void> deleteTokens() async {
+    tokensCache.deleteTokens();
+    await tokensStorage.deleteTokens();
+  }
 
   @override
   Future<Tokens> loadTokens() async {

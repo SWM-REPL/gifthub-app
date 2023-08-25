@@ -93,7 +93,7 @@ class _AppState extends ConsumerState<App> {
         outlinedButtonTheme: const GifthubOutlinedButtonThemeData(),
         elevatedButtonTheme: const GifthubElevatedButtonThemeData(),
       ),
-      home: const VoucherList(),
+      home: VoucherList(),
     );
   }
 }

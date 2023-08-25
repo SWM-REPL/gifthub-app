@@ -51,7 +51,11 @@ class AuthRepository with AuthRepositoryMixin {
   @override
   Future<bool> signOut() async {
     try {
-      await tokensRepository.deleteTokens();
+      final tokens = await tokensRepository.loadTokens();
+      if (tokens != null) {
+        await tokensRepository.deleteTokens();
+        await authApi.signout(tokens.accessToken);
+      }
       return true;
     } catch (e) {
       return false;
