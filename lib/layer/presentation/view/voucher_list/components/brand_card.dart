@@ -49,38 +49,35 @@ class _BrandCardState extends ConsumerState<BrandCard> {
             : null,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => changeBrancFilter(),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  fit: BoxFit.cover,
-                  widget.brand.imageUrl,
-                  width: 80,
-                  height: 80,
-                ),
+      child: GestureDetector(
+        onTap: () => changeBrancFilter(),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                fit: BoxFit.cover,
+                widget.brand.imageUrl,
+                width: 80,
+                height: 80,
               ),
-              const SizedBox(height: 10),
-              Text(
-                widget.brand.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 5),
-              Text(
-                '${widget.brand.totalPrice}원',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              Text(
-                '${widget.brand.totalCount}개',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              widget.brand.name,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '${widget.brand.totalPrice}원',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            Text(
+              '${widget.brand.totalCount}개',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
         ),
       ),
     );

@@ -36,6 +36,9 @@ mixin VoucherApiMixin {
     required String brandName,
     String? imageUrl,
   });
+  Future<void> deleteVoucher({
+    required int id,
+  });
 }
 
 class VoucherApi with DioMixin, VoucherApiMixin {
@@ -147,5 +150,14 @@ class VoucherApi with DioMixin, VoucherApiMixin {
     );
     final data = response.data as Map<String, dynamic>;
     return data['id'];
+  }
+
+  @override
+  Future<void> deleteVoucher({
+    required int id,
+  }) async {
+    final String endpoint = '/vouchers/$id';
+
+    await dio.delete(endpoint);
   }
 }

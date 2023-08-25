@@ -70,4 +70,11 @@ class VoucherRepository with VoucherRepositoryMixin {
       imageUrl: imageUrl,
     );
   }
+
+  @override
+  Future<void> deleteVoucher({
+    required int id,
+  }) async {
+    return await _api.deleteVoucher(id: id);
+  }
 }
