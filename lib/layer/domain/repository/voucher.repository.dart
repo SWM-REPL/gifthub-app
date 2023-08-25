@@ -26,4 +26,7 @@ mixin VoucherRepositoryMixin {
     required String brandName,
     String? imageUrl,
   });
+  Future<void> deleteVoucher({
+    required int id,
+  });
 }

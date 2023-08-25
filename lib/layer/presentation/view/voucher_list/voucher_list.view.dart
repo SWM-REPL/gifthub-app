@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/presentation/component/in_progress.dart';
-import 'package:gifthub/layer/presentation/notifier/vpbs.dart';
+import 'package:gifthub/layer/presentation/notifier/vpbs.notifier.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.content.dart';
 import 'package:gifthub/utility/navigate_route.dart';

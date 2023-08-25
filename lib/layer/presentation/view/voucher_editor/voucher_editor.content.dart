@@ -11,7 +11,7 @@ import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
-import 'package:gifthub/layer/presentation/notifier/vpbs.dart';
+import 'package:gifthub/layer/presentation/notifier/vpbs.notifier.dart';
 
 class VoucherEditorContent extends ConsumerStatefulWidget {
   VoucherEditorContent({
@@ -67,11 +67,21 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
 
   bool showDatePicker = false;
 
-  void onDeletePressed(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('삭제 버튼이 클릭되었습니다.'), // TODO
-      ),
+  void _deleteVoucher(BuildContext context) {
+    if (widget.voucher == null) {
+      return;
+    }
+
+    final vpbNotifier = ref.watch(vpbProvider(widget.voucher!.id).notifier);
+    vpbNotifier.deleteVoucher().then(
+      (_) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('삭제되었습니다.'),
+          ),
+        );
+      },
     );
   }
 
@@ -220,7 +230,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                   width: 50,
                   height: 50,
                   child: OutlinedButton(
-                    onPressed: () => onDeletePressed(context),
+                    onPressed: () => _deleteVoucher(context),
                     child: Icon(
                       Icons.delete_outline,
                       color: secondaryColor,

@@ -9,7 +9,7 @@ import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/register_voucher.provider.dart';
 
-class VPBsNotifier extends AsyncNotifier<List<VPB>> {
+class VPBsNotifier extends AutoDisposeAsyncNotifier<List<VPB>> {
   @override
   Future<List<VPB>> build() async {
     return await _fetch();
@@ -52,21 +52,21 @@ class VPBsNotifier extends AsyncNotifier<List<VPB>> {
   }
 }
 
-final vpbsProvider = AsyncNotifierProvider<VPBsNotifier, List<VPB>>(
+final vpbsProvider = AsyncNotifierProvider.autoDispose<VPBsNotifier, List<VPB>>(
   () => VPBsNotifier(),
 );
 
-final vouchersProvider = FutureProvider<List<Voucher>>((ref) async {
+final vouchersProvider = FutureProvider.autoDispose<List<Voucher>>((ref) async {
   final vpbs = await ref.watch(vpbsProvider.future);
   return vpbs.map((vpb) => vpb.voucher).toList();
 });
 
-final productsProvider = FutureProvider<List<Product>>((ref) async {
+final productsProvider = FutureProvider.autoDispose<List<Product>>((ref) async {
   final vpbs = await ref.watch(vpbsProvider.future);
   return vpbs.map((vpb) => vpb.product).toList();
 });
 
-final brandsProvider = FutureProvider<List<Brand>>((ref) async {
+final brandsProvider = FutureProvider.autoDispose<List<Brand>>((ref) async {
   final vpbs = await ref.watch(vpbsProvider.future);
   final brands = vpbs.map((vpb) => vpb.brand).toSet();
   for (final brand in brands) {
