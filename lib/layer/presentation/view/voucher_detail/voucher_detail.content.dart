@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
+import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
@@ -143,6 +144,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                     Image.network(
                       'https://barcode.tec-it.com/barcode.ashx?data=${widget.voucher.barcode}&translate-esc=on&imagetype=Png',
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) =>
+                          const InProgress(),
                     ),
                     Column(
                       children: [
