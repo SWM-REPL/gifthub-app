@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:word_break_text/word_break_text.dart';
 
@@ -89,38 +90,58 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                 left: MediaQuery.of(context).padding.left + 20,
                 right: MediaQuery.of(context).padding.right + 20,
               ),
-              child: ListView(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '보유 브랜드 목록',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
+              child: widget.vpbs.any((vpb) => vpb.voucher.isUsable)
+                  ? ListView(
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const BrandList(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '보유 기프티콘 목록',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          '보유 브랜드 목록',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const VoucherList(),
-                ],
-              ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const BrandList(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          '보유 기프티콘 목록',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const VoucherList(),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Image.asset(
+                          'assets/icon.png',
+                          color: Theme.of(context).disabledColor,
+                        ),
+                        AutoSizeText(
+                          '사용할 수 있는 기프티콘이 없습니다.',
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.displaySmall,
+                        ),
+                      ],
+                    ),
             ),
           ),
         ],
