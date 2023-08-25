@@ -74,8 +74,12 @@ final brandsProvider = FutureProvider<List<Brand>>((ref) async {
     brand.totalCount = 0;
   }
   for (final vpb in vpbs) {
+    if (vpb.voucher.isUsable == false) {
+      continue;
+    }
+
     vpb.brand.totalPrice += vpb.voucher.balance;
     vpb.brand.totalCount++;
   }
-  return brands.toList();
+  return brands.where((brand) => brand.totalCount > 0).toList();
 });
