@@ -37,30 +37,30 @@ class GifthubTextTheme {
         letterSpacing: 0.1,
       ),
       labelLarge: _customTextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.1,
       ),
       labelMedium: _customTextStyle(
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.5,
       ),
       labelSmall: _customTextStyle(
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.5,
       ),
       bodyLarge: _customTextStyle(
-        fontSize: 14,
+        fontSize: 16,
         letterSpacing: 0.15,
       ),
       bodyMedium: _customTextStyle(
-        fontSize: 12,
+        fontSize: 14,
         letterSpacing: 0.25,
       ),
       bodySmall: _customTextStyle(
-        fontSize: 11,
+        fontSize: 12,
         letterSpacing: 0.4,
       ),
     );
