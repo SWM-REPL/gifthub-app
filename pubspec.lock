@@ -368,14 +368,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
-  google_fonts:
-    dependency: "direct main"
-    description:
-      name: google_fonts
-      sha256: e20ff62b158b96f392bfc8afe29dee1503c94fbea2cbe8186fd59b756b8ae982
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.1.0"
   google_mlkit_commons:
     dependency: transitive
     description:
@@ -400,14 +392,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
-  http:
-    dependency: transitive
-    description:
-      name: http
-      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   http_parser:
     dependency: transitive
     description:
@@ -512,30 +496,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
-  path_provider:
-    dependency: transitive
-    description:
-      name: path_provider
-      sha256: "909b84830485dbcd0308edf6f7368bc8fd76afa26a270420f34cabea2a6467a0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  path_provider_android:
-    dependency: transitive
-    description:
-      name: path_provider_android
-      sha256: "5d44fc3314d969b84816b569070d7ace0f1dea04bd94a83f74c4829615d22ad8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  path_provider_foundation:
-    dependency: transitive
-    description:
-      name: path_provider_foundation
-      sha256: "1b744d3d774e5a879bb76d6cd1ecee2ba2c6960c03b1020cd35212f6aa267ac5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   path_provider_linux:
     dependency: transitive
     description:

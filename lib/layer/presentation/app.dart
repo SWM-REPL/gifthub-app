@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
@@ -16,6 +15,7 @@ import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/color.theme.dart';
+import 'package:gifthub/theme/text.theme.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -89,7 +89,7 @@ class _AppState extends ConsumerState<App> {
         scaffoldBackgroundColor: background,
         colorScheme: const GifthubColorScheme(),
         appBarTheme: const GifthubAppBarTheme(),
-        textTheme: GoogleFonts.notoSansGothicTextTheme(),
+        textTheme: GifthubTextTheme.theme,
         outlinedButtonTheme: const GifthubOutlinedButtonThemeData(),
         elevatedButtonTheme: const GifthubElevatedButtonThemeData(),
       ),
