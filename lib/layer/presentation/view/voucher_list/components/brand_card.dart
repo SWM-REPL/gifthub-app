@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
@@ -38,7 +39,6 @@ class _BrandCardState extends ConsumerState<BrandCard> {
 
     return Container(
       width: 120,
-      height: 160,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: isSelected
@@ -52,26 +52,26 @@ class _BrandCardState extends ConsumerState<BrandCard> {
       child: GestureDetector(
         onTap: () => changeBrancFilter(),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 fit: BoxFit.cover,
                 widget.brand.imageUrl,
-                width: 80,
-                height: 80,
+                width: 100,
+                height: 100,
               ),
             ),
-            const SizedBox(height: 10),
             Text(
               widget.brand.name,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 5),
             Text(
-              '${widget.brand.totalPrice}원',
-              style: Theme.of(context).textTheme.bodyLarge,
+              '${NumberFormat('#,##0', 'en-US').format(widget.brand.totalPrice)}원',
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
             Text(
               '${widget.brand.totalCount}개',

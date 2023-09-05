@@ -57,7 +57,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                         children: [
                           Text(
                             '안녕하세요. ${appuser.asData?.value.nickname}님',
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(
                             height: 5,
@@ -68,7 +68,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                                 .textTheme
                                 .titleLarge
                                 ?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w700,
                                 ),
                           ),
                         ],
@@ -103,7 +103,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                               .titleMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w700,
                               ),
                         ),
                         const SizedBox(
@@ -120,7 +120,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
                               .titleMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w700,
                               ),
                         ),
                         const SizedBox(
