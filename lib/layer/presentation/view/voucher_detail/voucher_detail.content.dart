@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
@@ -124,20 +125,21 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                       widget.brand.name,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                     Text(
                       widget.product.name,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
+                    const SizedBox(height: 8),
                     Text(
-                      '${widget.product.price}원',
+                      '${NumberFormat('#,##0', 'en-US').format(widget.product.price)}원',
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .copyWith(fontWeight: FontWeight.w700),
                     ),
                     Text(
-                      '잔액: ${widget.voucher.balance}원',
+                      '잔액: ${NumberFormat('#,##0', 'en-US').format(widget.voucher.balance)}원',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 20),
@@ -163,11 +165,14 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                               Icons.file_download,
                               color: Colors.grey,
                             ),
-                            label: const Text(
+                            label: Text(
                               '이미지 저장',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .copyWith(
+                                    color: Colors.grey,
+                                  ),
                             ),
                             style: ButtonStyle(
                               padding:
@@ -190,11 +195,14 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                                   Icons.edit,
                                   color: Colors.grey,
                                 ),
-                                label: const Text(
+                                label: Text(
                                   '수정하기',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        color: Colors.grey,
+                                      ),
                                 ),
                               ),
                               const VerticalDivider(),
@@ -204,11 +212,14 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                                   Icons.share,
                                   color: Colors.grey,
                                 ),
-                                label: const Text(
+                                label: Text(
                                   '공유하기',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        color: Colors.grey,
+                                      ),
                                 ),
                               ),
                             ],
@@ -222,7 +233,10 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
                       width: double.infinity,
                       child: Text(
                         '유의사항',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                       ),
                     ),
                     const SizedBox(height: 20),
