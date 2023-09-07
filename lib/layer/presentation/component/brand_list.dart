@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/brand.entity.dart';
+import 'package:gifthub/layer/presentation/component/brand_card.dart';
 import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/vpbs.notifier.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/components/brand_card.dart';
 
 class BrandList extends ConsumerStatefulWidget {
   const BrandList({super.key});

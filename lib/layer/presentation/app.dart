@@ -11,7 +11,7 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/register_voucher.provider.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
+import 'package:gifthub/layer/presentation/view/notification_list/notification_list.widget.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/color.theme.dart';
@@ -93,7 +93,7 @@ class _AppState extends ConsumerState<App> {
         outlinedButtonTheme: const GifthubOutlinedButtonThemeData(),
         elevatedButtonTheme: const GifthubElevatedButtonThemeData(),
       ),
-      home: VoucherList(),
+      home: const NotificationList(),
     );
   }
 }
