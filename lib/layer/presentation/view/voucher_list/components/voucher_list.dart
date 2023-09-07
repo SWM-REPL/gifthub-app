@@ -46,19 +46,11 @@ class _VoucherListContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandFilter = ref.watch(brandFilterProvider);
-    final idsUsable = ids.where(
-      (id) => ref.watch(vpbProvider(id)).when(
-            data: (vpb) => vpb.voucher.isUsable,
-            loading: () => false,
-            error: (error, stackTrace) {
-              throw error;
-            },
-          ),
-    );
+    final idsSorted = ids; // TODO: sort by date and usable
     return Column(
       children: brandFilter == null
-          ? idsUsable.map((id) => VoucherCard(id: id)).toList()
-          : idsUsable
+          ? idsSorted.map((id) => VoucherCard(id: id)).toList()
+          : idsSorted
               .where(
                 (id) => ref.watch(vpbProvider(id)).when(
                       data: (vpb) => vpb.brand.id == brandFilter,

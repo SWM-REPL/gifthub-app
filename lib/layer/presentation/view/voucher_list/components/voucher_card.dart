@@ -65,6 +65,15 @@ class _VoucherCardContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final difference = voucher.expiredDate
+        .difference(DateTime.now().copyWith(
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+          microsecond: 0,
+        ))
+        .inDays;
     return Column(
       children: [
         const SizedBox(
@@ -142,8 +151,19 @@ class _VoucherCardContent extends ConsumerWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 Text(
-                                  '${voucher.expiredDate.year}년 ${voucher.expiredDate.month}월 ${voucher.expiredDate.day}일 까지',
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  (difference == 0)
+                                      ? '오늘 만료'
+                                      : (difference > 0 && difference <= 5)
+                                          ? '$difference일 남음'
+                                          : '${voucher.expiredDate.year}년 ${voucher.expiredDate.month}월 ${voucher.expiredDate.day}일 까지',
+                                  style: (difference <= 5 && difference >= 0)
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            color: Colors.red,
+                                          )
+                                      : Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
                             ),
