@@ -151,16 +151,18 @@ class _VoucherCardContent extends ConsumerWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 Text(
-                                  (difference <= 5 && difference > 0)
-                                      ? '${difference}일 남음'
-                                      : (difference == 0)
-                                          ? '오늘 만료'
+                                  (difference == 0)
+                                      ? '오늘 만료'
+                                      : (difference > 0 && difference <= 5)
+                                          ? '$difference일 남음'
                                           : '${voucher.expiredDate.year}년 ${voucher.expiredDate.month}월 ${voucher.expiredDate.day}일 까지',
                                   style: (difference <= 5 && difference >= 0)
                                       ? Theme.of(context)
                                           .textTheme
                                           .bodySmall!
-                                          .copyWith(color: Colors.red)
+                                          .copyWith(
+                                            color: Colors.red,
+                                          )
                                       : Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
