@@ -256,7 +256,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed:
-                  widget.voucher.isUsable ? () => _onUsePressed(context) : null,
+                  // widget.voucher.isUsable ? () => _onUsePressed(context) : null,
+                  () => _onUsePressed(context),
               style: ButtonStyle(
                 padding: MaterialStateProperty.resolveWith<EdgeInsets>(
                   (states) => const EdgeInsets.only(

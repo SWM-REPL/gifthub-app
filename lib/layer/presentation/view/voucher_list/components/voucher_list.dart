@@ -46,15 +46,17 @@ class _VoucherListContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandFilter = ref.watch(brandFilterProvider);
-    final idsUsable = ids.where(
-      (id) => ref.watch(vpbProvider(id)).when(
-            data: (vpb) => vpb.voucher.isUsable,
-            loading: () => false,
-            error: (error, stackTrace) {
-              throw error;
-            },
-          ),
-    );
+    final idsUsable = ids;
+    // final idsUsable = ids.where(
+    //   (id) => ref.watch(vpbProvider(id)).when(
+    //         data: (vpb) => vpb.voucher.isUsable,
+
+    //         loading: () => false,
+    //         error: (error, stackTrace) {
+    //           throw error;
+    //         },
+    //       ),
+    // ); //흑백(사용할 수 있으면 맨 아래, 사용할 수 있었는데 기간이 만료되면 그 위에, 쓸수 있는건 젤 위에
     return Column(
       children: brandFilter == null
           ? idsUsable.map((id) => VoucherCard(id: id)).toList()
