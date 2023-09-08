@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -34,6 +35,10 @@ class _AppState extends ConsumerState<App> {
   @override
   void initState() {
     super.initState();
+
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen((fcmToken) {})
+        .onError((error) {});
 
     _mediaStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
