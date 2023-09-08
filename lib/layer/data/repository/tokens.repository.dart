@@ -35,13 +35,15 @@ class TokensRepository with TokensRepositoryMixin {
   @override
   Future<Tokens> loadTokens() async {
     if (tokensCache.isEmpty) {
-      tokensCache.saveTokens(await tokensStorage.loadTokens());
+      final tokens = await tokensStorage.loadTokens();
+      tokensCache.saveTokens(tokens);
     }
 
     if (tokensCache.isEmpty == false && tokensCache.isStaled) {
       try {
-        tokensCache
-            .saveTokens(await authApi.refreshTokens(tokensCache.refreshToken!));
+        final tokens = await authApi.refreshTokens(tokensCache.refreshToken!);
+        tokensStorage.saveTokens(tokens);
+        tokensCache.saveTokens(tokens);
       } on DioException catch (e) {
         final data = e.response?.data as Map<String, dynamic>?;
         if (data != null && data['status_code'] == 401) {
