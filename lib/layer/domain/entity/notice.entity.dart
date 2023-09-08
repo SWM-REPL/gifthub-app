@@ -1,8 +1,8 @@
 // 📦 Package imports:
 import 'package:equatable/equatable.dart';
 
-class Notification with EquatableMixin {
-  const Notification({
+class Notice with EquatableMixin {
+  const Notice({
     required this.id,
     required this.voucherId,
     required this.type,

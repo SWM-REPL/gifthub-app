@@ -1,8 +1,11 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-class NotificationList extends StatelessWidget {
-  const NotificationList({
+// 🌎 Project imports:
+import 'package:gifthub/layer/presentation/view/notice_list/notice_list.view.dart';
+
+class NoticeList extends StatelessWidget {
+  const NoticeList({
     super.key,
   });
 
@@ -32,6 +35,7 @@ class NotificationList extends StatelessWidget {
         ],
         backgroundColor: Theme.of(context).colorScheme.background,
       ),
+      body: const NoticeListView(),
     );
   }
 }

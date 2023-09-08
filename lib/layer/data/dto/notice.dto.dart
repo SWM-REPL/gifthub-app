@@ -1,8 +1,8 @@
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/notification.entity.dart';
+import 'package:gifthub/layer/domain/entity/notice.entity.dart';
 
-class NotificationDto extends Notification {
-  NotificationDto({
+class NoticeDto extends Notice {
+  NoticeDto({
     required super.id,
     required super.voucherId,
     required super.type,
@@ -10,8 +10,8 @@ class NotificationDto extends Notification {
     required super.notifiedAt,
   });
 
-  factory NotificationDto.fromJson(Map<String, dynamic> json) {
-    return NotificationDto(
+  factory NoticeDto.fromJson(Map<String, dynamic> json) {
+    return NoticeDto(
       id: json['id'] as int,
       voucherId: json['voucher_id'] as int,
       type: json['type'] as String,

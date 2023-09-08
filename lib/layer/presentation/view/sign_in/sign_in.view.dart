@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/exception/unauthorized.dio.exception.dart';
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
@@ -32,9 +32,8 @@ class _SignInViewState extends ConsumerState<SignInView> {
       data: (appUser) => VoucherList(),
       loading: () => const InProgress(),
       error: (error, stackTrace) {
-        if ((error is UnauthorizedException) ||
-            // TODO: Remove this 401 error
-            (error is DioException && error.response!.statusCode == 401)) {
+        if (error is UnauthorizedException ||
+            error is UnauthorizedDioException) {
           return const SignInContent();
         } else {
           return Center(
