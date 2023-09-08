@@ -58,8 +58,8 @@ class _VoucherCardContent extends ConsumerWidget {
 
   void openVoucherDetail(BuildContext context) {
     navigate(
+      VoucherDetail(voucher.id),
       context: context,
-      widget: VoucherDetail(voucher.id),
     );
   }
 

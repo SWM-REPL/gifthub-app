@@ -2,11 +2,14 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/exception/null_fcm_token.exception.dart';
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/sign_in.provider.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/update_fcm_token.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_up/sign_up.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
@@ -53,9 +56,17 @@ class _SignInContentState extends ConsumerState<SignInContent> {
             content: Text('로그인에 성공했습니다.'),
           ),
         );
+
+        FirebaseMessaging.instance.getToken().then((fcmToken) {
+          if (fcmToken == null) {
+            throw NullFcmTokenException();
+          }
+          final updateFcmToken = ref.read(updateFcmTokenProvider);
+          updateFcmToken(fcmToken);
+        });
         navigate(
+          VoucherList(),
           context: context,
-          widget: VoucherList(),
           predicate: (_) => false,
         );
       } else {
@@ -134,8 +145,8 @@ class _SignInContentState extends ConsumerState<SignInContent> {
                     ),
                     TextButton(
                       onPressed: () => navigate(
+                        const SignUpPage(),
                         context: context,
-                        widget: const SignUpPage(),
                       ),
                       child: Text(
                         '회원이 아니라면 회원가입 하러가기',
