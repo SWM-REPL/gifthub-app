@@ -54,8 +54,8 @@ class _SignInContentState extends ConsumerState<SignInContent> {
           ),
         );
         navigate(
+          VoucherList(),
           context: context,
-          widget: VoucherList(),
           predicate: (_) => false,
         );
       } else {
@@ -134,8 +134,8 @@ class _SignInContentState extends ConsumerState<SignInContent> {
                     ),
                     TextButton(
                       onPressed: () => navigate(
+                        const SignUpPage(),
                         context: context,
-                        widget: const SignUpPage(),
                       ),
                       child: Text(
                         '회원이 아니라면 회원가입 하러가기',

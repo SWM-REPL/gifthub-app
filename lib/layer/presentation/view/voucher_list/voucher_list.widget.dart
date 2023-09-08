@@ -13,8 +13,8 @@ import 'package:gifthub/utility/navigate_route.dart';
 class VoucherList extends StatelessWidget {
   void _openVoucherRegisterWidget(BuildContext context) {
     navigate(
+      const VoucherEditor(),
       context: context,
-      widget: const VoucherEditor(),
       bottomModal: true,
     );
   }
@@ -33,7 +33,10 @@ class VoucherList extends StatelessWidget {
         title: Image.asset('assets/logo.png', width: 150),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => navigate(
+              const VoucherEditor(),
+              context: context,
+            ),
             icon: const Icon(Icons.notifications_outlined),
             color: Theme.of(context).colorScheme.onSurface,
           ),

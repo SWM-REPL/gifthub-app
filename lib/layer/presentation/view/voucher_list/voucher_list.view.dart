@@ -45,8 +45,8 @@ class _VoucherListViewState extends ConsumerState<VoucherListView> {
         if (error is UnauthorizedException ||
             error is UnauthorizedDioException) {
           navigate(
+            const SignIn(),
             context: context,
-            widget: const SignIn(),
             predicate: (_) => false,
           );
           return const InProgress();

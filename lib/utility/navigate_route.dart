@@ -1,9 +1,9 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-void navigate({
+void navigate(
+  Widget widget, {
   required BuildContext context,
-  required Widget widget,
   RoutePredicate? predicate,
   bool bottomModal = false,
 }) {

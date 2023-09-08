@@ -45,8 +45,8 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
 
   void _onEditPressed(BuildContext context) {
     navigate(
+      VoucherEditor(voucherId: widget.voucher.id),
       context: context,
-      widget: VoucherEditor(voucherId: widget.voucher.id),
       bottomModal: true,
     );
   }
@@ -62,12 +62,12 @@ class _VoucherDetailContentState extends ConsumerState<VoucherDetailContent> {
   void _onUsePressed(BuildContext context) {
     if (widget.product.isReusable) {
       navigate(
-        context: context,
-        widget: _AmountSheet(
+        _AmountSheet(
           formKey: amountFormKey,
           voucher: widget.voucher,
           onUsePressed: _useVoucher,
         ),
+        context: context,
         bottomModal: true,
       );
     } else {
