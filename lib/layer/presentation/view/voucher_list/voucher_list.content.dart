@@ -7,10 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/layer/presentation/component/brand_list.dart';
+import 'package:gifthub/layer/presentation/component/voucher_list.dart';
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/components/brand_list.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/components/voucher_list.dart';
 
 class VoucherListContent extends ConsumerStatefulWidget {
   const VoucherListContent(
