@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
+import 'package:gifthub/layer/presentation/view/notice_list/notice_list.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigate_route.dart';
@@ -34,7 +35,7 @@ class VoucherList extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => navigate(
-              const VoucherEditor(),
+              const NoticeList(),
               context: context,
             ),
             icon: const Icon(Icons.notifications_outlined),
