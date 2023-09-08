@@ -11,7 +11,7 @@ import 'package:gifthub/layer/presentation/provider/entity/product.provider.dart
 import 'package:gifthub/layer/presentation/provider/entity/voucher.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/delete_voucher.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
-import 'package:gifthub/layer/presentation/provider/usecase/set_voucher.provider.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/update_voucher.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/use_voucher.provider.dart';
 
 class VPB with EquatableMixin {
@@ -53,7 +53,7 @@ class VPBNotifier extends AutoDisposeFamilyAsyncNotifier<VPB, int> {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final setVoucher = ref.watch(setVoucherProvider);
+      final setVoucher = ref.watch(updateVoucherProvider);
       await setVoucher(
         _voucherId,
         brandName: brandName,

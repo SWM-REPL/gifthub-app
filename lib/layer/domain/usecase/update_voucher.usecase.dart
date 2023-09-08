@@ -1,8 +1,8 @@
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/repository/voucher.repository.dart';
 
-class SetVoucher {
-  SetVoucher(this._voucherRepository);
+class UpdateVoucher {
+  UpdateVoucher(this._voucherRepository);
 
   final VoucherRepositoryMixin _voucherRepository;
 

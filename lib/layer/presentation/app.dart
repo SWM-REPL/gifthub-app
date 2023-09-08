@@ -12,6 +12,7 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
 import 'package:gifthub/layer/presentation/provider/usecase/register_voucher.provider.dart';
+import 'package:gifthub/layer/presentation/provider/usecase/update_fcm_token.provider.dart';
 import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
@@ -36,9 +37,12 @@ class _AppState extends ConsumerState<App> {
   void initState() {
     super.initState();
 
-    FirebaseMessaging.instance.onTokenRefresh
-        .listen((fcmToken) {})
-        .onError((error) {});
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      final updateFcmToken = ref.watch(updateFcmTokenProvider);
+      updateFcmToken(fcmToken);
+    }).onError((error) {
+      throw error;
+    });
 
     _mediaStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {

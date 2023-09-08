@@ -14,4 +14,9 @@ class NoticeRepository with NoticeRepositoryMixin {
   Future<List<NoticeDto>> getNotices() {
     return _api.getNotices();
   }
+
+  @override
+  Future<bool> updateFcmToken(String fcmToken) {
+    return _api.updateFcmToken(fcmToken);
+  }
 }
