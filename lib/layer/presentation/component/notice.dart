@@ -1,11 +1,17 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-class Notice extends StatelessWidget {
+// 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 🌎 Project imports:
+import 'package:gifthub/layer/presentation/notifier/settings.notifier.dart';
+
+class Notice extends ConsumerWidget {
   const Notice({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Center(
@@ -25,7 +31,12 @@ class Notice extends StatelessWidget {
                     Flexible(
                       flex: 5,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          ref
+                              .read(settingsProvider.notifier)
+                              .toggleShowNotice();
+                          Navigator.of(context).pop();
+                        },
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                           shape: RoundedRectangleBorder(

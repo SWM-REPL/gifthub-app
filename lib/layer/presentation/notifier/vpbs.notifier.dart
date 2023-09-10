@@ -41,13 +41,6 @@ class VPBsNotifier extends AutoDisposeAsyncNotifier<List<VPB>> {
     final ids = await ref.watch(voucherIdsProvider.future);
     final vpbFutures = ids.map((id) => ref.watch(vpbProvider(id).future));
     final vpbs = await Future.wait(vpbFutures);
-    for (final vpb in vpbs) {
-      if (vpb.voucher.isUsable == false) {
-        continue;
-      }
-      vpb.brand.totalCount++;
-      vpb.brand.totalPrice += vpb.voucher.balance;
-    }
     return vpbs;
   }
 }
@@ -72,12 +65,12 @@ final brandsProvider = FutureProvider.autoDispose<List<Brand>>((ref) async {
   for (final brand in brands) {
     brand.totalPrice = 0;
     brand.totalCount = 0;
+    brand.aboutToExpire = 0;
   }
   for (final vpb in vpbs) {
     if (vpb.voucher.isUsable == false) {
       continue;
     }
-
     vpb.brand.totalPrice += vpb.voucher.balance;
     vpb.brand.totalCount++;
     if (vpb.voucher.aboutToExpire) {
