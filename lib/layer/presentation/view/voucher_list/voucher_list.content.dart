@@ -28,8 +28,8 @@ class VoucherListContent extends ConsumerStatefulWidget {
 class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
+    afterBuild(context);
     final appuser = ref.watch(appUserProvider);
-
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: Column(
@@ -144,6 +144,61 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> afterBuild(BuildContext context) async {
+    await Future.delayed(Duration.zero);
+    // ignore: use_build_context_synchronously
+    showDialog(
+      context: context,
+      builder: (context) => SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Center(
+          child: Padding(
+            padding: MediaQuery.of(context).viewPadding.add(
+                  const EdgeInsets.all(20),
+                ),
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/notice_only-giftishow.png'),
+                  Row(children: [
+                    Flexible(
+                      flex: 1,
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: const Text('다시보지않기'),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: const Text('닫기'),
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
