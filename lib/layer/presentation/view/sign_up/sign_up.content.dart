@@ -143,6 +143,7 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
                         labelText: '비밀번호',
                         border: OutlineInputBorder(),
                       ),
+                      obscureText: true,
                     ),
                     const SizedBox(height: 16),
                     TextField(
@@ -151,6 +152,7 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
                         labelText: '비밀번호 확인',
                         border: OutlineInputBorder(),
                       ),
+                      obscureText: true,
                     ),
                     const SizedBox(height: 16),
                     TextField(
