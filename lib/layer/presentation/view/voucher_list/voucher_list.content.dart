@@ -11,6 +11,7 @@ import 'package:gifthub/layer/presentation/component/brand_list.dart';
 import 'package:gifthub/layer/presentation/component/notice.dart';
 import 'package:gifthub/layer/presentation/component/voucher_list.dart';
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
+import 'package:gifthub/layer/presentation/notifier/settings.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 
 class VoucherListContent extends ConsumerStatefulWidget {
@@ -29,7 +30,7 @@ class VoucherListContent extends ConsumerStatefulWidget {
 class _VoucherListContentState extends ConsumerState<VoucherListContent> {
   @override
   Widget build(BuildContext context) {
-    afterBuild(context);
+    afterBuild(context, ref);
     final appuser = ref.watch(appUserProvider);
     return Container(
       color: Theme.of(context).colorScheme.background,
@@ -149,12 +150,14 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
     );
   }
 
-  Future<void> afterBuild(BuildContext context) async {
-    await Future.delayed(Duration.zero);
-    // ignore: use_build_context_synchronously
-    showDialog(
-      context: context,
-      builder: (context) => const Notice(),
-    );
+  Future<void> afterBuild(BuildContext context, WidgetRef ref) async {
+    final settings = await ref.watch(settingsProvider.future);
+    if (settings.showNotice) {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) => const Notice(),
+      );
+    }
   }
 }
