@@ -56,11 +56,45 @@ class _BrandCardState extends ConsumerState<BrandCard> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                fit: BoxFit.cover,
-                widget.brand.imageUrl,
-                width: 100,
-                height: 100,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Image.network(
+                      fit: BoxFit.cover,
+                      widget.brand.imageUrl,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                  if (widget.brand.aboutToExpire > 0)
+                    Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 80),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Text(
+                              '임박 ${widget.brand.aboutToExpire}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ),
             Text(

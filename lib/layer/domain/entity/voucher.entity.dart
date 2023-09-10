@@ -23,6 +23,19 @@ class Voucher with EquatableMixin {
           const Duration(days: 1),
         ),
       );
+
+  int get remainDays => expiredDate
+      .difference(DateTime.now().copyWith(
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+      ))
+      .inDays;
+
+  bool get aboutToExpire => remainDays <= 5;
+
   @override
   List<Object?> get props => [id];
 }
