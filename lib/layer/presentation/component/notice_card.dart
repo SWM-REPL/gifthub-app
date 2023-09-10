@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/notice.entity.dart';
+import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/component/voucher_card.dart';
+import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 
 class NoticeCard extends ConsumerWidget {
   const NoticeCard(this.notice, {super.key});
@@ -15,6 +17,7 @@ class NoticeCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final vpb = ref.watch(vpbProvider(notice.voucherId));
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -40,7 +43,11 @@ class NoticeCard extends ConsumerWidget {
             ],
           ),
           Text(notice.message),
-          VoucherCard(id: notice.voucherId),
+          vpb.when(
+            data: (data) => VoucherCard(data),
+            loading: () => const InProgress(),
+            error: (error, stackTrace) => throw error,
+          ),
         ],
       ),
     );

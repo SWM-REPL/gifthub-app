@@ -9,7 +9,7 @@ import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/component/voucher_card.dart';
 import 'package:gifthub/layer/presentation/notifier/brand_filter.notifier.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
-import 'package:gifthub/layer/presentation/provider/usecase/get_voucher_ids.provider.dart';
+import 'package:gifthub/layer/presentation/notifier/vpbs.notifier.dart';
 
 class VoucherList extends ConsumerStatefulWidget {
   const VoucherList({super.key});
@@ -21,12 +21,12 @@ class VoucherList extends ConsumerStatefulWidget {
 class _VoucherListState extends ConsumerState<VoucherList> {
   @override
   Widget build(BuildContext context) {
-    final ids = ref.watch(voucherIdsProvider);
-    return ids.when(
+    final vpbs = ref.watch(vpbsProvider);
+    return vpbs.when(
       data: (data) => _VoucherListContent(data),
       loading: () {
-        if (ids.hasValue) {
-          return _VoucherListContent(ids.value!);
+        if (vpbs.hasValue) {
+          return _VoucherListContent(vpbs.value!);
         } else {
           return const InProgress();
         }
@@ -39,28 +39,30 @@ class _VoucherListState extends ConsumerState<VoucherList> {
 }
 
 class _VoucherListContent extends ConsumerWidget {
-  const _VoucherListContent(this.ids);
+  const _VoucherListContent(this.vpbs);
 
-  final List<int> ids;
+  final List<VPB> vpbs;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandFilter = ref.watch(brandFilterProvider);
-    final idsSorted = ids; // TODO: sort by date and usable
+    vpbs.sort((a, b) {
+      if (a.voucher.isUsable && b.voucher.isUsable) {
+        return a.voucher.expiredDate.compareTo(b.voucher.expiredDate);
+      } else if (a.voucher.isUsable) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
     return Column(
       children: brandFilter == null
-          ? idsSorted.map((id) => VoucherCard(id: id)).toList()
-          : idsSorted
+          ? vpbs.map((vpb) => VoucherCard(vpb)).toList()
+          : vpbs
               .where(
-                (id) => ref.watch(vpbProvider(id)).when(
-                      data: (vpb) => vpb.brand.id == brandFilter,
-                      loading: () => false,
-                      error: (error, stackTrace) {
-                        throw error;
-                      },
-                    ),
+                (vpb) => vpb.brand.id == brandFilter,
               )
-              .map((id) => VoucherCard(id: id))
+              .map((vpb) => VoucherCard(vpb))
               .toList(),
     );
   }
