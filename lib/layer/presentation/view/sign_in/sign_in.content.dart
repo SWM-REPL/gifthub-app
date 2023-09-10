@@ -132,6 +132,7 @@ class _SignInContentState extends ConsumerState<SignInContent> {
                         labelText: '비밀번호',
                         border: OutlineInputBorder(),
                       ),
+                      obscureText: true,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
