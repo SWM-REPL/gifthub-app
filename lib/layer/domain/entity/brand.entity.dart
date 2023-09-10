@@ -14,6 +14,7 @@ class Brand with EquatableMixin {
 
   int totalCount = 0;
   int totalPrice = 0;
+  int aboutToExpire = 0;
 
   @override
   List<Object?> get props => [id];

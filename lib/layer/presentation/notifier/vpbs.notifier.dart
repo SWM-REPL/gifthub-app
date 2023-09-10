@@ -80,6 +80,9 @@ final brandsProvider = FutureProvider.autoDispose<List<Brand>>((ref) async {
 
     vpb.brand.totalPrice += vpb.voucher.balance;
     vpb.brand.totalCount++;
+    if (vpb.voucher.aboutToExpire) {
+      vpb.brand.aboutToExpire++;
+    }
   }
   return brands.where((brand) => brand.totalCount > 0).toList();
 });
