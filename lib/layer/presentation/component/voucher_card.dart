@@ -9,49 +9,16 @@ import 'package:intl/intl.dart';
 // 🌎 Project imports:
 import 'package:gifthub/layer/domain/entity/product.entity.dart';
 import 'package:gifthub/layer/domain/entity/voucher.entity.dart';
-import 'package:gifthub/layer/presentation/component/in_progress.dart';
 import 'package:gifthub/layer/presentation/notifier/vpb.notifier.dart';
 import 'package:gifthub/layer/presentation/view/voucher_detail/voucher_detail.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
 
-class VoucherCard extends ConsumerStatefulWidget {
-  const VoucherCard({
-    required this.id,
+class VoucherCard extends ConsumerWidget {
+  VoucherCard(
+    VPB vpb, {
     super.key,
-  });
-
-  final int id;
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _VoucherCardState();
-}
-
-class _VoucherCardState extends ConsumerState<VoucherCard> {
-  @override
-  Widget build(BuildContext context) {
-    final vpb = ref.watch(vpbProvider(widget.id));
-
-    return vpb.when(
-      data: (data) => _VoucherCardContent(data.voucher, data.product),
-      loading: () {
-        if (vpb.hasValue) {
-          return _VoucherCardContent(vpb.value!.voucher, vpb.value!.product);
-        } else {
-          return const InProgress();
-        }
-      },
-      error: (error, stackTrace) {
-        throw error;
-      },
-    );
-  }
-}
-
-class _VoucherCardContent extends ConsumerWidget {
-  const _VoucherCardContent(
-    this.voucher,
-    this.product,
-  );
+  })  : voucher = vpb.voucher,
+        product = vpb.product;
 
   final Voucher voucher;
   final Product product;

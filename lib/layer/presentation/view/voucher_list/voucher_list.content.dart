@@ -34,8 +34,8 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
       color: Theme.of(context).colorScheme.background,
       child: Column(
         children: [
-          Flexible(
-            flex: 1,
+          SizedBox(
+            height: 180,
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -83,8 +83,7 @@ class _VoucherListContentState extends ConsumerState<VoucherListContent> {
               ),
             ),
           ),
-          Flexible(
-            flex: 4,
+          Expanded(
             child: Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).padding.left + 20,
