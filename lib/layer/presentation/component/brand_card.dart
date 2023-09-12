@@ -37,20 +37,20 @@ class _BrandCardState extends ConsumerState<BrandCard> {
       }
     }
 
-    return Container(
-      width: 120,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        border: isSelected
-            ? Border.all(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2,
-              )
-            : null,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: GestureDetector(
-        onTap: () => changeBrancFilter(),
+    return GestureDetector(
+      onTap: () => changeBrancFilter(),
+      child: Container(
+        width: 120,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          border: isSelected
+              ? Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
