@@ -133,6 +133,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     child: TextField(
                       controller: brandNameController,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
@@ -147,6 +148,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     child: TextField(
                       controller: productNameController,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
@@ -162,6 +164,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                       child: TextField(
                         controller: balanceController,
                         style: Theme.of(context).textTheme.bodyLarge,
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -186,6 +189,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                           child: TextField(
                             controller: expiresAtController,
                             style: Theme.of(context).textTheme.bodyLarge,
+                            keyboardType: TextInputType.none,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                             ),
@@ -214,6 +218,7 @@ class _VoucherEditorContentState extends ConsumerState<VoucherEditorContent> {
                     child: TextField(
                       controller: barcodeController,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      keyboardType: TextInputType.number,
                       enableInteractiveSelection: false,
                       showCursor: false,
                       decoration: const InputDecoration(
