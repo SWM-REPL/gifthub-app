@@ -6,10 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
-import 'package:gifthub/layer/presentation/provider/usecase/sign_in.provider.dart';
 import 'package:gifthub/layer/presentation/view/sign_up/sign_up.widget.dart';
-import 'package:gifthub/layer/presentation/view/voucher_list/voucher_list.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
+import 'package:gifthub/utility/show_snack_bar.dart';
 
 class SignInContent extends ConsumerStatefulWidget {
   const SignInContent({super.key});
@@ -21,57 +20,6 @@ class SignInContent extends ConsumerStatefulWidget {
 class _SignInContentState extends ConsumerState<SignInContent> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  void _onSignInPressed(BuildContext context) async {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-
-    if (username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('아이디를 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('비밀번호를 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    final result = await ref.read(signInProvider)(username, password);
-    if (context.mounted) {
-      if (result) {
-        ref.invalidate(appUserProvider);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('로그인에 성공했습니다.'),
-          ),
-        );
-        navigate(
-          VoucherList(),
-          context: context,
-          predicate: (_) => false,
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('로그인에 실패했습니다.'),
-          ),
-        );
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,5 +99,28 @@ class _SignInContentState extends ConsumerState<SignInContent> {
         ),
       ],
     );
+  }
+
+  void _onSignInPressed(BuildContext context) async {
+    if (!_validateInput()) {
+      return;
+    }
+
+    await ref.read(appUserProvider.notifier).signIn(
+          _usernameController.text,
+          _passwordController.text,
+        );
+  }
+
+  bool _validateInput() {
+    if (_usernameController.text.isEmpty) {
+      showSnackBar(context, '아이디를 입력해주세요.');
+      return false;
+    }
+    if (_passwordController.text.isEmpty) {
+      showSnackBar(context, '비밀번호를 입력해주세요.');
+      return false;
+    }
+    return true;
   }
 }

@@ -1,6 +1,9 @@
+// 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/tokens.entity.dart';
+
 mixin AuthRepositoryMixin {
-  Future<bool> signIn({required String username, required String password});
-  Future<bool> signUp({
+  Future<Tokens> signIn({required String username, required String password});
+  Future<Tokens> signUp({
     required String username,
     required String password,
     required String nickname,

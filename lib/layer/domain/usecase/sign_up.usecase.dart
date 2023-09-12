@@ -1,4 +1,5 @@
 // 🌎 Project imports:
+import 'package:gifthub/layer/domain/entity/tokens.entity.dart';
 import 'package:gifthub/layer/domain/repository/auth.repository.dart';
 
 class SignUp {
@@ -6,15 +7,16 @@ class SignUp {
 
   final AuthRepositoryMixin _repository;
 
-  Future<bool> call({
+  Future<Tokens> call({
     required String username,
     required String password,
     required String nickname,
   }) async {
-    return await _repository.signUp(
+    final tokens = await _repository.signUp(
       username: username,
       password: password,
       nickname: nickname,
     );
+    return tokens;
   }
 }

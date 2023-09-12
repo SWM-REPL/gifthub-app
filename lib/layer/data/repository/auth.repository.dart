@@ -1,5 +1,6 @@
 // 🌎 Project imports:
 import 'package:gifthub/layer/data/source/network/auth.api.dart';
+import 'package:gifthub/layer/domain/entity/tokens.entity.dart';
 import 'package:gifthub/layer/domain/repository/auth.repository.dart';
 import 'package:gifthub/layer/domain/repository/tokens.repository.dart';
 
@@ -13,39 +14,31 @@ class AuthRepository with AuthRepositoryMixin {
   final TokensRepositoryMixin tokensRepository;
 
   @override
-  Future<bool> signIn({
+  Future<Tokens> signIn({
     required String username,
     required String password,
   }) async {
-    try {
-      final token = await authApi.signin(
-        username: username,
-        password: password,
-      );
-      await tokensRepository.saveTokens(token);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    final tokens = await authApi.signin(
+      username: username,
+      password: password,
+    );
+    await tokensRepository.saveTokens(tokens);
+    return tokens;
   }
 
   @override
-  Future<bool> signUp({
+  Future<Tokens> signUp({
     required String username,
     required String password,
     required String nickname,
   }) async {
-    try {
-      final token = await authApi.signup(
-        username: username,
-        password: password,
-        nickname: nickname,
-      );
-      await tokensRepository.saveTokens(token);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    final tokens = await authApi.signup(
+      username: username,
+      password: password,
+      nickname: nickname,
+    );
+    await tokensRepository.saveTokens(tokens);
+    return tokens;
   }
 
   @override

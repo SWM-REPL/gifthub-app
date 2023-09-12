@@ -21,7 +21,6 @@ class SingleDio {
     ));
   }
   static final SingleDio api = SingleDio._('api');
-  static final SingleDio storage = SingleDio._('dev.storage');
 
   final Dio _dio;
   Dio get dio => _dio;

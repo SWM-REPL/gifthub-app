@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/layer/presentation/notifier/appuser.notifier.dart';
-import 'package:gifthub/layer/presentation/provider/usecase/sign_up.provider.dart';
+import 'package:gifthub/utility/show_snack_bar.dart';
 
 class SignUpContent extends ConsumerStatefulWidget {
   const SignUpContent({super.key});
@@ -20,81 +20,6 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _nicknameController = TextEditingController();
-
-  void _onSignUpPressed(BuildContext context) async {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-    final nickname = _nicknameController.text;
-
-    if (username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('아이디를 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('비밀번호를 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    if (confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('비밀번호 확인을 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    if (nickname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('닉네임을 입력해주세요.'),
-        ),
-      );
-      return;
-    }
-
-    if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('비밀번호와 비밀번호 확인이 일치하지 않습니다.'),
-        ),
-      );
-      return;
-    }
-
-    final result = await ref.read(signUpProvider)(
-      username: username,
-      password: password,
-      nickname: nickname,
-    );
-    if (context.mounted) {
-      if (result) {
-        ref.invalidate(appUserProvider);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('회원가입에 성공했습니다.'),
-          ),
-        );
-        Navigator.of(context).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('회원가입에 실패했습니다.'),
-          ),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,5 +105,41 @@ class _SignUpContentState extends ConsumerState<SignUpContent> {
         ),
       ],
     );
+  }
+
+  void _onSignUpPressed(BuildContext context) async {
+    if (!_verifyInputs()) {
+      return;
+    }
+
+    await ref.read(appUserProvider.notifier).signUp(
+          _usernameController.text,
+          _passwordController.text,
+          _nicknameController.text,
+        );
+  }
+
+  bool _verifyInputs() {
+    if (_usernameController.text.isEmpty) {
+      showSnackBar(context, '아이디를 입력해주세요.');
+      return false;
+    }
+    if (_passwordController.text.isEmpty) {
+      showSnackBar(context, '비밀번호를 입력해주세요.');
+      return false;
+    }
+    if (_confirmPasswordController.text.isEmpty) {
+      showSnackBar(context, '비밀번호 확인을 입력해주세요.');
+      return false;
+    }
+    if (_nicknameController.text.isEmpty) {
+      showSnackBar(context, '닉네임을 입력해주세요.');
+      return false;
+    }
+    if (_passwordController.text != _confirmPasswordController.text) {
+      showSnackBar(context, '비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      return false;
+    }
+    return true;
   }
 }
