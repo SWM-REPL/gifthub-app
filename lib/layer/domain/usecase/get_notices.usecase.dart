@@ -1,5 +1,5 @@
 // 🌎 Project imports:
-import 'package:gifthub/layer/domain/entity/notice.entity.dart';
+import 'package:gifthub/layer/domain/entity/notices.entity.dart';
 import 'package:gifthub/layer/domain/repository/notice.repository.dart';
 
 class GetNotices {
@@ -8,7 +8,7 @@ class GetNotices {
 
   final NoticeRepositoryMixin _repository;
 
-  Future<List<Notice>> call() async {
+  Future<Notices> call() async {
     return await _repository.getNotices();
   }
 }
