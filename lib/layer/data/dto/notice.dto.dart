@@ -8,6 +8,7 @@ class NoticeDto extends Notice {
     required super.type,
     required super.message,
     required super.notifiedAt,
+    super.checkedAt,
   });
 
   factory NoticeDto.fromJson(Map<String, dynamic> json) {
@@ -17,6 +18,9 @@ class NoticeDto extends Notice {
       type: json['type'] as String,
       message: json['message'] as String,
       notifiedAt: DateTime.parse(json['notified_at'] as String),
+      checkedAt: json['checked_at'] == null
+          ? null
+          : DateTime.parse(json['checked_at'] as String),
     );
   }
 

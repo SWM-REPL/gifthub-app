@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/exception/unauthorized.dio.exception.dart';
 import 'package:gifthub/exception/unauthorized.exception.dart';
 import 'package:gifthub/layer/presentation/component/in_progress.dart';
-import 'package:gifthub/layer/presentation/notifier/notifications.notifier.dart';
+import 'package:gifthub/layer/presentation/provider/entity/notices.provider.dart';
 import 'package:gifthub/layer/presentation/view/notice_list/notice_list.content.dart';
 import 'package:gifthub/layer/presentation/view/sign_in/sign_in.widget.dart';
 import 'package:gifthub/utility/navigate_route.dart';
