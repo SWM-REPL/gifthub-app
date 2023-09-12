@@ -41,6 +41,7 @@ class VoucherList extends ConsumerWidget {
               children: [
                 IconButton(
                   onPressed: () {
+                    ref.invalidate(noticesProvider);
                     navigate(
                       const NoticeList(),
                       context: context,
