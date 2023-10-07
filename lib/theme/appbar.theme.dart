@@ -4,12 +4,19 @@ import 'package:flutter/material.dart';
 // 🌎 Project imports:
 import 'package:gifthub/theme/color.theme.dart';
 
-class GifthubAppBarTheme extends AppBarTheme {
-  const GifthubAppBarTheme({
-    super.backgroundColor = surface,
+class GiftHubAppBarTheme extends AppBarTheme {
+  const GiftHubAppBarTheme({
     super.elevation = 0,
+    super.foregroundColor = GiftHubColors.onSurface,
+    super.backgroundColor = GiftHubColors.surface,
     super.iconTheme = const IconThemeData(
-      color: Color(0xFF838A9A),
+      color: Colors.black,
+    ),
+    super.titleTextStyle = const TextStyle(
+      fontFamily: 'Pretendard',
+      color: Colors.black,
+      fontSize: 20,
+      fontWeight: FontWeight.w800,
     ),
   });
 }

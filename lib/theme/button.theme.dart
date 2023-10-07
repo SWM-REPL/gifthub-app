@@ -1,6 +1,9 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
+// 🌎 Project imports:
+import 'package:gifthub/theme/color.theme.dart';
+
 const _buttonShape = MaterialStatePropertyAll(
   RoundedRectangleBorder(
     borderRadius: BorderRadius.all(
@@ -9,28 +12,35 @@ const _buttonShape = MaterialStatePropertyAll(
   ),
 );
 
-class GifthubElevatedButtonThemeData extends ElevatedButtonThemeData {
-  const GifthubElevatedButtonThemeData({
+class GiftHubElevatedButtonThemeData extends ElevatedButtonThemeData {
+  const GiftHubElevatedButtonThemeData({
     super.style = const ButtonStyle(
-      textStyle: MaterialStatePropertyAll(
-        TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
       elevation: MaterialStatePropertyAll(0),
       shape: _buttonShape,
     ),
   });
 }
 
-class GifthubOutlinedButtonThemeData extends OutlinedButtonThemeData {
-  const GifthubOutlinedButtonThemeData({
+class GiftHubOutlinedButtonThemeData extends OutlinedButtonThemeData {
+  const GiftHubOutlinedButtonThemeData({
     super.style = const ButtonStyle(
       padding: MaterialStatePropertyAll(
         EdgeInsets.all(0),
       ),
       shape: _buttonShape,
+    ),
+  });
+}
+
+class GiftHubTextButtonThemeData extends TextButtonThemeData {
+  const GiftHubTextButtonThemeData({
+    super.style = const ButtonStyle(
+      padding: MaterialStatePropertyAll(
+        EdgeInsets.all(0),
+      ),
+      foregroundColor: MaterialStatePropertyAll(
+        GiftHubColors.secondary,
+      ),
     ),
   });
 }

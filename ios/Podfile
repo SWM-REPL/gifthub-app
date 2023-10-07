@@ -32,14 +32,12 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
+  pod 'GoogleMLKit/TextRecognitionKorean', '~> 4.0.0'
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'GoogleMLKit/TextRecognitionKorean', '~> 4.0.0' 
-  pod 'nanopb'
-  
   target 'RunnerTests' do
     inherit! :search_paths
   end
-  
+
   target 'Register' do
     inherit! :search_paths
   end
@@ -53,11 +51,23 @@ post_install do |installer|
 
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-    
+
     target.build_configurations.each do |config|
       if Gem::Version.new($iOSVersion) > Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = $iOSVersion
       end
     end
+  end
+
+  # For Xcode 15
+  # https://stackoverflow.com/questions/77136958/flutter-xcode-15-error-xcode-dt-toolchain-dir-cannot-be-used-to-evaluate-libr
+  installer.pods_project.targets.each do |target|
+     flutter_additional_ios_build_settings(target)
+      target.build_configurations.each do |config|
+        xcconfig_path = config.base_configuration_reference.real_path
+        xcconfig = File.read(xcconfig_path)
+        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+      end
   end
 end
