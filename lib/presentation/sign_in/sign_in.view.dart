@@ -76,33 +76,34 @@ class SignInView extends ConsumerWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () {
-              ref.watch(appUserProvider.notifier).signInWithApple();
-            },
-            style: ButtonStyle(
-              minimumSize:
-                  MaterialStateProperty.all(const Size(double.infinity, 48)),
-              backgroundColor: MaterialStateProperty.all(Colors.white),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  side: BorderSide(color: Theme.of(context).dividerColor),
-                  borderRadius: BorderRadius.circular(100),
+          if (Platform.isIOS) const SizedBox(height: 20),
+          if (Platform.isIOS)
+            ElevatedButton.icon(
+              onPressed: () {
+                ref.watch(appUserProvider.notifier).signInWithApple();
+              },
+              style: ButtonStyle(
+                minimumSize:
+                    MaterialStateProperty.all(const Size(double.infinity, 48)),
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).dividerColor),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
               ),
+              icon: Icon(
+                Icons.apple,
+                color: Theme.of(context).textTheme.labelLarge!.color,
+              ),
+              label: Text(
+                'Apple로 계속하기',
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ),
-            icon: Icon(
-              Icons.apple,
-              color: Theme.of(context).textTheme.labelLarge!.color,
-            ),
-            label: Text(
-              'Apple로 계속하기',
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
           TextButton(
             onPressed: () => navigate(SignInWithPasswordView()),
             child: Row(
