@@ -1,3 +1,6 @@
+// 🎯 Dart imports:
+import 'dart:io';
+
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,11 +76,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<OAuthToken> signInWithApple() async {
-    final credential =
-        await apple.SignInWithApple.getAppleIDCredential(scopes: [
-      apple.AppleIDAuthorizationScopes.email,
-      apple.AppleIDAuthorizationScopes.fullName,
-    ]);
+    if (!Platform.isIOS) {
+      throw Exception('iOS에서만 사용할 수 있습니다.');
+    }
+    final credential = await apple.SignInWithApple.getAppleIDCredential(
+      scopes: [
+        apple.AppleIDAuthorizationScopes.email,
+        apple.AppleIDAuthorizationScopes.fullName,
+      ],
+    );
     final tokens = await _authApi.signInWithApple(credential.authorizationCode);
     _saveToStorage(tokens);
     return tokens;

@@ -99,6 +99,7 @@ final productApiProvider = Provider<ProductApi>((ref) {
 
 final authStorageProvider = Provider<AuthStorage>((ref) {
   final flutterSecureStorage = ref.watch(flutterSecureStorageProvider);
+  // flutterSecureStorage.deleteAll();
   return AuthStorage(flutterSecureStorage);
 });
 
@@ -113,17 +114,37 @@ final oauthTokenProvider = StateProvider<OAuthToken?>((ref) {
 });
 
 final dioProvider = Provider<Dio>((ref) {
+  const host = 'https://api.dev.gifthub.kr';
   final oauthToken = ref.watch(oauthTokenProvider);
   return Dio(
     BaseOptions(
-      baseUrl: 'https://api.dev.gifthub.kr',
+      baseUrl: host,
       headers: {
+        'User-Agent': 'GiftHub/0.3.0',
         'Content-Type': 'application/json',
         if (oauthToken != null)
           'Authorization': 'Bearer ${oauthToken.accessToken}',
       },
     ),
   )..interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        if (oauthToken != null &&
+            oauthToken.isStaled &&
+            oauthToken.isExpired == false) {
+          final response = await Dio().post(
+            '$host/auth/refresh',
+            options: Options(headers: {
+              'Authorization': 'Bearer ${oauthToken.refreshToken}'
+            }),
+          );
+          // ignore: avoid_dynamic_calls
+          final newToken = OAuthToken.fromJson(response.data['data']);
+          ref.read(oauthTokenProvider.notifier).state = newToken;
+          options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
+          return handler.next(options);
+        }
+        return handler.next(options);
+      },
       onResponse: (response, handler) {
         if (response.statusCode == 200) {
           final data = response.data as Map<String, dynamic>?;
