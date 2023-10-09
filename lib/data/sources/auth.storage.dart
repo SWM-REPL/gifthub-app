@@ -28,7 +28,7 @@ class AuthStorage {
     return OAuthTokenDto.fromJson(json.decode(tokenJson));
   }
 
-  Future<void> deleteTokens() async {
+  Future<void> deleteOAuthToken() async {
     await _secureStorage.delete(key: _cachedTokenKey);
   }
 }

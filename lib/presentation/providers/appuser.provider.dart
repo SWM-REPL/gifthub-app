@@ -82,13 +82,18 @@ class AppUserProvider extends AsyncNotifier<AppUser?> {
     if (oauthToken == null) {
       return null;
     }
-    final me = await _userRepository.getUser(oauthToken.userId);
-    return AppUser.from(me, oauthToken);
+    try {
+      final me = await _userRepository.getUser(oauthToken.userId);
+      return AppUser.from(me, oauthToken);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<OAuthToken?> _loadOAuthToken() async {
-    if (ref.watch(oauthTokenProvider) != null) {
-      return ref.watch(oauthTokenProvider);
+    final oauthToken = ref.watch(oauthTokenProvider);
+    if (oauthToken != null) {
+      return oauthToken;
     }
 
     final authRepository = ref.watch(authRepositoryProvider);

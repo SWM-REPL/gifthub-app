@@ -34,8 +34,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<OAuthToken> signIn({
-    required String username,
-    required String password,
+    required final String username,
+    required final String password,
   }) async {
     final tokens = await _authApi.signIn(
       username: username,
@@ -92,9 +92,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<OAuthToken> signUp({
-    required String nickname,
-    required String username,
-    required String password,
+    required final String nickname,
+    required final String username,
+    required final String password,
   }) async {
     final tokens = await _authApi.signUp(
       nickname: nickname,
@@ -106,9 +106,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async {
-    await _authApi.signOut();
-    await _authStorage.deleteTokens();
+  Future<void> signOut({
+    required final String deviceToken,
+  }) async {
+    await _authApi.signOut(deviceToken: deviceToken);
+    await _authStorage.deleteOAuthToken();
   }
 
   Future<void> _saveToStorage(OAuthToken oauth) async {

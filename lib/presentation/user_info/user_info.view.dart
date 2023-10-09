@@ -8,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
-import 'package:gifthub/utility/show_snack_bar.dart';
 
 class UserInfoView extends ConsumerWidget {
   final usernameController = TextEditingController();
@@ -95,7 +96,10 @@ class UserInfoView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () => showSnackBar(const Text('로그아웃')),
+                onPressed: () {
+                  ref.watch(signOutCommandProvider)();
+                  ref.invalidate(voucherIdsProvider);
+                },
                 child: const Text('로그아웃'),
               ),
               const SizedBox(
@@ -103,7 +107,10 @@ class UserInfoView extends ConsumerWidget {
                 child: VerticalDivider(),
               ),
               TextButton(
-                onPressed: () => showSnackBar(const Text('회원탈퇴')),
+                onPressed: () {
+                  ref.watch(deregisterCommandProvider)();
+                  ref.invalidate(voucherIdsProvider);
+                },
                 child: const Text('회원탈퇴'),
               ),
             ],

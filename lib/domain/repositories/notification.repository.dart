@@ -6,5 +6,13 @@ abstract class NotificationRepository {
 
   Future<Notification> getNotification(int id);
 
+  Future<void> deleteNotification(int id);
+
+  Future<void> saveDeviceToken(String fcmToken);
+
+  Future<String?> getDeviceToken();
+
+  Future<void> deleteDeviceToken();
+
   Future<void> subscribeNotification(String fcmToken);
 }

@@ -3,24 +3,22 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/entities/block.entity.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
-class CreateVoucherByImageCommand {
-  static const name = 'create_voucher_by_image';
-
+class CreateVoucherByImageCommand extends Command {
   final VoucherRepository _voucherRepository;
   final TextRecognizer _textRecognizer;
-  final FirebaseAnalytics _analytics;
 
   CreateVoucherByImageCommand({
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
     TextRecognizer? textRecognizer,
   })  : _voucherRepository = voucherRepository,
-        _analytics = analytics,
         _textRecognizer = textRecognizer ??
-            TextRecognizer(script: TextRecognitionScript.korean);
+            TextRecognizer(script: TextRecognitionScript.korean),
+        super('create_voucher_by_image', analytics);
 
   Future<void> call(String imagePath) async {
     try {
@@ -42,22 +40,9 @@ class CreateVoucherByImageCommand {
 
       final texts = textlines.map((t) => t.text).toList();
       await _voucherRepository.createVoucherByTexts(texts);
-
-      _analytics.logEvent(
-        name: CreateVoucherByImageCommand.name,
-        parameters: {
-          'success': true,
-          'texts': texts.join(','),
-        },
-      );
-    } catch (e) {
-      _analytics.logEvent(
-        name: CreateVoucherByImageCommand.name,
-        parameters: {
-          'success': false,
-          'error': e.toString(),
-        },
-      );
+      logSuccess({'texts': texts});
+    } catch (error, stacktrace) {
+      logFailure(error, stacktrace);
       rethrow;
     }
   }

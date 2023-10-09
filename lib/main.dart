@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/exception.boundary.dart';
 import 'package:gifthub/firebase_options.dart';
 import 'package:gifthub/presentation/app.dart';
 
@@ -52,7 +53,9 @@ Future<void> main() async {
 
   runApp(
     const ProviderScope(
-      child: App(),
+      child: ExceptionBoundary(
+        child: App(),
+      ),
     ),
   );
 }
