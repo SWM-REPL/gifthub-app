@@ -2,19 +2,17 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
-class UpdateVoucherCommand {
-  static const name = 'update_voucher';
-
+class UpdateVoucherCommand extends Command {
   final VoucherRepository _voucherRepository;
-  final FirebaseAnalytics _analytics;
 
   UpdateVoucherCommand({
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
   })  : _voucherRepository = voucherRepository,
-        _analytics = analytics;
+        super('update_voucher', analytics);
 
   Future<void> call({
     required int id,
@@ -31,20 +29,9 @@ class UpdateVoucherCommand {
         productName: productName,
         brandName: brandName,
       );
-      _analytics.logEvent(
-        name: UpdateVoucherCommand.name,
-        parameters: {
-          'success': true,
-        },
-      );
-    } catch (e) {
-      _analytics.logEvent(
-        name: UpdateVoucherCommand.name,
-        parameters: {
-          'success': false,
-          'error': e.toString(),
-        },
-      );
+      logSuccess();
+    } catch (error, stacktrace) {
+      logFailure(error, stacktrace);
       rethrow;
     }
   }

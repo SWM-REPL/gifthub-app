@@ -8,6 +8,7 @@ import 'package:gifthub/domain/commands/delete_voucher.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
+import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/event.provider.dart';
@@ -69,6 +70,14 @@ final deleteVoucherCommandProvider = Provider<DeleteVoucherCommand>((ref) {
 final useVoucherCommandProvider = Provider<UseVoucherCommand>((ref) {
   return UseVoucherCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final signOutCommandProvider = Provider<SignOutCommand>((ref) {
+  return SignOutCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

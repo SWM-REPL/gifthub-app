@@ -2,19 +2,17 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
-class CreateVoucherByValuesCommand {
-  static const name = 'create_voucher_by_values';
-
+class CreateVoucherByValuesCommand extends Command {
   final VoucherRepository _voucherRepository;
-  final FirebaseAnalytics _analytics;
 
   CreateVoucherByValuesCommand({
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
   })  : _voucherRepository = voucherRepository,
-        _analytics = analytics;
+        super('create_voucher_by_values', analytics);
 
   Future<void> call({
     required String barcode,
@@ -29,20 +27,9 @@ class CreateVoucherByValuesCommand {
         productName: productName,
         brandName: brandName,
       );
-      _analytics.logEvent(
-        name: CreateVoucherByValuesCommand.name,
-        parameters: {
-          'success': true,
-        },
-      );
-    } catch (e) {
-      _analytics.logEvent(
-        name: CreateVoucherByValuesCommand.name,
-        parameters: {
-          'success': false,
-          'error': e.toString(),
-        },
-      );
+      logSuccess();
+    } catch (error, stacktrace) {
+      logFailure(error, stacktrace);
       rethrow;
     }
   }

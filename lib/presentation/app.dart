@@ -11,7 +11,6 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
-import 'package:gifthub/presentation/exception.boundary.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
@@ -99,9 +98,7 @@ class _AppState extends ConsumerState<App> {
         dividerTheme: GiftHubDividerTheme.data,
         textTheme: GiftHubTextTheme.theme,
       ),
-      home: const ExceptionBoundary(
-        child: VoucherListView(),
-      ),
+      home: const VoucherListView(),
     );
   }
 

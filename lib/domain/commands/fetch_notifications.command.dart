@@ -24,25 +24,34 @@ class FetchNotificationsCommand {
         notifications.map((n) async {
           final notification =
               await _notificationRepository.getNotification(n.id);
-          _analytics.logEvent(
-            name: FetchNotificationsCommand.name,
-            parameters: {
-              'success': true,
-              'notification_type': notification.type,
-            },
-          );
+          _logSuccess(notification.type);
           return notification;
         }),
       );
-    } catch (e) {
-      _analytics.logEvent(
-        name: FetchNotificationsCommand.name,
-        parameters: {
-          'success': false,
-          'error': e.toString(),
-        },
-      );
+    } catch (error, stacktrace) {
+      _logFailure(error, stacktrace);
       rethrow;
     }
+  }
+
+  void _logSuccess(String notificationType) {
+    _analytics.logEvent(
+      name: FetchNotificationsCommand.name,
+      parameters: {
+        'success': true.toString(),
+        'notification_type': notificationType,
+      },
+    );
+  }
+
+  void _logFailure(Object error, StackTrace stacktrace) {
+    _analytics.logEvent(
+      name: FetchNotificationsCommand.name,
+      parameters: {
+        'success': false.toString(),
+        'error': error.toString(),
+        'stacktrace': stacktrace.toString(),
+      },
+    );
   }
 }

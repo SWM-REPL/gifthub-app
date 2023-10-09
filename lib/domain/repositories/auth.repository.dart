@@ -5,8 +5,8 @@ abstract class AuthRepository {
   Future<OAuthToken?> loadFromStorage();
 
   Future<OAuthToken> signIn({
-    required String username,
-    required String password,
+    required final String username,
+    required final String password,
   });
 
   Future<OAuthToken> signInWithKakao();
@@ -14,10 +14,10 @@ abstract class AuthRepository {
   Future<OAuthToken> signInWithApple();
 
   Future<OAuthToken> signUp({
-    required String nickname,
-    required String username,
-    required String password,
+    required final String nickname,
+    required final String username,
+    required final String password,
   });
 
-  Future<void> signOut();
+  Future<void> signOut({required final String deviceToken});
 }

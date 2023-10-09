@@ -14,6 +14,7 @@ import 'package:gifthub/data/sources/auth.api.dart';
 import 'package:gifthub/data/sources/auth.storage.dart';
 import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
+import 'package:gifthub/data/sources/notification.storage.dart';
 import 'package:gifthub/data/sources/product.api.dart';
 import 'package:gifthub/data/sources/user.api.dart';
 import 'package:gifthub/data/sources/voucher.api.dart';
@@ -29,8 +30,10 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 ///SECTION - Repositories
 
 final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
-  final notificationApi = ref.watch(notificationApiProvider);
-  return NotificationRepositoryImpl(notificationApi);
+  return NotificationRepositoryImpl(
+    notificationApi: ref.watch(notificationApiProvider),
+    notificationStorage: ref.watch(notificationStorageProvider),
+  );
 });
 
 final voucherRepositoryProvider = Provider<VoucherRepository>((ref) {
@@ -99,8 +102,12 @@ final productApiProvider = Provider<ProductApi>((ref) {
 
 final authStorageProvider = Provider<AuthStorage>((ref) {
   final flutterSecureStorage = ref.watch(flutterSecureStorageProvider);
-  // flutterSecureStorage.deleteAll();
   return AuthStorage(flutterSecureStorage);
+});
+
+final notificationStorageProvider = Provider<NotificationStorage>((ref) {
+  final flutterSecureStorage = ref.watch(flutterSecureStorageProvider);
+  return NotificationStorage(flutterSecureStorage);
 });
 
 ///SECTION - Others
@@ -128,22 +135,31 @@ final dioProvider = Provider<Dio>((ref) {
     ),
   )..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        if (oauthToken != null &&
-            oauthToken.isStaled &&
-            oauthToken.isExpired == false) {
-          final response = await Dio().post(
-            '$host/auth/refresh',
-            options: Options(headers: {
-              'Authorization': 'Bearer ${oauthToken.refreshToken}'
-            }),
-          );
-          // ignore: avoid_dynamic_calls
-          final newToken = OAuthToken.fromJson(response.data['data']);
-          ref.read(oauthTokenProvider.notifier).state = newToken;
-          options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
+        try {
+          if (oauthToken != null &&
+              oauthToken.isStaled &&
+              oauthToken.isExpired == false) {
+            final response = await Dio().post(
+              '$host/auth/refresh',
+              options: Options(
+                headers: {
+                  'Authorization': 'Bearer ${oauthToken.refreshToken}',
+                },
+              ),
+            );
+            // ignore: avoid_dynamic_calls
+            final newToken = OAuthToken.fromJson(response.data['data']);
+            ref.read(oauthTokenProvider.notifier).state = newToken;
+            options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
+            return handler.next(options);
+          }
           return handler.next(options);
+        } catch (error) {
+          if (error is DioException) {
+            return handler.reject(UnauthorizedException.from(error));
+          }
+          rethrow;
         }
-        return handler.next(options);
       },
       onResponse: (response, handler) {
         if (response.statusCode == 200) {

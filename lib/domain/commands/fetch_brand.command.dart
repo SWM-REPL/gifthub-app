@@ -2,40 +2,26 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/repositories/brand.repository.dart';
 
-class FetchBrandCommand {
-  static const name = 'fetch_brand';
-
+class FetchBrandCommand extends Command {
   final BrandRepository _brandRepository;
-  final FirebaseAnalytics _analytics;
 
   FetchBrandCommand({
     required BrandRepository brandRepository,
     required FirebaseAnalytics analytics,
   })  : _brandRepository = brandRepository,
-        _analytics = analytics;
+        super('fetch_brand', analytics);
 
   Future<Brand> call(int id) async {
     try {
       final brand = await _brandRepository.getBrandById(id);
-      _analytics.logEvent(
-        name: FetchBrandCommand.name,
-        parameters: {
-          'success': true,
-          'brandname': brand.name,
-        },
-      );
+      logSuccess({'brandname': brand.name});
       return brand;
-    } catch (e) {
-      _analytics.logEvent(
-        name: FetchBrandCommand.name,
-        parameters: {
-          'success': false,
-          'error': e.toString(),
-        },
-      );
+    } catch (error, stacktrace) {
+      logFailure(error, stacktrace);
       rethrow;
     }
   }

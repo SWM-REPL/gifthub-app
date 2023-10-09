@@ -59,7 +59,11 @@ class AuthApi {
     return OAuthTokenDto.fromJson(response.data);
   }
 
-  Future<void> signOut() async {
-    await dio.post('/auth/sign-out');
+  Future<void> signOut({
+    required final String deviceToken,
+  }) async {
+    await dio.post('/auth/sign-out', data: {
+      'device_token': deviceToken,
+    });
   }
 }
