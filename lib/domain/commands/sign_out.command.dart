@@ -30,10 +30,10 @@ class SignOutCommand extends Command {
 
   Future<void> _signOut() async {
     final deviceToken = await _notificationRepository.getDeviceToken();
-    if (deviceToken != null) {
+    if (deviceToken == null) {
       throw Exception('deviceToken is null');
     }
     await _notificationRepository.deleteDeviceToken();
-    await _authRepository.signOut(deviceToken: deviceToken!);
+    await _authRepository.signOut(deviceToken: deviceToken);
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
 import 'package:gifthub/domain/commands/delete_voucher.command.dart';
+import 'package:gifthub/domain/commands/deregister.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
@@ -78,6 +79,14 @@ final signOutCommandProvider = Provider<SignOutCommand>((ref) {
   return SignOutCommand(
     authRepository: ref.watch(authRepositoryProvider),
     notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
+  return DeregisterCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    userRepository: ref.watch(userRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

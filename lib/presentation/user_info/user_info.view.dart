@@ -9,7 +9,7 @@ import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/providers/source.provider.dart';
+import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -97,8 +97,8 @@ class UserInfoView extends ConsumerWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  ref.read(signOutCommandProvider)();
-                  ref.read(oauthTokenProvider.notifier).state = null;
+                  ref.watch(signOutCommandProvider)();
+                  ref.invalidate(voucherIdsProvider);
                 },
                 child: const Text('로그아웃'),
               ),
@@ -107,7 +107,10 @@ class UserInfoView extends ConsumerWidget {
                 child: VerticalDivider(),
               ),
               TextButton(
-                onPressed: () => ref.read(appUserProvider.notifier),
+                onPressed: () {
+                  ref.watch(deregisterCommandProvider)();
+                  ref.invalidate(voucherIdsProvider);
+                },
                 child: const Text('회원탈퇴'),
               ),
             ],

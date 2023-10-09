@@ -12,7 +12,7 @@ class NotificationNotifier extends AsyncNotifier<List<Notification>> {
   }
 
   Future<List<Notification>> _fetch() async {
-    final fetchNotifications = ref.read(fetchNotificationsCommandProvider);
+    final fetchNotifications = ref.watch(fetchNotificationsCommandProvider);
     return await fetchNotifications();
   }
 }

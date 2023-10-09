@@ -19,5 +19,7 @@ abstract class AuthRepository {
     required final String password,
   });
 
-  Future<void> signOut({required final String deviceToken});
+  Future<void> signOut({
+    required final String deviceToken,
+  });
 }

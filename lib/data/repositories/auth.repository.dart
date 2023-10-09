@@ -110,7 +110,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required final String deviceToken,
   }) async {
     await _authApi.signOut(deviceToken: deviceToken);
-    await _authStorage.deleteTokens();
+    await _authStorage.deleteOAuthToken();
   }
 
   Future<void> _saveToStorage(OAuthToken oauth) async {

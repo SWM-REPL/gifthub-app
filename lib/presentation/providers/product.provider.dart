@@ -6,6 +6,6 @@ import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
 final productProvider = FutureProvider.family<Product, int>((ref, id) async {
-  final productRepository = ref.read(productRepositoryProvider);
+  final productRepository = ref.watch(productRepositoryProvider);
   return await productRepository.getProductById(id);
 });

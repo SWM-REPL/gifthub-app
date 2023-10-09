@@ -149,7 +149,7 @@ final dioProvider = Provider<Dio>((ref) {
             );
             // ignore: avoid_dynamic_calls
             final newToken = OAuthToken.fromJson(response.data['data']);
-            ref.read(oauthTokenProvider.notifier).state = newToken;
+            ref.watch(oauthTokenProvider.notifier).state = newToken;
             options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
             return handler.next(options);
           }
