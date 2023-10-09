@@ -10,12 +10,14 @@ import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dar
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
+import 'package:gifthub/presentation/providers/event.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
 final fetchNewNotificationCountCommandProvider =
     Provider<FetchNewNotificationCountCommand>((ref) {
   return FetchNewNotificationCountCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
@@ -23,12 +25,14 @@ final fetchNotificationsCommandProvider =
     Provider<FetchNotificationsCommand>((ref) {
   return FetchNotificationsCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
 final fetchBrandCommandProvider = Provider<FetchBrandCommand>((ref) {
   return FetchBrandCommand(
     brandRepository: ref.watch(brandRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
@@ -36,6 +40,7 @@ final createVoucherByValuesCommandProvider =
     Provider<CreateVoucherByValuesCommand>((ref) {
   return CreateVoucherByValuesCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
@@ -43,23 +48,27 @@ final createVoucherByImageCommandProvider =
     Provider<CreateVoucherByImageCommand>((ref) {
   return CreateVoucherByImageCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
 final updateVoucherCommandProvider = Provider<UpdateVoucherCommand>((ref) {
   return UpdateVoucherCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
 final deleteVoucherCommandProvider = Provider<DeleteVoucherCommand>((ref) {
   return DeleteVoucherCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
 final useVoucherCommandProvider = Provider<UseVoucherCommand>((ref) {
   return UseVoucherCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
