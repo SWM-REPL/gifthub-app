@@ -8,14 +8,14 @@ import 'package:gifthub/data/repositories/auth.repository.dart';
 import 'package:gifthub/data/repositories/brand.repository.dart';
 import 'package:gifthub/data/repositories/notification.repository.dart';
 import 'package:gifthub/data/repositories/product.repository.dart';
+import 'package:gifthub/data/repositories/token.repository.dart';
 import 'package:gifthub/data/repositories/user.repository.dart';
 import 'package:gifthub/data/repositories/voucher.repository.dart';
 import 'package:gifthub/data/sources/auth.api.dart';
-import 'package:gifthub/data/sources/auth.storage.dart';
 import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
-import 'package:gifthub/data/sources/notification.storage.dart';
 import 'package:gifthub/data/sources/product.api.dart';
+import 'package:gifthub/data/sources/token.storage.dart';
 import 'package:gifthub/data/sources/user.api.dart';
 import 'package:gifthub/data/sources/voucher.api.dart';
 import 'package:gifthub/domain/entities/oauth_token.entity.dart';
@@ -24,6 +24,7 @@ import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/brand.repository.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/domain/repositories/product.repository.dart';
+import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
@@ -32,7 +33,6 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
   return NotificationRepositoryImpl(
     notificationApi: ref.watch(notificationApiProvider),
-    notificationStorage: ref.watch(notificationStorageProvider),
   );
 });
 
@@ -43,7 +43,6 @@ final voucherRepositoryProvider = Provider<VoucherRepository>((ref) {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
-    authStorage: ref.watch(authStorageProvider),
     authApi: ref.watch(authApiProvider),
   );
 });
@@ -63,6 +62,12 @@ final brandRepositoryProvider = Provider<BrandRepository>((ref) {
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
   return ProductRepositoryImpl(
     productApi: ref.watch(productApiProvider),
+  );
+});
+
+final tokenRepositoryProvider = Provider<TokenRepository>((ref) {
+  return TokenRepositoryImpl(
+    tokenStorage: ref.watch(tokenStorageProvider),
   );
 });
 
@@ -100,14 +105,9 @@ final productApiProvider = Provider<ProductApi>((ref) {
 
 ///SECTION - Storages
 
-final authStorageProvider = Provider<AuthStorage>((ref) {
+final tokenStorageProvider = Provider<TokenStorage>((ref) {
   final flutterSecureStorage = ref.watch(flutterSecureStorageProvider);
-  return AuthStorage(flutterSecureStorage);
-});
-
-final notificationStorageProvider = Provider<NotificationStorage>((ref) {
-  final flutterSecureStorage = ref.watch(flutterSecureStorageProvider);
-  return NotificationStorage(flutterSecureStorage);
+  return TokenStorage(flutterSecureStorage);
 });
 
 ///SECTION - Others

@@ -23,7 +23,7 @@ class AppUserProvider extends AsyncNotifier<AppUser?> {
   void signIn(String username, String password) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final oauth = await _authRepository.signIn(
+      final oauth = await _authRepository.signInWithPassword(
         username: username,
         password: password,
       );
@@ -96,8 +96,8 @@ class AppUserProvider extends AsyncNotifier<AppUser?> {
       return oauthToken;
     }
 
-    final authRepository = ref.watch(authRepositoryProvider);
-    final oauthFromStorage = await authRepository.loadFromStorage();
+    final tokenRepository = ref.watch(tokenRepositoryProvider);
+    final oauthFromStorage = await tokenRepository.getOAuthToken();
     if (oauthFromStorage != null) {
       ref.watch(oauthTokenProvider.notifier).state = oauthFromStorage;
       return oauthFromStorage;

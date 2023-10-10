@@ -4,24 +4,24 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
-import 'package:gifthub/domain/repositories/auth.repository.dart';
+import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 
 class DeregisterCommand extends Command {
-  final AuthRepository _authRepository;
+  final TokenRepository _tokenRepository;
   final UserRepository _userRepository;
 
   DeregisterCommand({
-    required final AuthRepository authRepository,
+    required final TokenRepository tokenRepository,
     required final UserRepository userRepository,
     required final FirebaseAnalytics analytics,
-  })  : _authRepository = authRepository,
+  })  : _tokenRepository = tokenRepository,
         _userRepository = userRepository,
         super('deregister', analytics);
 
   Future<void> call() async {
     try {
-      final oauthToken = await _authRepository.loadFromStorage();
+      final oauthToken = await _tokenRepository.getOAuthToken();
       if (oauthToken == null) {
         throw UnauthorizedException();
       }

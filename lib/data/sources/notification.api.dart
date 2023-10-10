@@ -26,4 +26,10 @@ class NotificationApi {
       'token': fcmToken,
     });
   }
+
+  Future<void> unsubscribeNotification(final String fcmToken) {
+    return dio.delete('/notifications/device', data: {
+      'token': fcmToken,
+    });
+  }
 }

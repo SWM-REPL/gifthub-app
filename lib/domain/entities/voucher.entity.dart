@@ -9,8 +9,8 @@ class Voucher with EquatableMixin {
   int productId;
   String barcode;
   DateTime expiresAt;
-  int price;
-  int balance;
+  int? price;
+  int? balance;
   String? imageUrl;
 
   Voucher({
@@ -30,7 +30,7 @@ class Voucher with EquatableMixin {
   }
 
   bool get isUsable =>
-      balance > 0 &&
+      (balance == null || balance! > 0) &&
       expiresAt.isAfter(DateTime.now().subtract(const Duration(days: 1)));
   bool get isExpired => remainDays < 0;
   bool get aboutToExpire => !isExpired && remainDays < 7;

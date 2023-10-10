@@ -50,11 +50,10 @@ class VoucherDetailStateNotifier
     });
   }
 
-  Future<void> _useVoucher(int amount) async {
-    final command = ref.watch(useVoucherCommandProvider);
-    final value = state.value!;
-    await command(value.voucher.id, amount);
-    ref.invalidate(voucherProvider(value.voucher.id));
+  Future<void> _useVoucher(int? amount) async {
+    final voucher = state.value!.voucher;
+    ref.watch(useVoucherCommandProvider)(voucher.id, amount);
+    ref.invalidate(voucherProvider(voucher.id));
   }
 }
 

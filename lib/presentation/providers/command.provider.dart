@@ -9,6 +9,7 @@ import 'package:gifthub/domain/commands/deregister.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
+import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
@@ -75,17 +76,28 @@ final useVoucherCommandProvider = Provider<UseVoucherCommand>((ref) {
   );
 });
 
+final signInWithPasswordCommandProvider =
+    Provider<SignInWithPasswordCommand>((ref) {
+  return SignInWithPasswordCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
 final signOutCommandProvider = Provider<SignOutCommand>((ref) {
   return SignOutCommand(
     authRepository: ref.watch(authRepositoryProvider),
     notificationRepository: ref.watch(notificationRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
 final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
   return DeregisterCommand(
-    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
     userRepository: ref.watch(userRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );

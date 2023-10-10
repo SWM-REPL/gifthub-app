@@ -8,11 +8,7 @@ abstract class NotificationRepository {
 
   Future<void> deleteNotification(int id);
 
-  Future<void> saveDeviceToken(String fcmToken);
-
-  Future<String?> getDeviceToken();
-
-  Future<void> deleteDeviceToken();
-
   Future<void> subscribeNotification(String fcmToken);
+
+  Future<void> unsubscribeNotification(String fcmToken);
 }

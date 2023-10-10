@@ -69,7 +69,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
   @override
   Future<void> useVoucher(
     int id, {
-    required int amount,
+    int? amount,
   }) async {
     await _voucherApi.useVoucher(
       id,

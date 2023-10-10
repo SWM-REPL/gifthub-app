@@ -10,7 +10,7 @@ class Product with EquatableMixin {
   String name;
   String description;
   bool isReusable;
-  int price;
+  int? price;
   String imageUrl;
 
   Product({
@@ -23,7 +23,7 @@ class Product with EquatableMixin {
     required this.imageUrl,
   });
 
-  String get priceFormatted => currencyFormat(price);
+  String get priceFormatted => currencyFormat(price!);
 
   @override
   List<Object?> get props => [id];
