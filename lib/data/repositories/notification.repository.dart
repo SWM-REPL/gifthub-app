@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 // 🌎 Project imports:
 import 'package:gifthub/data/dto/notification.dto.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
-import 'package:gifthub/data/sources/notification.storage.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
   final NotificationApi _notificationApi;
-  final NotificationStorage _notificationStorage;
 
   NotificationRepositoryImpl({
     required NotificationApi notificationApi,
-    required NotificationStorage notificationStorage,
-  })  : _notificationApi = notificationApi,
-        _notificationStorage = notificationStorage;
+  }) : _notificationApi = notificationApi;
 
   @override
   Future<List<NotificationDto>> getNotifications() async {
@@ -35,22 +31,13 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  Future<void> saveDeviceToken(String fcmToken) async {
-    await _notificationStorage.saveDeviceToken(fcmToken);
-  }
-
-  @override
-  Future<String?> getDeviceToken() async {
-    return await _notificationStorage.loadDeviceToken();
-  }
-
-  @override
-  Future<void> deleteDeviceToken() async {
-    await _notificationStorage.deleteDeviceToken();
-  }
-
-  @override
   Future<void> subscribeNotification(String fcmToken) async {
     await _notificationApi.subscribeNotification(fcmToken);
+  }
+
+  @override
+  Future<void> unsubscribeNotification(String fcmToken) async {
+    // await _notificationApi.unsubscribeNotification(fcmToken);
+    showSnackBar(const Text('준비중입니다.'));
   }
 }

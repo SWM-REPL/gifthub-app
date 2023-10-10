@@ -68,7 +68,7 @@ class VoucherApi {
 
   Future<void> useVoucher(
     final int id, {
-    required final int amount,
+    final int? amount,
   }) async {
     await dio.post('/vouchers/$id/usage', data: {
       'amount': amount,

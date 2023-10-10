@@ -2,9 +2,7 @@
 import 'package:gifthub/domain/entities/oauth_token.entity.dart';
 
 abstract class AuthRepository {
-  Future<OAuthToken?> loadFromStorage();
-
-  Future<OAuthToken> signIn({
+  Future<OAuthToken> signInWithPassword({
     required final String username,
     required final String password,
   });
@@ -19,7 +17,5 @@ abstract class AuthRepository {
     required final String password,
   });
 
-  Future<void> signOut({
-    required final String deviceToken,
-  });
+  Future<void> signOut();
 }

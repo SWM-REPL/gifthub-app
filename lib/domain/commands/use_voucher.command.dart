@@ -14,7 +14,7 @@ class UseVoucherCommand extends Command {
   })  : _voucherRepository = voucherRepository,
         super('use_voucher', analytics);
 
-  Future<void> call(int id, int amount) async {
+  Future<void> call(int id, int? amount) async {
     try {
       await _voucherRepository.useVoucher(id, amount: amount);
       logSuccess();

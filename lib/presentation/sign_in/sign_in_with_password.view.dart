@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -77,10 +78,10 @@ class SignInWithPasswordView extends ConsumerWidget {
                   ? null
                   : () {
                       if (formKey.currentState!.validate()) {
-                        ref.watch(appUserProvider.notifier).signIn(
-                              usernameController.text,
-                              passwordController.text,
-                            );
+                        ref.watch(signInWithPasswordCommandProvider)(
+                          usernameController.text,
+                          passwordController.text,
+                        );
                       }
                     },
               style: ElevatedButton.styleFrom(

@@ -7,12 +7,12 @@ import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 
-class SignOutCommand extends Command {
+class SignInWithPasswordCommand extends Command {
   final AuthRepository _authRepository;
   final TokenRepository _tokenRepository;
   final NotificationRepository _notificationRepository;
 
-  SignOutCommand({
+  SignInWithPasswordCommand({
     required AuthRepository authRepository,
     required TokenRepository tokenRepository,
     required NotificationRepository notificationRepository,
@@ -20,24 +20,25 @@ class SignOutCommand extends Command {
   })  : _authRepository = authRepository,
         _tokenRepository = tokenRepository,
         _notificationRepository = notificationRepository,
-        super('sign_out', analytics);
+        super('sign_in_with_password', analytics);
 
-  Future<void> call() async {
+  Future<void> call(
+    String username,
+    String password,
+  ) async {
     try {
-      await _signOut();
+      await _authRepository.signInWithPassword(
+        username: username,
+        password: password,
+      );
+      final fcmToken = await _tokenRepository.getFCMToken();
+      if (fcmToken != null) {
+        await _notificationRepository.subscribeNotification(fcmToken);
+      }
       logSuccess();
     } catch (error, stacktrace) {
       logFailure(error, stacktrace);
       rethrow;
     }
-  }
-
-  Future<void> _signOut() async {
-    final fcmToken = await _tokenRepository.getFCMToken();
-    if (fcmToken != null) {
-      _notificationRepository.unsubscribeNotification(fcmToken);
-    }
-    await _tokenRepository.deleteAll();
-    await _authRepository.signOut();
   }
 }
