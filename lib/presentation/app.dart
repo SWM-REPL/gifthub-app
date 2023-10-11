@@ -14,6 +14,7 @@ import 'package:gifthub/global_keys.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
+import 'package:gifthub/presentation/voucher_list/voucher_list.notifier.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
@@ -111,6 +112,11 @@ class _AppState extends ConsumerState<App> {
     FirebaseMessaging.onMessage.listen((message) async {
       final title = message.notification?.title;
       final body = message.notification?.body;
+      final data = message.data;
+
+      if (data['notification_type'] == '2') {
+        ref.invalidate(voucherListStateProvider);
+      }
 
       ref.invalidate(notificationsProvider);
       showSnackBar(
