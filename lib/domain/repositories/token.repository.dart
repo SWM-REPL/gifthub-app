@@ -1,12 +1,12 @@
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 
 abstract class TokenRepository {
-  Future<void> saveOAuthToken(OAuthToken token);
+  Future<void> saveAuthToken(AuthToken token);
 
-  Future<void> deleteOAuthToken();
+  Future<void> deleteAuthToken();
 
-  Future<OAuthToken?> getOAuthToken();
+  Future<AuthToken?> getAuthToken();
 
   Future<void> saveFCMToken(String token);
 

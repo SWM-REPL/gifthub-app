@@ -55,6 +55,8 @@ dependencies:
   firebase_messaging: ^14.6.7
   kakao_flutter_sdk_user: ^1.6.0
   sign_in_with_apple: ^5.0.0
+  flutter_naver_login: ^1.8.0
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:

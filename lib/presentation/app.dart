@@ -11,7 +11,6 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
-import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
@@ -104,7 +103,7 @@ class _AppState extends ConsumerState<App> {
 
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      ref.watch(appUserProvider.notifier).subscribeNotification(fcmToken);
+      ref.watch(subscribeNotificationCommandProvider)();
     }).onError((error) {
       throw error;
     });
@@ -129,7 +128,10 @@ class _AppState extends ConsumerState<App> {
   Future<void> _afterBuild() async {
     await Future.delayed(
       Duration.zero,
-      _processSharedIntents,
+      () {
+        _processSharedIntents();
+        ref.watch(subscribeNotificationCommandProvider)();
+      },
     );
   }
 

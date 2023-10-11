@@ -18,7 +18,7 @@ import 'package:gifthub/data/sources/product.api.dart';
 import 'package:gifthub/data/sources/token.storage.dart';
 import 'package:gifthub/data/sources/user.api.dart';
 import 'package:gifthub/data/sources/voucher.api.dart';
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/brand.repository.dart';
@@ -116,40 +116,40 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
   return const FlutterSecureStorage();
 });
 
-final oauthTokenProvider = StateProvider<OAuthToken?>((ref) {
+final authTokenProvider = StateProvider<AuthToken?>((ref) {
   return null;
 });
 
 final dioProvider = Provider<Dio>((ref) {
   const host = 'https://api.dev.gifthub.kr';
-  final oauthToken = ref.watch(oauthTokenProvider);
+  final authToken = ref.watch(authTokenProvider);
   return Dio(
     BaseOptions(
       baseUrl: host,
       headers: {
-        'User-Agent': 'GiftHub/0.3.0',
+        'User-Agent': 'GiftHub/0.3.2',
         'Content-Type': 'application/json',
-        if (oauthToken != null)
-          'Authorization': 'Bearer ${oauthToken.accessToken}',
+        if (authToken != null)
+          'Authorization': 'Bearer ${authToken.accessToken}',
       },
     ),
   )..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         try {
-          if (oauthToken != null &&
-              oauthToken.isStaled &&
-              oauthToken.isExpired == false) {
+          if (authToken != null &&
+              authToken.isStaled &&
+              authToken.isExpired == false) {
             final response = await Dio().post(
               '$host/auth/refresh',
               options: Options(
                 headers: {
-                  'Authorization': 'Bearer ${oauthToken.refreshToken}',
+                  'Authorization': 'Bearer ${authToken.refreshToken}',
                 },
               ),
             );
             // ignore: avoid_dynamic_calls
-            final newToken = OAuthToken.fromJson(response.data['data']);
-            ref.watch(oauthTokenProvider.notifier).state = newToken;
+            final newToken = AuthToken.fromJson(response.data['data']);
+            ref.watch(authTokenProvider.notifier).state = newToken;
             options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
             return handler.next(options);
           }

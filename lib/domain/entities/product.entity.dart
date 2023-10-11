@@ -8,7 +8,7 @@ class Product with EquatableMixin {
   int id;
   int brandId;
   String name;
-  String description;
+  String? description;
   bool isReusable;
   int? price;
   String imageUrl;

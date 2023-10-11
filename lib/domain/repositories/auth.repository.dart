@@ -1,17 +1,21 @@
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 
 abstract class AuthRepository {
-  Future<OAuthToken> signInWithPassword({
+  Future<AuthToken> signInWithPassword({
     required final String username,
     required final String password,
   });
 
-  Future<OAuthToken> signInWithKakao();
+  Future<AuthToken> signInWithKakao();
 
-  Future<OAuthToken> signInWithApple();
+  Future<AuthToken> signInWithApple();
 
-  Future<OAuthToken> signUp({
+  Future<AuthToken> signInWithNaver();
+
+  Future<AuthToken> signInWithGoogle();
+
+  Future<AuthToken> signUp({
     required final String nickname,
     required final String username,
     required final String password,

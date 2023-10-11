@@ -98,10 +98,11 @@ class VoucherDetailView extends ConsumerWidget {
                         const SizedBox(height: 20),
                         _buildButtons(context, ref, state),
                         const SizedBox(height: 30),
-                        Text(
-                          state.product.description,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
+                        if (state.product.description != null)
+                          Text(
+                            state.product.description!,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                       ],
                     ),
                   ),

@@ -21,7 +21,7 @@ class DeregisterCommand extends Command {
 
   Future<void> call() async {
     try {
-      final oauthToken = await _tokenRepository.getOAuthToken();
+      final oauthToken = await _tokenRepository.getAuthToken();
       if (oauthToken == null) {
         throw UnauthorizedException();
       }

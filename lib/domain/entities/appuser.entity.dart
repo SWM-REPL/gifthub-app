@@ -2,11 +2,11 @@
 import 'package:equatable/equatable.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/entities/user.entity.dart';
 
 class AppUser extends User with EquatableMixin {
-  OAuthToken tokens;
+  AuthToken tokens;
 
   AppUser({
     required super.id,
@@ -17,7 +17,7 @@ class AppUser extends User with EquatableMixin {
 
   factory AppUser.from(
     final User user,
-    final OAuthToken tokens,
+    final AuthToken tokens,
   ) {
     return AppUser(
       id: user.id,

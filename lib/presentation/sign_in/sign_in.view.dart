@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
@@ -54,8 +56,10 @@ class SignInView extends ConsumerWidget {
         children: [
           Image.asset('assets/icon.png'),
           ElevatedButton.icon(
-            onPressed: () {
-              ref.watch(appUserProvider.notifier).signInWithKakao();
+            onPressed: () async {
+              final authToken =
+                  await ref.watch(signInWithKakaoCommandProvider)();
+              ref.watch(authTokenProvider.notifier).state = authToken;
             },
             style: ButtonStyle(
               minimumSize:
@@ -76,11 +80,80 @@ class SignInView extends ConsumerWidget {
                   ),
             ),
           ),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () async {
+              final authToken =
+                  await ref.watch(signInWithNaverCommandProvider)();
+              ref.watch(authTokenProvider.notifier).state = authToken;
+            },
+            style: ButtonStyle(
+              minimumSize:
+                  MaterialStateProperty.all(const Size(double.infinity, 48)),
+              backgroundColor:
+                  MaterialStateProperty.all(const Color(0xff03c659)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+            ),
+            icon: Image.asset('assets/naver.png', height: 16),
+            label: Text(
+              '네이버로 계속하기',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () async {
+              final authToken =
+                  await ref.watch(signInWithGoogleCommandProvider)();
+              ref.watch(authTokenProvider.notifier).state = authToken;
+            },
+            style: ButtonStyle(
+              minimumSize:
+                  MaterialStateProperty.all(const Size(double.infinity, 48)),
+              backgroundColor:
+                  MaterialStateProperty.all(const Color(0xff4286f4)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+            ),
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              height: 28,
+              width: 28,
+              child: Center(
+                child: Image.asset(
+                  'assets/google.png',
+                  height: 24,
+                ),
+              ),
+            ),
+            label: Text(
+              '구글로 계속하기',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+            ),
+          ),
           if (Platform.isIOS) const SizedBox(height: 20),
           if (Platform.isIOS)
             ElevatedButton.icon(
-              onPressed: () {
-                ref.watch(appUserProvider.notifier).signInWithApple();
+              onPressed: () async {
+                final authToken =
+                    await ref.watch(signInWithAppleCommandProvider)();
+                ref.watch(authTokenProvider.notifier).state = authToken;
               },
               style: ButtonStyle(
                 minimumSize:

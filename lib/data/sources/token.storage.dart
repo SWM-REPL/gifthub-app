@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/dto/oauth_token.dto.dart';
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 
 class TokenStorage {
   static const _oauthTokenKey = 'OAUTH_TOKEN_KEY';
@@ -15,33 +15,33 @@ class TokenStorage {
 
   final FlutterSecureStorage _secureStorage;
 
-  OAuthToken? _cachedOAuthToken;
+  AuthToken? _cachedAuthToken;
   String? _cachedFCMToken;
 
   TokenStorage(this._secureStorage)
-      : _cachedOAuthToken = null,
+      : _cachedAuthToken = null,
         _cachedFCMToken = null;
 
-  Future<void> saveOAuthToken(OAuthToken oauth) async {
-    _cachedOAuthToken = oauth;
+  Future<void> saveAuthToken(AuthToken oauth) async {
+    _cachedAuthToken = oauth;
 
-    final tokenJson = json.encode(OAuthTokenDto.from(oauth).toJson());
+    final tokenJson = json.encode(AuthTokenDto.from(oauth).toJson());
     await _secureStorage.write(key: _oauthTokenKey, value: tokenJson);
   }
 
-  Future<OAuthToken?> getOAuthToken() async {
-    if (_cachedOAuthToken != null) {
-      return _cachedOAuthToken;
+  Future<AuthToken?> getAuthToken() async {
+    if (_cachedAuthToken != null) {
+      return _cachedAuthToken;
     }
 
     final tokenJson = await _secureStorage.read(key: _oauthTokenKey);
     return tokenJson != null
-        ? OAuthTokenDto.fromJson(json.decode(tokenJson))
+        ? AuthTokenDto.fromJson(json.decode(tokenJson))
         : null;
   }
 
-  Future<void> deleteOAuthToken() async {
-    _cachedOAuthToken = null;
+  Future<void> deleteAuthToken() async {
+    _cachedAuthToken = null;
     await _secureStorage.delete(key: _oauthTokenKey);
   }
 

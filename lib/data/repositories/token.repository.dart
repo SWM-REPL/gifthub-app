@@ -1,6 +1,6 @@
 // 🌎 Project imports:
 import 'package:gifthub/data/sources/token.storage.dart';
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 
 class TokenRepositoryImpl implements TokenRepository {
@@ -11,18 +11,18 @@ class TokenRepositoryImpl implements TokenRepository {
   }) : _tokenStorage = tokenStorage;
 
   @override
-  Future<void> saveOAuthToken(OAuthToken token) async {
-    return await _tokenStorage.saveOAuthToken(token);
+  Future<void> saveAuthToken(AuthToken token) async {
+    return await _tokenStorage.saveAuthToken(token);
   }
 
   @override
-  Future<void> deleteOAuthToken() async {
-    return await _tokenStorage.deleteOAuthToken();
+  Future<void> deleteAuthToken() async {
+    return await _tokenStorage.deleteAuthToken();
   }
 
   @override
-  Future<OAuthToken?> getOAuthToken() async {
-    return await _tokenStorage.getOAuthToken();
+  Future<AuthToken?> getAuthToken() async {
+    return await _tokenStorage.getAuthToken();
   }
 
   @override
@@ -42,7 +42,7 @@ class TokenRepositoryImpl implements TokenRepository {
 
   @override
   Future<void> deleteAll() async {
-    await _tokenStorage.deleteOAuthToken();
+    await _tokenStorage.deleteAuthToken();
     await _tokenStorage.deleteFCMToken();
   }
 }

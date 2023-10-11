@@ -9,8 +9,13 @@ import 'package:gifthub/domain/commands/deregister.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
+import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
+import 'package:gifthub/domain/commands/sign_in_with_google.command.dart';
+import 'package:gifthub/domain/commands/sign_in_with_kakao.command.dart';
+import 'package:gifthub/domain/commands/sign_in_with_naver.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
+import 'package:gifthub/domain/commands/subscribe_notification.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/event.provider.dart';
@@ -86,6 +91,39 @@ final signInWithPasswordCommandProvider =
   );
 });
 
+final signInWithAppleCommandProvider = Provider<SignInWithAppleCommand>((ref) {
+  return SignInWithAppleCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final signInWithGoogleCommandProvider =
+    Provider<SignInWithGoogleCommand>((ref) {
+  return SignInWithGoogleCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final signInWithKakaoCommandProvider = Provider<SignInWithKakaoCommand>((ref) {
+  return SignInWithKakaoCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final signInWithNaverCommandProvider = Provider<SignInWithNaverCommand>((ref) {
+  return SignInWithNaverCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
 final signOutCommandProvider = Provider<SignOutCommand>((ref) {
   return SignOutCommand(
     authRepository: ref.watch(authRepositoryProvider),
@@ -99,6 +137,14 @@ final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
   return DeregisterCommand(
     tokenRepository: ref.watch(tokenRepositoryProvider),
     userRepository: ref.watch(userRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final subscribeNotificationCommandProvider =
+    Provider<SubscribeNotificationCommand>((ref) {
+  return SubscribeNotificationCommand(
+    notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 📦 Package imports:
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart' as apple;
 
 // 🌎 Project imports:
 import 'package:gifthub/data/sources/auth.api.dart';
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
@@ -24,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }) : _authApi = authApi;
 
   @override
-  Future<OAuthToken> signInWithPassword({
+  Future<AuthToken> signInWithPassword({
     required final String username,
     required final String password,
   }) async {
@@ -36,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<OAuthToken> signInWithKakao() async {
+  Future<AuthToken> signInWithKakao() async {
     late final kakao.OAuthToken? kakaoOauthToken;
 
     try {
@@ -64,7 +66,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<OAuthToken> signInWithApple() async {
+  Future<AuthToken> signInWithApple() async {
     if (!Platform.isIOS) {
       throw Exception('iOS에서만 사용할 수 있습니다.');
     }
@@ -79,7 +81,28 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<OAuthToken> signUp({
+  Future<AuthToken> signInWithNaver() async {
+    await FlutterNaverLogin.logIn();
+    final naverToken = await FlutterNaverLogin.currentAccessToken;
+    final tokens = await _authApi.signInWithNaver(naverToken.accessToken);
+    return tokens;
+  }
+
+  @override
+  Future<AuthToken> signInWithGoogle() async {
+    final google = GoogleSignIn(
+      scopes: [
+        'email',
+      ],
+    );
+    final credential = await google.signIn();
+    final googleTokens = await credential?.authentication;
+    final tokens = await _authApi.signInWithGoogle(googleTokens!.idToken!);
+    return tokens;
+  }
+
+  @override
+  Future<AuthToken> signUp({
     required final String nickname,
     required final String username,
     required final String password,

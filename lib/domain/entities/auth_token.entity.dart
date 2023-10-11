@@ -2,17 +2,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-class OAuthToken with EquatableMixin {
+class AuthToken with EquatableMixin {
   final String accessToken;
   final String refreshToken;
 
-  OAuthToken({
+  AuthToken({
     required this.accessToken,
     required this.refreshToken,
   });
 
-  factory OAuthToken.fromJson(Map<String, dynamic> json) {
-    return OAuthToken(
+  factory AuthToken.fromJson(Map<String, dynamic> json) {
+    return AuthToken(
       accessToken: json['access_token'],
       refreshToken: json['refresh_token'],
     );

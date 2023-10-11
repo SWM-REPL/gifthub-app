@@ -9,7 +9,7 @@ class AuthApi {
 
   AuthApi(this.dio);
 
-  Future<OAuthTokenDto> signIn({
+  Future<AuthTokenDto> signIn({
     required final String username,
     required final String password,
   }) async {
@@ -20,30 +20,46 @@ class AuthApi {
         'password': password,
       },
     );
-    return OAuthTokenDto.fromJson(response.data);
+    return AuthTokenDto.fromJson(response.data);
   }
 
-  Future<OAuthTokenDto> signInWithKakao(String kakaoAccessToken) async {
+  Future<AuthTokenDto> signInWithKakao(String kakaoAccessToken) async {
     final response = await dio.post(
       '/auth/sign-in/kakao',
       data: {
         'access_token': kakaoAccessToken,
       },
     );
-    return OAuthTokenDto.fromJson(response.data);
+    return AuthTokenDto.fromJson(response.data);
   }
 
-  Future<OAuthTokenDto> signInWithApple(String appleAuthToken) async {
+  Future<AuthTokenDto> signInWithApple(String appleAccessToken) async {
     final response = await dio.post(
       '/auth/sign-in/apple',
       data: {
-        'token': appleAuthToken,
+        'token': appleAccessToken,
       },
     );
-    return OAuthTokenDto.fromJson(response.data);
+    return AuthTokenDto.fromJson(response.data);
   }
 
-  Future<OAuthTokenDto> signUp({
+  Future<AuthTokenDto> signInWithNaver(String naverAccessToken) async {
+    final response = await dio.post(
+      '/auth/sign-in/naver',
+      data: {'token': naverAccessToken},
+    );
+    return AuthTokenDto.fromJson(response.data);
+  }
+
+  Future<AuthTokenDto> signInWithGoogle(String googleAccessToken) async {
+    final response = await dio.post(
+      '/auth/sign-in/google',
+      data: {'token': googleAccessToken},
+    );
+    return AuthTokenDto.fromJson(response.data);
+  }
+
+  Future<AuthTokenDto> signUp({
     required final String nickname,
     required final String username,
     required final String password,
@@ -56,7 +72,7 @@ class AuthApi {
         'password': password,
       },
     );
-    return OAuthTokenDto.fromJson(response.data);
+    return AuthTokenDto.fromJson(response.data);
   }
 
   Future<void> signOut() async {

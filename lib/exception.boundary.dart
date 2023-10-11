@@ -20,8 +20,8 @@ class ExceptionBoundary extends ConsumerWidget {
     final next = FlutterError.onError;
     FlutterError.onError = (details) {
       if (details.exception is UnauthorizedException) {
-        ref.watch(oauthTokenProvider.notifier).state = null;
-        ref.watch(tokenRepositoryProvider).deleteOAuthToken();
+        ref.watch(authTokenProvider.notifier).state = null;
+        ref.watch(tokenRepositoryProvider).deleteAuthToken();
         navigate(const SignInView(), clearStack: true);
       } else {
         next?.call(details);

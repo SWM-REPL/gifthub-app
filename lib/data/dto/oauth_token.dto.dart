@@ -2,23 +2,23 @@
 import 'package:equatable/equatable.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/oauth_token.entity.dart';
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
 
-class OAuthTokenDto extends OAuthToken with EquatableMixin {
-  OAuthTokenDto({
+class AuthTokenDto extends AuthToken with EquatableMixin {
+  AuthTokenDto({
     required super.accessToken,
     required super.refreshToken,
   });
 
-  factory OAuthTokenDto.from(final OAuthToken token) {
-    return OAuthTokenDto(
+  factory AuthTokenDto.from(final AuthToken token) {
+    return AuthTokenDto(
       accessToken: token.accessToken,
       refreshToken: token.refreshToken,
     );
   }
 
-  factory OAuthTokenDto.fromJson(final Map<String, dynamic> json) {
-    return OAuthTokenDto(
+  factory AuthTokenDto.fromJson(final Map<String, dynamic> json) {
+    return AuthTokenDto(
       accessToken: json['access_token'],
       refreshToken: json['refresh_token'],
     );
