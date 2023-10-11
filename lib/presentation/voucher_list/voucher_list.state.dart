@@ -10,12 +10,14 @@ class VoucherListState with EquatableMixin {
   final AppUser appUser;
   final List<Voucher> vouchers;
   final List<Brand> brands;
+  final int pendingCount;
   final int notificationCount;
 
   const VoucherListState({
     required this.appUser,
     required this.vouchers,
     required this.brands,
+    required this.pendingCount,
     required this.notificationCount,
   });
 
@@ -23,6 +25,7 @@ class VoucherListState with EquatableMixin {
   List<Object?> get props => [
         appUser,
         vouchers,
+        pendingCount,
         notificationCount,
       ];
 }

@@ -13,7 +13,16 @@ class VoucherApi {
     final response = await dio.get('/vouchers', queryParameters: {
       'user_id': userId,
     });
-    return List<int>.from(response.data);
+    // ignore: avoid_dynamic_calls
+    return List<int>.from(response.data['voucher_ids']);
+  }
+
+  Future<int> getPendingCount(final int userId) async {
+    final response = await dio.get('/vouchers', queryParameters: {
+      'user_id': userId,
+    });
+    // ignore: avoid_dynamic_calls
+    return response.data['pending_count'];
   }
 
   Future<VoucherDto> getVoucherById(final int id) async {

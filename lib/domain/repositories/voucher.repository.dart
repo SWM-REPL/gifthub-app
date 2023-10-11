@@ -4,6 +4,8 @@ import 'package:gifthub/domain/entities/voucher.entity.dart';
 abstract class VoucherRepository {
   Future<List<int>> getVoucherIds(int userId);
 
+  Future<int> getPendingCount(int userId);
+
   Future<Voucher> getVoucherById(int id);
 
   Future<void> createVoucherByValues({

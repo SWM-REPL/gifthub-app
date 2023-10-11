@@ -10,6 +10,7 @@ import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
+import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.view.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.notifier.dart';
@@ -90,6 +91,13 @@ class VoucherListView extends ConsumerWidget {
         (voucher) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: padding),
           child: VoucherCard(voucher.id),
+        ),
+      ),
+      ...List.generate(
+        state.pendingCount,
+        (index) => const Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: VoucherPendingCard(),
         ),
       ),
     ];

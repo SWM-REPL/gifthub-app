@@ -17,6 +17,11 @@ class VoucherRepositoryImpl implements VoucherRepository {
   }
 
   @override
+  Future<int> getPendingCount(int userId) async {
+    return await _voucherApi.getPendingCount(userId);
+  }
+
+  @override
   Future<VoucherDto> getVoucherById(int id) {
     return _voucherApi.getVoucherById(id);
   }

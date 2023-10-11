@@ -9,6 +9,7 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 
@@ -23,6 +24,7 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
       appUser: appUser,
       vouchers: await _fetchVouchers(),
       brands: await _fetchBrands(),
+      pendingCount: await _fetchPendingCount(),
       notificationCount: await _fetchNotificationCount(),
     );
   }
@@ -42,6 +44,17 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
       }
     });
     return vouchers;
+  }
+
+  Future<int> _fetchPendingCount() async {
+    final appUser = await ref.watch(appUserProvider.future);
+    if (appUser == null) {
+      throw UnauthorizedException();
+    }
+
+    final voucherRepository = ref.watch(voucherRepositoryProvider);
+    final pendingCount = await voucherRepository.getPendingCount(appUser.id);
+    return pendingCount;
   }
 
   Future<List<Brand>> _fetchBrands() async {
