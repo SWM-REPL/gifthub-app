@@ -1,9 +1,11 @@
 // 📦 Package imports:
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
+import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 
@@ -27,6 +29,10 @@ class SignInWithNaverCommand extends Command {
       return authToken;
     } catch (error, stackTrace) {
       logFailure(error, stackTrace);
+      if (error is DioException) {
+        // ignore: avoid_dynamic_calls
+        throw SignInException(error.response!.data['error']);
+      }
       rethrow;
     }
   }

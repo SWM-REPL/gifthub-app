@@ -17,8 +17,14 @@ import NaverThirdPartyLogin
       super.application(app, open:url, options: options)
       return true
     } else if url.absoluteString.contains("thirdPartyLoginResult") {
-      NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
-      return true
+      var applicationResult = false
+      if !applicationResult {
+        applicationResult = NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+      }
+      if !applicationResult {
+        applicationResult = super.application(app, open: url, options: options)
+      }
+      return applicationResult
     } else {
       return true
     }

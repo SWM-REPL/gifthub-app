@@ -5,19 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 
-class NotificationNotifier extends AsyncNotifier<List<Notification>> {
-  @override
-  Future<List<Notification>> build() {
-    return _fetch();
-  }
+final notificationsProvider = FutureProvider<List<Notification>>((ref) async {
+  final fetchNotifications = ref.watch(fetchNotificationsCommandProvider);
+  return await fetchNotifications();
+});
 
-  Future<List<Notification>> _fetch() async {
-    final fetchNotifications = ref.watch(fetchNotificationsCommandProvider);
-    return await fetchNotifications();
-  }
-}
-
-final notificationsProvider =
-    AsyncNotifierProvider<NotificationNotifier, List<Notification>>(
-  () => NotificationNotifier(),
-);
+final notificationProvider =
+    FutureProvider.family<Notification, int>((ref, id) async {
+  final fetchNotification = ref.watch(fetchNotificationCommandProvider);
+  return await fetchNotification(id);
+});

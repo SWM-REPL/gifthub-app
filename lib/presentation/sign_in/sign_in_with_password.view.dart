@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/entities/auth_token.entity.dart';
+import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
+import 'package:gifthub/utility/show_snack_bar.dart';
 
-class SignInWithPasswordView extends ConsumerWidget {
+class SignInWithPasswordView extends ConsumerStatefulWidget {
   final formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -19,7 +22,16 @@ class SignInWithPasswordView extends ConsumerWidget {
   SignInWithPasswordView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SignInWithPasswordView> createState() =>
+      _SignInWithPasswordViewState();
+}
+
+class _SignInWithPasswordViewState
+    extends ConsumerState<SignInWithPasswordView> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     final appUser = ref.watch(appUserProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -29,10 +41,10 @@ class SignInWithPasswordView extends ConsumerWidget {
           if (data != null) {
             return navigate(const VoucherListView(), clearStack: true);
           } else {
-            return _buildSignInForm(context, ref, false);
+            return _buildSignInForm(context, false);
           }
         },
-        loading: () => _buildSignInForm(context, ref, true),
+        loading: () => _buildSignInForm(context, true),
         error: (error, stackTrace) => throw error,
       ),
     );
@@ -48,15 +60,15 @@ class SignInWithPasswordView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSignInForm(BuildContext context, WidgetRef ref, bool loading) {
+  Widget _buildSignInForm(BuildContext context, bool loading) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Form(
-        key: formKey,
+        key: widget.formKey,
         child: Column(
           children: [
             TextFormField(
-              controller: usernameController,
+              controller: widget.usernameController,
               validator: _validateUsername,
               decoration: const InputDecoration(
                 labelText: '아이디',
@@ -66,7 +78,7 @@ class SignInWithPasswordView extends ConsumerWidget {
             const SizedBox(height: 20),
             TextFormField(
               obscureText: true,
-              controller: passwordController,
+              controller: widget.passwordController,
               validator: _validatePassword,
               decoration: const InputDecoration(
                 labelText: '비밀번호',
@@ -75,18 +87,12 @@ class SignInWithPasswordView extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: loading
-                  ? null
-                  : () async {
-                      if (formKey.currentState!.validate()) {
-                        final authToken =
-                            await ref.watch(signInWithPasswordCommandProvider)(
-                          usernameController.text,
-                          passwordController.text,
-                        );
-                        ref.watch(authTokenProvider.notifier).state = authToken;
-                      }
-                    },
+              onPressed: _handleSignIn(
+                () async => await ref.watch(signInWithPasswordCommandProvider)(
+                  widget.usernameController.text,
+                  widget.passwordController.text,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
               ),
@@ -110,5 +116,25 @@ class SignInWithPasswordView extends ConsumerWidget {
       return '비밀번호를 입력해주세요.';
     }
     return null;
+  }
+
+  void Function()? _handleSignIn(Future<AuthToken> Function() signIn) {
+    return isLoading
+        ? null
+        : () async {
+            try {
+              if (widget.formKey.currentState!.validate()) {
+                final authToken = await signIn();
+                ref.watch(authTokenProvider.notifier).state = authToken;
+              }
+            } catch (error) {
+              if (error is SignInException) {
+                setState(() => isLoading = false);
+                showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+              } else {
+                rethrow;
+              }
+            }
+          };
   }
 }

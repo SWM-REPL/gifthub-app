@@ -37,8 +37,6 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>naver</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>naverlogin</string>
@@ -52,6 +50,11 @@
 				<string>com.googleusercontent.apps.932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r</string>
 			</array>
 		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -85,7 +88,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>naverComsumerKey</key>
+	<key>naverConsumerKey</key>
 	<string>Rimu_bXpNaw87IszTPtM</string>
 	<key>naverComsumerSecret</key>
 	<string>2dDiC1hCuf</string>
@@ -93,5 +96,27 @@
 	<string>GiftHub</string>
 	<key>naverServiceAppUrlScheme</key>
 	<string>naverlogin</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>naver.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>naver.net</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>

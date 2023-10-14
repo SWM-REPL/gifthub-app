@@ -37,7 +37,7 @@ class SignOutCommand extends Command {
     if (fcmToken != null) {
       _notificationRepository.unsubscribeNotification(fcmToken);
     }
-    await _tokenRepository.deleteAll();
     await _authRepository.signOut();
+    await _tokenRepository.deleteAll();
   }
 }

@@ -27,7 +27,7 @@ class AuthApi {
     final response = await dio.post(
       '/auth/sign-in/kakao',
       data: {
-        'access_token': kakaoAccessToken,
+        'token': kakaoAccessToken,
       },
     );
     return AuthTokenDto.fromJson(response.data);

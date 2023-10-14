@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:word_break_text/word_break_text.dart';
 
@@ -55,10 +56,41 @@ class VoucherListView extends ConsumerWidget {
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     final state = ref.watch(voucherListStateProvider);
     return state.when(
-      data: (state) => _buildData(context, ref, state),
+      data: (state) => state.vouchers.isEmpty
+          ? _buildEmpty(context, state)
+          : _buildData(context, ref, state),
       loading: () => const Loading(),
       error: (error, stackTrace) =>
           _buildError(context, ref, error, stackTrace),
+    );
+  }
+
+  Widget _buildEmpty(BuildContext context, VoucherListState state) {
+    return Center(
+      child: Column(
+        children: [
+          _buildHeader(context, state),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/icon.png',
+                    color: Theme.of(context).disabledColor,
+                  ),
+                  AutoSizeText(
+                    '사용할 수 있는 기프티콘이 없습니다.',
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

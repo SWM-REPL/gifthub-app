@@ -37,7 +37,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<void> unsubscribeNotification(String fcmToken) async {
-    // await _notificationApi.unsubscribeNotification(fcmToken);
-    showSnackBar(const Text('준비중입니다.'));
+    await _notificationApi.unsubscribeNotification(fcmToken);
   }
 }

@@ -36,7 +36,7 @@ class VoucherApi {
     required final String productName,
     required final String brandName,
   }) async {
-    await dio.post('/vouchers', data: {
+    await dio.post('/vouchers/manual', data: {
       'barcode': barcode,
       'expires_at': expiresAt,
       'product_name': productName,
@@ -45,7 +45,7 @@ class VoucherApi {
   }
 
   Future<void> createVoucherByTexts(final List<String> texts) async {
-    await dio.post('/vouchers/test', data: {
+    await dio.post('/vouchers', data: {
       'texts': texts,
     });
   }

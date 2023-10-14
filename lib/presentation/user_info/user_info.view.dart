@@ -96,9 +96,9 @@ class UserInfoView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () {
-                  ref.watch(signOutCommandProvider)();
-                  ref.invalidate(voucherIdsProvider);
+                onPressed: () async {
+                  await ref.watch(signOutCommandProvider)();
+                  ref.invalidate(appUserProvider);
                 },
                 child: const Text('로그아웃'),
               ),

@@ -1,7 +1,7 @@
 // 📦 Package imports:
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-abstract class Command<T> {
+abstract class Command {
   final String name;
   final FirebaseAnalytics _analytics;
 
@@ -20,13 +20,15 @@ abstract class Command<T> {
     );
   }
 
-  void logFailure(Object error, StackTrace stacktrace) {
+  void logFailure(Object error, StackTrace stacktrace,
+      [final Map<String, Object>? parameters]) {
     _analytics.logEvent(
       name: name,
       parameters: {
         'success': false.toString(),
         'error': error.toString(),
         'stacktrace': stacktrace.toString(),
+        ...?parameters,
       },
     );
   }

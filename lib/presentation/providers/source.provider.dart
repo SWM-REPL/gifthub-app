@@ -133,50 +133,53 @@ final dioProvider = Provider<Dio>((ref) {
           'Authorization': 'Bearer ${authToken.accessToken}',
       },
     ),
-  )..interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        try {
-          if (authToken != null &&
-              authToken.isStaled &&
-              authToken.isExpired == false) {
-            final response = await Dio().post(
-              '$host/auth/refresh',
-              options: Options(
-                headers: {
-                  'Authorization': 'Bearer ${authToken.refreshToken}',
-                },
-              ),
-            );
-            // ignore: avoid_dynamic_calls
-            final newToken = AuthToken.fromJson(response.data['data']);
-            ref.watch(authTokenProvider.notifier).state = newToken;
-            options.headers['Authorization'] = 'Bearer ${newToken.accessToken}';
+  )..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          try {
+            if (authToken != null &&
+                authToken.isStaled &&
+                authToken.isExpired == false) {
+              final response = await Dio().post(
+                '$host/auth/refresh',
+                options: Options(
+                  headers: {
+                    'Authorization': 'Bearer ${authToken.refreshToken}',
+                  },
+                ),
+              );
+              // ignore: avoid_dynamic_calls
+              final newToken = AuthToken.fromJson(response.data['data']);
+              ref.watch(authTokenProvider.notifier).state = newToken;
+              options.headers['Authorization'] =
+                  'Bearer ${newToken.accessToken}';
+              return handler.next(options);
+            }
             return handler.next(options);
+          } catch (error) {
+            if (error is DioException) {
+              return handler.reject(UnauthorizedException.from(error));
+            }
+            rethrow;
           }
-          return handler.next(options);
-        } catch (error) {
-          if (error is DioException) {
-            return handler.reject(UnauthorizedException.from(error));
+        },
+        onResponse: (response, handler) {
+          if (response.statusCode == 200) {
+            final data = response.data as Map<String, dynamic>?;
+            if (data != null && data.containsKey('data')) {
+              response.data = data['data'];
+            }
           }
-          rethrow;
-        }
-      },
-      onResponse: (response, handler) {
-        if (response.statusCode == 200) {
-          final data = response.data as Map<String, dynamic>?;
-          if (data != null && data.containsKey('data')) {
-            response.data = data['data'];
+          return handler.next(response);
+        },
+        onError: (error, handler) {
+          if (error.response?.statusCode == 401) {
+            return handler.next(
+              UnauthorizedException.from(error),
+            );
           }
-        }
-        return handler.next(response);
-      },
-      onError: (error, handler) {
-        if (error.response?.statusCode == 401) {
-          return handler.next(
-            UnauthorizedException.from(error),
-          );
-        }
-        return handler.next(error);
-      },
-    ));
+          return handler.next(error);
+        },
+      ),
+    );
 });

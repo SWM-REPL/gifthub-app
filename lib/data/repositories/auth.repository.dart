@@ -2,7 +2,6 @@
 import 'dart:io';
 
 // 🐦 Flutter imports:
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 📦 Package imports:
@@ -16,7 +15,6 @@ import 'package:gifthub/data/sources/auth.api.dart';
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
-import 'package:gifthub/utility/show_snack_bar.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi _authApi;
@@ -44,14 +42,15 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       kakaoOauthToken = await kakao.UserApi.instance.loginWithKakaoTalk();
     } catch (error) {
-      if (error is PlatformException && error.code == 'OPEN_URL_ERROR') {
+      if (error is PlatformException &&
+          (error.code == 'OPEN_URL_ERROR' || error.code == 'Error')) {
         try {
           kakaoOauthToken =
               await kakao.UserApi.instance.loginWithKakaoAccount();
         } catch (error) {
           kakaoOauthToken = null;
           if (error is PlatformException) {
-            showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+            throw SignInException(error.message ?? '로그인에 실패했습니다.');
           }
         }
       }
@@ -92,7 +91,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthToken> signInWithGoogle() async {
     final google = GoogleSignIn(
       scopes: [
-        'email',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
       ],
     );
     final credential = await google.signIn();

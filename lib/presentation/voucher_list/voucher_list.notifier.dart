@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/brand.entity.dart';
+import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/domain/entities/voucher.entity.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
@@ -20,20 +21,36 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     if (appUser == null) {
       throw UnauthorizedException();
     }
+
+    final voucherIds = await ref.watch(voucherIdsProvider.future);
+    final vouchers = await Future.wait(
+      [for (final id in voucherIds) ref.watch(voucherProvider(id).future)],
+    );
+    final productIds = vouchers.map((voucher) => voucher.productId).toSet();
+    final products = await Future.wait([
+      for (final productId in productIds)
+        ref.watch(productProvider(productId).future)
+    ]);
+    final brandIds = products.map((product) => product.brandId).toSet();
+    final brands = await Future.wait([
+      for (final brandId in brandIds) ref.watch(brandProvider(brandId).future)
+    ]);
+
+    final voucherRepository = ref.watch(voucherRepositoryProvider);
+
     return VoucherListState(
       appUser: appUser,
-      vouchers: await _fetchVouchers(),
-      brands: await _fetchBrands(),
-      pendingCount: await _fetchPendingCount(),
-      notificationCount: await _fetchNotificationCount(),
+      vouchers: _sortVouchers(vouchers),
+      brands: _sortBrands(vouchers, products, brands),
+      pendingCount: await voucherRepository.getPendingCount(appUser.id),
+      notificationCount:
+          await ref.watch(fetchNewNotificationCountCommandProvider)(),
     );
   }
 
-  Future<List<Voucher>> _fetchVouchers() async {
-    final ids = await ref.watch(voucherIdsProvider.future);
-    final vouchers = await Future.wait(
-      [for (final id in ids) ref.watch(voucherProvider(id).future)],
-    );
+  List<Voucher> _sortVouchers(
+    final List<Voucher> vouchers,
+  ) {
     vouchers.sort((a, b) {
       if ((a.isUsable && b.isUsable) || (!a.isUsable && !b.isUsable)) {
         return b.expiresAt.compareTo(a.expiresAt);
@@ -46,38 +63,24 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     return vouchers;
   }
 
-  Future<int> _fetchPendingCount() async {
-    final appUser = await ref.watch(appUserProvider.future);
-    if (appUser == null) {
-      throw UnauthorizedException();
-    }
-
-    final voucherRepository = ref.watch(voucherRepositoryProvider);
-    final pendingCount = await voucherRepository.getPendingCount(appUser.id);
-    return pendingCount;
-  }
-
-  Future<List<Brand>> _fetchBrands() async {
-    final ids = await ref.watch(voucherIdsProvider.future);
-    final vouchers = await Future.wait(
-      [for (final id in ids) ref.watch(voucherProvider(id).future)],
-    );
-    final productIds = vouchers.map((voucher) => voucher.productId).toSet();
-    final products = await Future.wait([
-      for (final productId in productIds)
-        ref.watch(productProvider(productId).future)
-    ]);
-    final brandIds = products.map((product) => product.brandId).toSet();
-    final brands = await Future.wait([
-      for (final brandId in brandIds) ref.watch(brandProvider(brandId).future)
-    ]);
+  List<Brand> _sortBrands(
+    final List<Voucher> vouchers,
+    final List<Product> products,
+    final List<Brand> brands,
+  ) {
+    final productCount = {
+      for (final product in products)
+        product.id: vouchers.where((v) => v.productId == product.id).length,
+    };
+    final brandCount = {
+      for (final brand in brands)
+        brand.id: productCount.entries
+            .where((entry) => entry.key == brand.id)
+            .map((entry) => entry.value)
+            .reduce((a, b) => a + b),
+    };
+    brands.sort((a, b) => brandCount[b.id]!.compareTo(brandCount[a.id]!));
     return brands;
-  }
-
-  Future<int> _fetchNotificationCount() async {
-    final fetchNewNotificationCountCommand =
-        ref.watch(fetchNewNotificationCountCommandProvider);
-    return await fetchNewNotificationCountCommand();
   }
 }
 

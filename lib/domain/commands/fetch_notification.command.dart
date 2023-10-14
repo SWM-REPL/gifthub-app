@@ -6,22 +6,22 @@ import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 
-class FetchNotificationsCommand extends Command {
+class FetchNotificationCommand extends Command {
   final NotificationRepository _notificationRepository;
 
-  FetchNotificationsCommand({
+  FetchNotificationCommand({
     required NotificationRepository notificationRepository,
-    required FirebaseAnalytics analytics,
+    required final FirebaseAnalytics analytics,
   })  : _notificationRepository = notificationRepository,
-        super('fetch_notifications', analytics);
+        super('fetch_notification', analytics);
 
-  Future<List<Notification>> call() async {
+  Future<Notification> call(int id) async {
     try {
-      final notifications = await _notificationRepository.getNotifications();
+      final notification = await _notificationRepository.getNotification(id);
       logSuccess({
-        'notification_count': notifications.length.toString(),
+        'notification_type': notification.type,
       });
-      return notifications;
+      return notification;
     } catch (error, stacktrace) {
       logFailure(error, stacktrace);
       rethrow;
