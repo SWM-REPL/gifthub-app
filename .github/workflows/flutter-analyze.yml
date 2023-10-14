@@ -2,7 +2,7 @@ name: Flutter Analysis
 
 on:
   pull_request:
-    branches: [ main, dev ]
+    branches: [ develop ]
 
 jobs:
   analysis:
