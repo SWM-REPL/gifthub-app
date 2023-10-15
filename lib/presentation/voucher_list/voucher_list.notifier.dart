@@ -68,6 +68,9 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     final List<Product> products,
     final List<Brand> brands,
   ) {
+    final productsMap = {
+      for (final product in products) product.id: product,
+    };
     final productCount = {
       for (final product in products)
         product.id: vouchers.where((v) => v.productId == product.id).length,
@@ -75,7 +78,7 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     final brandCount = {
       for (final brand in brands)
         brand.id: productCount.entries
-            .where((entry) => entry.key == brand.id)
+            .where((entry) => productsMap[entry.key]?.brandId == brand.id)
             .map((entry) => entry.value)
             .reduce((a, b) => a + b),
     };
