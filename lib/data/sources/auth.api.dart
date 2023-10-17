@@ -76,6 +76,9 @@ class AuthApi {
   }
 
   Future<void> signOut() async {
-    await dio.post('/auth/sign-out');
+    await dio.post(
+      '/auth/sign-out',
+      data: {},
+    );
   }
 }

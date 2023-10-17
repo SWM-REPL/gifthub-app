@@ -10,6 +10,7 @@ void showSnackBar(Widget content) {
     return;
   }
 
+  scaffoldMessenger.hideCurrentSnackBar();
   scaffoldMessenger.showSnackBar(
     SnackBar(
       content: content,

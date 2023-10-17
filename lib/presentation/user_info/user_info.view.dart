@@ -9,9 +9,9 @@ import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
+import 'package:gifthub/utility/show_confirm.dart';
 
 class UserInfoView extends ConsumerWidget {
   final usernameController = TextEditingController();
@@ -96,10 +96,15 @@ class UserInfoView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () async {
-                  await ref.watch(signOutCommandProvider)();
-                  ref.invalidate(appUserProvider);
-                },
+                onPressed: () => showConfirm(
+                  title: const Text('로그아웃'),
+                  content: const Text('정말로 로그아웃을 하시겠습니까?'),
+                  onConfirmPressed: () async {
+                    await ref.watch(unsubscribeNotificationCommandProvider)();
+                    await ref.watch(signOutCommandProvider)();
+                    ref.invalidate(appUserProvider);
+                  },
+                ),
                 child: const Text('로그아웃'),
               ),
               const SizedBox(
@@ -107,10 +112,15 @@ class UserInfoView extends ConsumerWidget {
                 child: VerticalDivider(),
               ),
               TextButton(
-                onPressed: () {
-                  ref.watch(deregisterCommandProvider)();
-                  ref.invalidate(voucherIdsProvider);
-                },
+                onPressed: () => showConfirm(
+                  title: const Text('회원 탈퇴'),
+                  content: const Text('정말로 회원 탈퇴를 하시겠습니까?'),
+                  onConfirmPressed: () async {
+                    await ref.watch(unsubscribeNotificationCommandProvider)();
+                    await ref.watch(deregisterCommandProvider)();
+                    ref.invalidate(appUserProvider);
+                  },
+                ),
                 child: const Text('회원탈퇴'),
               ),
             ],

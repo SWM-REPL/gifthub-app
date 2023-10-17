@@ -121,7 +121,8 @@ final authTokenProvider = StateProvider<AuthToken?>((ref) {
 });
 
 final dioProvider = Provider<Dio>((ref) {
-  const host = 'https://api.dev.gifthub.kr';
+  // const host = 'https://api.dev.gifthub.kr';
+  const host = 'https://ebe7-165-229-125-43.ngrok-free.app';
   final authToken = ref.watch(authTokenProvider);
   return Dio(
     BaseOptions(

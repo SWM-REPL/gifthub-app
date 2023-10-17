@@ -139,7 +139,11 @@ class VoucherDetailView extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () => _onUsePressed(ref),
                   child: const SizedBox(
-                      height: 48, child: Center(child: Text('사용하기'))),
+                    height: 48,
+                    child: Center(
+                      child: Text('사용하기'),
+                    ),
+                  ),
                 ),
               ),
             ],

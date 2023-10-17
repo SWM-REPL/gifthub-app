@@ -69,14 +69,23 @@ class AuthRepositoryImpl implements AuthRepository {
     if (!Platform.isIOS) {
       throw Exception('iOS에서만 사용할 수 있습니다.');
     }
-    final credential = await apple.SignInWithApple.getAppleIDCredential(
-      scopes: [
-        apple.AppleIDAuthorizationScopes.email,
-        apple.AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    final tokens = await _authApi.signInWithApple(credential.authorizationCode);
-    return tokens;
+    try {
+      final credential = await apple.SignInWithApple.getAppleIDCredential(
+        scopes: [
+          apple.AppleIDAuthorizationScopes.email,
+          apple.AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      final tokens =
+          await _authApi.signInWithApple(credential.authorizationCode);
+      return tokens;
+    } catch (exception) {
+      if (exception is apple.SignInWithAppleAuthorizationException) {
+        throw SignInException(exception.message);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
@@ -97,7 +106,10 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     final credential = await google.signIn();
     final googleTokens = await credential?.authentication;
-    final tokens = await _authApi.signInWithGoogle(googleTokens!.idToken!);
+    if (googleTokens == null) {
+      throw SignInException('사용자가 로그인을 취소했습니다.');
+    }
+    final tokens = await _authApi.signInWithGoogle(googleTokens.idToken!);
     return tokens;
   }
 

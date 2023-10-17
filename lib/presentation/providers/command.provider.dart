@@ -17,6 +17,7 @@ import 'package:gifthub/domain/commands/sign_in_with_naver.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/subscribe_notification.command.dart';
+import 'package:gifthub/domain/commands/unsubscribe_notification.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/event.provider.dart';
@@ -136,7 +137,6 @@ final signInWithNaverCommandProvider = Provider<SignInWithNaverCommand>((ref) {
 final signOutCommandProvider = Provider<SignOutCommand>((ref) {
   return SignOutCommand(
     authRepository: ref.watch(authRepositoryProvider),
-    notificationRepository: ref.watch(notificationRepositoryProvider),
     tokenRepository: ref.watch(tokenRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
@@ -153,6 +153,14 @@ final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
 final subscribeNotificationCommandProvider =
     Provider<SubscribeNotificationCommand>((ref) {
   return SubscribeNotificationCommand(
+    notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final unsubscribeNotificationCommandProvider =
+    Provider<UnsubscribeNotificationCommand>((ref) {
+  return UnsubscribeNotificationCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
