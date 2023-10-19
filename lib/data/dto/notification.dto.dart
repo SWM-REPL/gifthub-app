@@ -14,7 +14,9 @@ class NotificationDto extends Notification {
   factory NotificationDto.fromJson(Map<String, dynamic> json) {
     return NotificationDto(
       id: json['id'],
-      voucherId: json['voucher_id'],
+      voucherId: (json.containsKey('voucher_id') && json['voucher_id'] != null)
+          ? json['voucher_id']
+          : null,
       type: json['type'],
       message: json['message'],
       notifiedAt: DateTime.parse(

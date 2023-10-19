@@ -139,7 +139,11 @@ class VoucherDetailView extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () => _onUsePressed(ref),
                   child: const SizedBox(
-                      height: 48, child: Center(child: Text('사용하기'))),
+                    height: 48,
+                    child: Center(
+                      child: Text('사용하기'),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -295,7 +299,7 @@ class VoucherDetailView extends ConsumerWidget {
     );
   }
 
-  void _onUsePressed(WidgetRef ref) {
+  void _onUsePressed(WidgetRef ref) async {
     showSnackBar(const Text('준비 중입니다.'));
   }
 }

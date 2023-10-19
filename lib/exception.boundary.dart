@@ -23,16 +23,30 @@ class ExceptionBoundary extends ConsumerWidget {
     FlutterError.onError = (details) {
       final exception = details.exception;
       if (exception is UnauthorizedException) {
-        ref.watch(authTokenProvider.notifier).state = null;
-        ref.watch(tokenRepositoryProvider).deleteAuthToken();
-        navigate(const SignInView(), clearStack: true);
+        _handleUnauthorizedException(ref);
       } else if (exception is DioException) {
-        // ignore: avoid_dynamic_calls
-        showSnackBar(Text(exception.response?.data['error']));
+        _handleDioException(exception);
       } else {
         next?.call(details);
       }
     };
     return child;
+  }
+
+  void _handleUnauthorizedException(WidgetRef ref) {
+    Future.delayed(Duration.zero, () async {
+      ref.watch(authTokenProvider.notifier).state = null;
+      ref.watch(tokenRepositoryProvider).deleteAuthToken();
+      navigate(const SignInView(), clearStack: true);
+    });
+  }
+
+  void _handleDioException(DioException exception) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => showSnackBar(
+        // ignore: avoid_dynamic_calls
+        Text(exception.response?.data['error']),
+      ),
+    );
   }
 }

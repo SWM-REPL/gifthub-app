@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>AppGroupId</key>
 	<string>$(CUSTOM_GROUP_ID)</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
@@ -37,9 +39,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>naver-sign-in</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>naverlogin</string>
+				<string>naver-sign-in</string>
 			</array>
 		</dict>
 		<dict>
@@ -90,12 +94,12 @@
 	<false/>
 	<key>naverConsumerKey</key>
 	<string>Rimu_bXpNaw87IszTPtM</string>
-	<key>naverComsumerSecret</key>
+	<key>naverConsumerSecret</key>
 	<string>2dDiC1hCuf</string>
 	<key>naverServiceAppName</key>
 	<string>GiftHub</string>
 	<key>naverServiceAppUrlScheme</key>
-	<string>naverlogin</string>
+	<string>naver-sign-in</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

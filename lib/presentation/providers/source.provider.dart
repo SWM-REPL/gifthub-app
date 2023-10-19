@@ -12,6 +12,7 @@ import 'package:gifthub/data/repositories/token.repository.dart';
 import 'package:gifthub/data/repositories/user.repository.dart';
 import 'package:gifthub/data/repositories/voucher.repository.dart';
 import 'package:gifthub/data/sources/auth.api.dart';
+import 'package:gifthub/data/sources/auth.sdk.dart';
 import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/data/sources/product.api.dart';
@@ -44,6 +45,7 @@ final voucherRepositoryProvider = Provider<VoucherRepository>((ref) {
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
     authApi: ref.watch(authApiProvider),
+    authSdk: ref.watch(authSdkProvider),
   );
 });
 
@@ -71,6 +73,7 @@ final tokenRepositoryProvider = Provider<TokenRepository>((ref) {
   );
 });
 
+///!SECTION - Repositories
 ///SECTION - APIs
 
 final notificationApiProvider = Provider<NotificationApi>((ref) {
@@ -103,6 +106,14 @@ final productApiProvider = Provider<ProductApi>((ref) {
   return ProductApi(dio);
 });
 
+///!SECTION - APIs
+///SECTION - SDKs
+
+final authSdkProvider = Provider<AuthSdk>((ref) {
+  return AuthSdk();
+});
+
+///!SECTION - SDKs
 ///SECTION - Storages
 
 final tokenStorageProvider = Provider<TokenStorage>((ref) {
@@ -110,6 +121,7 @@ final tokenStorageProvider = Provider<TokenStorage>((ref) {
   return TokenStorage(flutterSecureStorage);
 });
 
+///!SECTION - Storages
 ///SECTION - Others
 
 final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
@@ -183,3 +195,5 @@ final dioProvider = Provider<Dio>((ref) {
       ),
     );
 });
+
+///!SECTION - Others

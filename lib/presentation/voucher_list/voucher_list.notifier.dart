@@ -36,6 +36,15 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
       for (final brandId in brandIds) ref.watch(brandProvider(brandId).future)
     ]);
 
+    final Map<int, int> totalBalance = {};
+    for (final voucher in vouchers) {
+      totalBalance.update(
+        products.where((element) => element.id == voucher.productId).first.id,
+        (value) => value + voucher.balance,
+        ifAbsent: () => voucher.balance,
+      );
+    }
+
     final voucherRepository = ref.watch(voucherRepositoryProvider);
 
     return VoucherListState(
@@ -45,6 +54,7 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
       pendingCount: await voucherRepository.getPendingCount(appUser.id),
       notificationCount:
           await ref.watch(fetchNewNotificationCountCommandProvider)(),
+      brandTotalBalance: totalBalance,
     );
   }
 
@@ -68,6 +78,9 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     final List<Product> products,
     final List<Brand> brands,
   ) {
+    final productsMap = {
+      for (final product in products) product.id: product,
+    };
     final productCount = {
       for (final product in products)
         product.id: vouchers.where((v) => v.productId == product.id).length,
@@ -75,7 +88,7 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
     final brandCount = {
       for (final brand in brands)
         brand.id: productCount.entries
-            .where((entry) => entry.key == brand.id)
+            .where((entry) => productsMap[entry.key]?.brandId == brand.id)
             .map((entry) => entry.value)
             .reduce((a, b) => a + b),
     };

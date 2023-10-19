@@ -67,16 +67,14 @@ class _SignInViewState extends ConsumerState<SignInView> {
           children: [
             Image.asset('assets/icon.png'),
             loginButton(
-              signIn: () async =>
-                  await ref.watch(signInWithKakaoCommandProvider)(),
+              signIn: () => ref.watch(signInWithKakaoCommandProvider)(),
               icon: Image.asset('assets/kakao.png', height: 22),
               label: '카카오로 계속하기',
               backgroundColor: const Color(0xfffee500),
             ),
             const SizedBox(height: 20),
             loginButton(
-              signIn: () async =>
-                  await ref.watch(signInWithNaverCommandProvider)(),
+              signIn: () => ref.watch(signInWithNaverCommandProvider)(),
               icon: Image.asset('assets/naver.png', height: 16),
               label: '네이버로 계속하기',
               backgroundColor: const Color(0xff03c659),
@@ -84,8 +82,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
             ),
             const SizedBox(height: 20),
             loginButton(
-              signIn: () async =>
-                  await ref.watch(signInWithGoogleCommandProvider)(),
+              signIn: () => ref.watch(signInWithGoogleCommandProvider)(),
               icon: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -107,8 +104,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
             if (Platform.isIOS) const SizedBox(height: 20),
             if (Platform.isIOS)
               loginButton(
-                signIn: () async =>
-                    await ref.watch(signInWithAppleCommandProvider)(),
+                signIn: () => ref.watch(signInWithAppleCommandProvider)(),
                 icon: Icon(
                   Icons.apple,
                   color: Theme.of(context).textTheme.labelLarge!.color,
@@ -154,7 +150,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
         style: Theme.of(context).textTheme.labelLarge!.copyWith(
               fontWeight: FontWeight.bold,
               color: isLoading
-                  ? Colors.black
+                  ? Colors.white
                   : invertColor
                       ? Colors.white
                       : Colors.black,
