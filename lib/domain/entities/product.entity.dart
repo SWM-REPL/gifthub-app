@@ -23,7 +23,7 @@ class Product with EquatableMixin {
     required this.imageUrl,
   });
 
-  String get priceFormatted => currencyFormat(price!);
+  String get priceFormatted => currencyFormat(price);
 
   @override
   List<Object?> get props => [id];

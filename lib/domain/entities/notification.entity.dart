@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class Notification with EquatableMixin {
   int id;
-  int voucherId;
+  int? voucherId;
   String type;
   String message;
   DateTime notifiedAt;

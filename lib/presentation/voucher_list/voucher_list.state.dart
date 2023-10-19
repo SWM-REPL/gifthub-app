@@ -12,6 +12,7 @@ class VoucherListState with EquatableMixin {
   final List<Brand> brands;
   final int pendingCount;
   final int notificationCount;
+  final Map<int, int> brandTotalBalance;
 
   const VoucherListState({
     required this.appUser,
@@ -19,6 +20,7 @@ class VoucherListState with EquatableMixin {
     required this.brands,
     required this.pendingCount,
     required this.notificationCount,
+    required this.brandTotalBalance,
   });
 
   @override

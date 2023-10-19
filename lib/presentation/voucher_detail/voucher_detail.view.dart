@@ -299,7 +299,7 @@ class VoucherDetailView extends ConsumerWidget {
     );
   }
 
-  void _onUsePressed(WidgetRef ref) {
+  void _onUsePressed(WidgetRef ref) async {
     showSnackBar(const Text('준비 중입니다.'));
   }
 }
