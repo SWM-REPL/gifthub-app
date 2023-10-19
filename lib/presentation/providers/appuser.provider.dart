@@ -27,7 +27,7 @@ final appUserProvider = FutureProvider<AppUser?>((ref) async {
     return null;
   }
 
-  final me = await userRepository.getUser(token.userId);
+  final me = await userRepository.getMe();
   try {
     await Future.delayed(
       Duration.zero,
@@ -41,5 +41,5 @@ final appUserProvider = FutureProvider<AppUser?>((ref) async {
       rethrow;
     }
   }
-  return AppUser.from(me, token);
+  return me;
 });

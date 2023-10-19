@@ -1,4 +1,5 @@
 // 🌎 Project imports:
+import 'package:gifthub/data/dto/appuser.dto.dart';
 import 'package:gifthub/data/dto/user.dto.dart';
 import 'package:gifthub/data/sources/user.api.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
@@ -9,6 +10,11 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({
     required UserApi userApi,
   }) : _userApi = userApi;
+
+  @override
+  Future<AppUserDto> getMe() async {
+    return await _userApi.getMe();
+  }
 
   @override
   Future<UserDto> getUser(int id) async {
