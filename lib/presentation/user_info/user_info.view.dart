@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
@@ -24,9 +23,6 @@ class UserInfoView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appUser = ref.watch(appUserProvider);
     appUser.whenData((appUser) {
-      if (appUser == null) {
-        throw UnauthorizedException();
-      }
       usernameController.text = appUser.username;
       nicknameController.text = appUser.nickname;
       socialAccountsController.text = '카카오톡 | 페이스북';

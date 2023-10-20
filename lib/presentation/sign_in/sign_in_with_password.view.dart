@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
-import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
@@ -32,21 +31,14 @@ class _SignInWithPasswordViewState
 
   @override
   Widget build(BuildContext context) {
-    final appUser = ref.watch(appUserProvider);
+    final authToken = ref.watch(authTokenProvider);
+    if (authToken != null) {
+      navigate(const VoucherListView());
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
-      body: appUser.when(
-        data: (data) {
-          if (data != null) {
-            return navigate(const VoucherListView(), clearStack: true);
-          } else {
-            return _buildSignInForm(context, false);
-          }
-        },
-        loading: () => _buildSignInForm(context, true),
-        error: (error, stackTrace) => throw error,
-      ),
+      body: _buildSignInForm(context, false),
     );
   }
 

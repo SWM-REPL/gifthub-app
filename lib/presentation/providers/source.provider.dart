@@ -1,5 +1,6 @@
 // 📦 Package imports:
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -124,12 +125,12 @@ final tokenStorageProvider = Provider<TokenStorage>((ref) {
 ///!SECTION - Storages
 ///SECTION - Others
 
-final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
-  return const FlutterSecureStorage();
-});
-
 final authTokenProvider = StateProvider<AuthToken?>((ref) {
   return null;
+});
+
+final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
+  return const FlutterSecureStorage();
 });
 
 final dioProvider = Provider<Dio>((ref) {
@@ -194,6 +195,10 @@ final dioProvider = Provider<Dio>((ref) {
         },
       ),
     );
+});
+
+final firebaseAnalyticsProvider = Provider<FirebaseAnalytics>((ref) {
+  return FirebaseAnalytics.instance;
 });
 
 ///!SECTION - Others

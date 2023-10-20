@@ -24,25 +24,4 @@ class TokenRepositoryImpl implements TokenRepository {
   Future<AuthToken?> getAuthToken() async {
     return await _tokenStorage.getAuthToken();
   }
-
-  @override
-  Future<void> saveFCMToken(String token) async {
-    return await _tokenStorage.saveFCMToken(token);
-  }
-
-  @override
-  Future<void> deleteFCMToken() async {
-    return await _tokenStorage.deleteFCMToken();
-  }
-
-  @override
-  Future<String?> getFCMToken() async {
-    return await _tokenStorage.getFCMToken();
-  }
-
-  @override
-  Future<void> deleteAll() async {
-    await _tokenStorage.deleteAuthToken();
-    await _tokenStorage.deleteFCMToken();
-  }
 }

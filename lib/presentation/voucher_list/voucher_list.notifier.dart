@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/domain/entities/voucher.entity.dart';
-import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
@@ -18,9 +17,6 @@ class VoucherListStateNotifier extends AsyncNotifier<VoucherListState> {
   @override
   Future<VoucherListState> build() async {
     final appUser = await ref.watch(appUserProvider.future);
-    if (appUser == null) {
-      throw UnauthorizedException();
-    }
 
     final voucherIds = await ref.watch(voucherIdsProvider.future);
     final vouchers = await Future.wait(

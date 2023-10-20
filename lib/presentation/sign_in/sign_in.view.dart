@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
-import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
@@ -31,12 +30,10 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    final appUser = ref.watch(appUserProvider);
-    appUser.whenData((appUser) {
-      if (appUser != null) {
-        navigate(const VoucherListView(), clearStack: true);
-      }
-    });
+    final authToken = ref.watch(authTokenProvider);
+    if (authToken != null) {
+      navigate(const VoucherListView());
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),

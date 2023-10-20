@@ -11,22 +11,8 @@ import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-final appUserProvider = FutureProvider<AppUser?>((ref) async {
+final appUserProvider = FutureProvider<AppUser>((ref) async {
   final userRepository = ref.watch(userRepositoryProvider);
-  final tokenRepository = ref.watch(tokenRepositoryProvider);
-
-  final tokenFromRef = ref.watch(authTokenProvider);
-  final tokenFromStorage = await tokenRepository.getAuthToken();
-
-  if (tokenFromRef != tokenFromStorage) {
-    ref.watch(authTokenProvider.notifier).state = tokenFromStorage;
-  }
-
-  final token = tokenFromRef ?? tokenFromStorage;
-  if (token == null) {
-    return null;
-  }
-
   final me = await userRepository.getMe();
   try {
     await Future.delayed(

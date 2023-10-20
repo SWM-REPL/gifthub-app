@@ -30,6 +30,6 @@ class SignOutCommand extends Command {
 
   Future<void> _signOut() async {
     await _authRepository.signOut();
-    await _tokenRepository.deleteAll();
+    await _tokenRepository.deleteAuthToken();
   }
 }

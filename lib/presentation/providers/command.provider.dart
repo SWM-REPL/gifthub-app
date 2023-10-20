@@ -18,9 +18,9 @@ import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/subscribe_notification.command.dart';
 import 'package:gifthub/domain/commands/unsubscribe_notification.command.dart';
+import 'package:gifthub/domain/commands/update_user.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
-import 'package:gifthub/presentation/providers/event.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
 final fetchNewNotificationCountCommandProvider =
@@ -162,6 +162,13 @@ final unsubscribeNotificationCommandProvider =
     Provider<UnsubscribeNotificationCommand>((ref) {
   return UnsubscribeNotificationCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final updateUserCommandProvider = Provider<UpdateUserCommand>((ref) {
+  return UpdateUserCommand(
+    userRepository: ref.watch(userRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

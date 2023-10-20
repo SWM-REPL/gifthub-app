@@ -26,7 +26,7 @@ class DeregisterCommand extends Command {
         throw UnauthorizedException();
       }
       await _userRepository.deleteUser(oauthToken.userId);
-      await _tokenRepository.deleteAll();
+      await _tokenRepository.deleteAuthToken();
 
       logSuccess();
     } catch (error, stacktrace) {

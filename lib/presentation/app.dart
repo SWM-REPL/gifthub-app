@@ -80,7 +80,7 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
-      _afterBuild();
+      Future.delayed(Duration.zero, _processSharedIntents);
     }
     return MaterialApp(
       navigatorKey: navigatorKey,
@@ -128,15 +128,6 @@ class _AppState extends ConsumerState<App> {
         ),
       );
     });
-  }
-
-  Future<void> _afterBuild() async {
-    await Future.delayed(
-      Duration.zero,
-      () {
-        _processSharedIntents();
-      },
-    );
   }
 
   Future<void> _processSharedIntents() async {
