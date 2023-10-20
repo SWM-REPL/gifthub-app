@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
@@ -79,12 +78,7 @@ class _SignInWithPasswordViewState
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _handleSignIn(
-                () async => await ref.watch(signInWithPasswordCommandProvider)(
-                  widget.usernameController.text,
-                  widget.passwordController.text,
-                ),
-              ),
+              onPressed: isLoading ? null : _handleSignIn,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
               ),
@@ -110,23 +104,23 @@ class _SignInWithPasswordViewState
     return null;
   }
 
-  void Function()? _handleSignIn(Future<AuthToken> Function() signIn) {
-    return isLoading
-        ? null
-        : () async {
-            try {
-              if (widget.formKey.currentState!.validate()) {
-                final authToken = await signIn();
-                ref.watch(authTokenProvider.notifier).state = authToken;
-              }
-            } catch (error) {
-              if (error is SignInException) {
-                setState(() => isLoading = false);
-                showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
-              } else {
-                rethrow;
-              }
-            }
-          };
+  void _handleSignIn() async {
+    try {
+      setState(() => isLoading = true);
+      if (widget.formKey.currentState!.validate()) {
+        final authToken = await ref.watch(signInWithPasswordCommandProvider)(
+          widget.usernameController.text,
+          widget.passwordController.text,
+        );
+        ref.watch(authTokenProvider.notifier).state = authToken;
+      }
+    } catch (error) {
+      if (error is SignInException) {
+        setState(() => isLoading = false);
+        showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+      } else {
+        rethrow;
+      }
+    }
   }
 }

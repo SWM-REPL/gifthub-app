@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
@@ -65,6 +66,7 @@ class UserInfoView extends ConsumerWidget {
                 ),
                 const Divider(),
                 LabeledTextField(
+                  onTap: (event) => navigate(UserNicknameEditorView()),
                   labelText: '닉네임',
                   controller: nicknameController,
                   enabled: false,
