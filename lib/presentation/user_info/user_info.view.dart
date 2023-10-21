@@ -112,7 +112,6 @@ class UserInfoView extends ConsumerWidget {
                     await ref.watch(unsubscribeNotificationCommandProvider)();
                     await ref.watch(signOutCommandProvider)();
                     ref.watch(authTokenProvider.notifier).state = null;
-                    ref.invalidate(appUserProvider);
                   },
                 ),
                 child: const Text('로그아웃'),
@@ -128,7 +127,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(unsubscribeNotificationCommandProvider)();
                     await ref.watch(deregisterCommandProvider)();
-                    ref.invalidate(appUserProvider);
+                    ref.watch(authTokenProvider.notifier).state = null;
                   },
                 ),
                 child: const Text('회원탈퇴'),

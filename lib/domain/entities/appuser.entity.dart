@@ -7,12 +7,14 @@ import 'package:gifthub/domain/entities/user.entity.dart';
 
 class AppUser extends User with EquatableMixin {
   final List<OAuth> oauth;
+  final bool allowNotifications;
 
   AppUser({
     required super.id,
     required super.nickname,
     required super.username,
     required this.oauth,
+    required this.allowNotifications,
   });
 
   @override
@@ -21,5 +23,6 @@ class AppUser extends User with EquatableMixin {
         super.nickname,
         super.username,
         oauth,
+        allowNotifications,
       ];
 }
