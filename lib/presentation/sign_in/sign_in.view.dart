@@ -32,7 +32,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
   Widget build(BuildContext context) {
     final authToken = ref.watch(authTokenProvider);
     if (authToken != null) {
-      navigate(const VoucherListView());
+      navigate(const VoucherListView(), clearStack: true);
     }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
