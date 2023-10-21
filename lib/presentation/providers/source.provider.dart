@@ -53,6 +53,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   return UserRepositoryImpl(
     userApi: ref.watch(userApiProvider),
+    authSdk: ref.watch(authSdkProvider),
   );
 });
 

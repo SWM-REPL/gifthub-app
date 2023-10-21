@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
+import 'package:gifthub/presentation/common/icon_placeholder.widget.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
@@ -71,25 +71,7 @@ class VoucherListView extends ConsumerWidget {
       child: Column(
         children: [
           _buildHeader(context, state),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/icon.png',
-                    color: Theme.of(context).disabledColor,
-                  ),
-                  AutoSizeText(
-                    '사용할 수 있는 기프티콘이 없습니다.',
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const Empty('사용할 수 있는 기프티콘이 없습니다.'),
         ],
       ),
     );

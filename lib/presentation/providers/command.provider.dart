@@ -10,6 +10,8 @@ import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notification.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
+import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
+import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_google.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_kakao.command.dart';
@@ -168,6 +170,20 @@ final unsubscribeNotificationCommandProvider =
 
 final updateUserCommandProvider = Provider<UpdateUserCommand>((ref) {
   return UpdateUserCommand(
+    userRepository: ref.watch(userRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final invokeOAuthCommandProvider = Provider<InvokeOAuthCommand>((ref) {
+  return InvokeOAuthCommand(
+    userRepository: ref.watch(userRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final revokeOAuthCommandProvider = Provider<RevokeOAuthCommand>((ref) {
+  return RevokeOAuthCommand(
     userRepository: ref.watch(userRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );

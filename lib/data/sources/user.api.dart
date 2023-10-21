@@ -20,6 +20,16 @@ class UserApi {
     return UserDto.fromJson(response.data);
   }
 
+  Future<void> invokeOAuth(String providerCode, String token) async {
+    await dio.post('/users/oauth/$providerCode', data: {
+      'token': token,
+    });
+  }
+
+  Future<void> revokeOAuth(String providerCode) async {
+    await dio.delete('/users/oauth/$providerCode');
+  }
+
   Future<void> updateUserById(
     int id, {
     String? nickname,

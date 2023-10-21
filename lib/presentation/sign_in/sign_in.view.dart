@@ -72,7 +72,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
             const SizedBox(height: 20),
             loginButton(
               signIn: () => ref.watch(signInWithNaverCommandProvider)(),
-              icon: Image.asset('assets/naver.png', height: 16),
+              icon: Image.asset('assets/naver.png', height: 18),
               label: '네이버로 계속하기',
               backgroundColor: const Color(0xff03c659),
               invertColor: true,

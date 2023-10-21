@@ -7,6 +7,10 @@ abstract class UserRepository {
 
   Future<User> getUser(int id);
 
+  Future<void> invokeOAuth(String providerCode);
+
+  Future<void> revokeOAuth(String providerCode);
+
   Future<void> updateUser(
     int id, {
     String? nickname,

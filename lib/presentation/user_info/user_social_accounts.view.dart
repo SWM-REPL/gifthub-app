@@ -2,9 +2,15 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/entities/appuser.entity.dart';
+import 'package:gifthub/domain/entities/oauth.entity.dart';
+import 'package:gifthub/presentation/common/loading.widget.dart';
+import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class UserSocialAccountsView extends ConsumerWidget {
@@ -26,16 +32,35 @@ class UserSocialAccountsView extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
+    final appUser = ref.watch(appUserProvider);
+    return appUser.when(
+      data: (appUser) => _buildData(context, ref, appUser),
+      loading: () => const Loading(),
+      error: (error, stackTrace) {
+        showSnackBar(Text(error.toString()));
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget _buildData(BuildContext context, WidgetRef ref, AppUser appUser) {
+    final oauthProviders = [
+      OAuth(id: '', name: '', providerCode: 'kakao', email: ''),
+      OAuth(id: '', name: '', providerCode: 'naver', email: ''),
+      OAuth(id: '', name: '', providerCode: 'google', email: ''),
+      OAuth(id: '', name: '', providerCode: 'apple', email: ''),
+    ];
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child:
-                Text('소셜 계정', style: Theme.of(context).textTheme.titleMedium),
-          ),
+          if (appUser.oauth.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child:
+                  Text('소셜 계정', style: Theme.of(context).textTheme.titleMedium),
+            ),
           Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -47,18 +72,48 @@ class UserSocialAccountsView extends ConsumerWidget {
             ),
             child: Column(
               children: [
-                _buildSocialAccountCard(context, ref),
-                const Divider(),
-                _buildSocialAccountCard(context, ref),
+                ...appUser.oauth.map(
+                  (oauth) => _buildSocialAccountCard(context, ref, oauth),
+                )
               ],
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...oauthProviders.map(
+                (oauth) => IconButton(
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                        ),
+                      ),
+                      width: 50,
+                      height: 50,
+                      padding: const EdgeInsets.all(10),
+                      child: oauth.icon,
+                    ),
+                    iconSize: 50,
+                    onPressed: () async {
+                      await ref.watch(invokeOAuthCommandProvider)(
+                        oauth.providerCode,
+                      );
+                      showSnackBar(const Text('새로운 소셜 계정이 연동되었습니다'));
+                      ref.invalidate(appUserProvider);
+                    }),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSocialAccountCard(BuildContext context, WidgetRef ref) {
+  Widget _buildSocialAccountCard(
+      BuildContext context, WidgetRef ref, OAuth oauth) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -68,26 +123,32 @@ class UserSocialAccountsView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'seheon99@kakao.com',
+              AutoSizeText(
+                oauth.email ?? '이메일 정보 제공에 동의하지 않으셨습니다',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 5),
               Row(
                 children: [
-                  Image.asset('assets/kakao.png', height: 12),
+                  SizedBox(
+                    width: 12,
+                    height: 12,
+                    child: oauth.icon,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    '카카오톡',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w300,
-                        ),
+                    oauth.provider,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
             ],
           ),
           ElevatedButton(
-            onPressed: () => showSnackBar(const Text('해지 클릭')),
+            onPressed: () async {
+              await ref.watch(revokeOAuthCommandProvider)(oauth.providerCode);
+              ref.invalidate(appUserProvider);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.tertiary,
               shape: RoundedRectangleBorder(

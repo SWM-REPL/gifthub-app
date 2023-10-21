@@ -29,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthToken> signInWithKakao() async {
-    final kakaoToken = await _authSdk.acquireKakaoToken();
+    final kakaoToken = await _authSdk.acquireOAuthToken('kakao');
     if (kakaoToken == null) {
       throw SignInException('카카오 로그인에 실패했습니다.');
     }
@@ -39,19 +39,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthToken> signInWithApple() async {
-    final appleToken = await _authSdk.acquireAppleToken();
-    if (appleToken == null) {
-      throw SignInException('애플 로그인에 실패했습니다.');
-    }
-
-    final tokens = await _authApi.signInWithApple(appleToken);
-    return tokens;
-  }
-
-  @override
   Future<AuthToken> signInWithNaver() async {
-    final naverToken = await _authSdk.acquireNaverToken();
+    final naverToken = await _authSdk.acquireOAuthToken('naver');
     if (naverToken == null) {
       throw SignInException('사용자가 로그인을 취소했습니다.');
     }
@@ -62,12 +51,23 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthToken> signInWithGoogle() async {
-    final googleToken = await _authSdk.acquireGoogleToken();
+    final googleToken = await _authSdk.acquireOAuthToken('google');
     if (googleToken == null) {
       throw SignInException('사용자가 로그인을 취소했습니다.');
     }
 
     final tokens = await _authApi.signInWithGoogle(googleToken);
+    return tokens;
+  }
+
+  @override
+  Future<AuthToken> signInWithApple() async {
+    final appleToken = await _authSdk.acquireOAuthToken('apple');
+    if (appleToken == null) {
+      throw SignInException('애플 로그인에 실패했습니다.');
+    }
+
+    final tokens = await _authApi.signInWithApple(appleToken);
     return tokens;
   }
 

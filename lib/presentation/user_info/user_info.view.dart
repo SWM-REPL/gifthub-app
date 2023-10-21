@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/presentation/common/labeled_field.widget.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
@@ -16,7 +18,6 @@ import 'package:gifthub/utility/show_confirm.dart';
 class UserInfoView extends ConsumerWidget {
   final usernameController = TextEditingController();
   final nicknameController = TextEditingController();
-  final socialAccountsController = TextEditingController();
 
   UserInfoView({super.key});
 
@@ -26,7 +27,6 @@ class UserInfoView extends ConsumerWidget {
     appUser.whenData((appUser) {
       usernameController.text = appUser.username;
       nicknameController.text = appUser.nickname;
-      socialAccountsController.text = '카카오톡 | 페이스북';
     });
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -42,6 +42,7 @@ class UserInfoView extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
+    final appUser = ref.watch(appUserProvider);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -84,10 +85,20 @@ class UserInfoView extends ConsumerWidget {
                 Radius.circular(5),
               ),
             ),
-            child: LabeledTextField(
-              onTap: (event) => navigate(const UserSocialAccountsView()),
+            child: LabeledField(
               labelText: '연동된 소셜 계정',
-              controller: socialAccountsController,
+              onTap: (event) => navigate(const UserSocialAccountsView()),
+              child: appUser.when(
+                data: (appUser) => Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 50),
+                    ...appUser.oauth.map((e) => e.icon),
+                  ],
+                ),
+                loading: () => const SizedBox.shrink(),
+                error: (error, stackTrace) => const SizedBox.shrink(),
+              ),
             ),
           ),
           Row(
@@ -100,6 +111,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(unsubscribeNotificationCommandProvider)();
                     await ref.watch(signOutCommandProvider)();
+                    ref.watch(authTokenProvider.notifier).state = null;
                     ref.invalidate(appUserProvider);
                   },
                 ),

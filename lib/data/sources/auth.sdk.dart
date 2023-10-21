@@ -7,6 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+// 🌎 Project imports:
+import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
+
 class AuthSdk {
   Future<String?> acquireKakaoToken() async {
     try {
@@ -16,9 +19,17 @@ class AuthSdk {
       if (error is! PlatformException) {
         rethrow;
       }
-      final oauthToken = await UserApi.instance.loginWithKakaoAccount();
-      return oauthToken.accessToken;
+      try {
+        final oauthToken = await UserApi.instance.loginWithKakaoAccount();
+        return oauthToken.accessToken;
+      } catch (error) {
+        if (error is! PlatformException) {
+          rethrow;
+        }
+      }
     }
+
+    throw SignInException('카카오 로그인에 실패했습니다.');
   }
 
   Future<String?> acquireAppleToken() async {
@@ -60,5 +71,18 @@ class AuthSdk {
     } catch (error) {
       rethrow;
     }
+  }
+
+  Future<String?> acquireOAuthToken(String providerCode) async {
+    if (providerCode == 'kakao') {
+      return await acquireKakaoToken();
+    } else if (providerCode == 'naver') {
+      return await acquireNaverToken();
+    } else if (providerCode == 'google') {
+      return await acquireGoogleToken();
+    } else if (providerCode == 'apple') {
+      return await acquireAppleToken();
+    }
+    return null;
   }
 }
