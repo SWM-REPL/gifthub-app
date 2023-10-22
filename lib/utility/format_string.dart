@@ -13,9 +13,9 @@ String relativeDateFormat(DateTime date) {
   final now = DateTime.now();
   final diff = now.difference(date);
   if (diff.inDays > 30) {
-    return '${diff.inDays / 30}개월 전';
+    return '${(diff.inDays / 30).floor()}개월 전';
   } else if (diff.inDays > 7) {
-    return '${diff.inDays / 7}주 전}';
+    return '${(diff.inDays / 7).floor()}주 전}';
   } else if (diff.inDays > 0) {
     return '${diff.inDays}일 전';
   } else if (diff.inHours > 0) {
