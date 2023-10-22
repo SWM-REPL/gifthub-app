@@ -92,7 +92,7 @@ class VoucherListView extends ConsumerWidget {
               ),
         ),
       ),
-      _buildBrandFilter(context, ref),
+      _buildBrandList(context, ref),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
@@ -242,7 +242,7 @@ class VoucherListView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBrandFilter(
+  Widget _buildBrandList(
     BuildContext context,
     WidgetRef ref,
   ) {
@@ -274,23 +274,40 @@ class VoucherListView extends ConsumerWidget {
     WidgetRef ref,
     Brand brand,
   ) {
-    return SizedBox(
-      width: 130,
-      height: 180,
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.network(
-                brand.logoUrl,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-              ),
-              Text(brand.name),
-            ],
+    final brandFilter = ref.watch(brandFilterProvider);
+    final isSelected = brandFilter?.id == brand.id;
+    return TapRegion(
+      onTapInside: (event) {
+        final brandFilterNotifier = ref.watch(brandFilterProvider.notifier);
+        brandFilterNotifier.state = isSelected ? null : brand;
+      },
+      child: SizedBox(
+        width: 130,
+        height: 180,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.transparent,
+              width: 2,
+            ),
+          ),
+          margin: EdgeInsets.zero,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.network(
+                  brand.logoUrl,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+                Text(brand.name),
+              ],
+            ),
           ),
         ),
       ),
