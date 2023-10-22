@@ -1,33 +1,34 @@
 // 📦 Package imports:
-import 'package:equatable/equatable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/appuser.entity.dart';
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/entities/voucher.entity.dart';
+import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/product.provider.dart';
+import 'package:gifthub/presentation/providers/voucher.provider.dart';
 
-class VoucherListState with EquatableMixin {
-  final AppUser appUser;
-  final List<Voucher> vouchers;
-  final List<Brand> brands;
-  final int pendingCount;
-  final int notificationCount;
-  final Map<int, int> brandTotalBalance;
+final brandFilterProvider = StateProvider<Brand?>((ref) => null);
 
-  const VoucherListState({
-    required this.appUser,
-    required this.vouchers,
-    required this.brands,
-    required this.pendingCount,
-    required this.notificationCount,
-    required this.brandTotalBalance,
-  });
+final filteredVouchersProvider = FutureProvider<List<Voucher>>((ref) async {
+  final vouchers = await ref.watch(vouchersProvider.future);
+  final products = await ref.watch(productsProvider.future);
+  final brandFilter = ref.watch(brandFilterProvider);
+  final filteredVouchers = vouchers.where((voucher) {
+    if (brandFilter == null) {
+      return true;
+    }
+    final product =
+        products.firstWhere((product) => product.id == voucher.productId);
+    return product.brandId == brandFilter.id;
+  }).toList();
+  return filteredVouchers;
+});
 
-  @override
-  List<Object?> get props => [
-        appUser,
-        vouchers,
-        pendingCount,
-        notificationCount,
-      ];
-}
+final pendingCountProvider = FutureProvider<int>((ref) async {
+  final appUser = await ref.watch(appUserProvider.future);
+  final pendingCount =
+      await ref.watch(fetchPendingVoucherCountCommandProvider)(appUser.id);
+  return pendingCount;
+});

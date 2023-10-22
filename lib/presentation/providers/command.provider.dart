@@ -10,6 +10,7 @@ import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notification.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
+import 'package:gifthub/domain/commands/fetch_pending_voucher_count.command.dart';
 import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
@@ -24,6 +25,14 @@ import 'package:gifthub/domain/commands/update_user.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
+
+final fetchPendingVoucherCountCommandProvider =
+    Provider<FetchPendingVoucherCountCommand>((ref) {
+  return FetchPendingVoucherCountCommand(
+    voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
 
 final fetchNewNotificationCountCommandProvider =
     Provider<FetchNewNotificationCountCommand>((ref) {

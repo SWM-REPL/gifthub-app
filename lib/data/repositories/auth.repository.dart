@@ -89,4 +89,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> signOut() async {
     await _authApi.signOut();
   }
+
+  @override
+  Future<AuthToken> refreshAuthToken(final String refreshToken) async {
+    final tokens = await _authApi.refreshAuthToken(
+      refreshToken: refreshToken,
+    );
+    return tokens;
+  }
 }

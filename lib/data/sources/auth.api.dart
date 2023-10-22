@@ -81,4 +81,16 @@ class AuthApi {
       data: {},
     );
   }
+
+  Future<AuthTokenDto> refreshAuthToken({
+    required final String refreshToken,
+  }) async {
+    final response = await dio.post(
+      '/auth/refresh',
+      options: Options(headers: {
+        'Authorization': 'Bearer $refreshToken',
+      }),
+    );
+    return AuthTokenDto.fromJson(response.data);
+  }
 }

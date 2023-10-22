@@ -11,10 +11,10 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
+import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/card.theme.dart';
@@ -70,37 +70,6 @@ class _AppState extends ConsumerState<App> {
     });
   }
 
-  @override
-  void dispose() {
-    _mediaStreamSubscription.cancel();
-    _textStreamSubscription.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
-      Future.delayed(Duration.zero, _processSharedIntents);
-    }
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        scaffoldBackgroundColor: GiftHubColors.background,
-        appBarTheme: const GiftHubAppBarTheme(),
-        outlinedButtonTheme: const GiftHubOutlinedButtonThemeData(),
-        elevatedButtonTheme: const GiftHubElevatedButtonThemeData(),
-        textButtonTheme: const GiftHubTextButtonThemeData(),
-        cardTheme: const GiftHubCardTheme(),
-        colorScheme: const GiftHubColorScheme(),
-        dividerTheme: GiftHubDividerTheme.data,
-        textTheme: GiftHubTextTheme.theme,
-      ),
-      home: const VoucherListView(),
-    );
-  }
-
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
       ref.watch(subscribeNotificationCommandProvider)();
@@ -128,6 +97,37 @@ class _AppState extends ConsumerState<App> {
         ),
       );
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
+      Future.delayed(Duration.zero, _processSharedIntents);
+    }
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: scaffoldMessengerKey,
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
+        scaffoldBackgroundColor: GiftHubColors.background,
+        appBarTheme: const GiftHubAppBarTheme(),
+        outlinedButtonTheme: const GiftHubOutlinedButtonThemeData(),
+        elevatedButtonTheme: const GiftHubElevatedButtonThemeData(),
+        textButtonTheme: const GiftHubTextButtonThemeData(),
+        cardTheme: const GiftHubCardTheme(),
+        colorScheme: const GiftHubColorScheme(),
+        dividerTheme: GiftHubDividerTheme.data,
+        textTheme: GiftHubTextTheme.theme,
+      ),
+      home: const LoadingScreen(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _mediaStreamSubscription.cancel();
+    _textStreamSubscription.cancel();
+    super.dispose();
   }
 
   Future<void> _processSharedIntents() async {

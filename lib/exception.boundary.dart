@@ -35,7 +35,7 @@ class ExceptionBoundary extends ConsumerWidget {
 
   void _handleUnauthorizedException(WidgetRef ref) {
     Future.delayed(Duration.zero, () async {
-      ref.watch(authTokenProvider.notifier).state = null;
+      ref.invalidate(authTokenProvider);
       ref.watch(tokenRepositoryProvider).deleteAuthToken();
       navigate(const SignInView(), clearStack: true);
     });

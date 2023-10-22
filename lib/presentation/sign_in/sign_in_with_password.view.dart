@@ -31,13 +31,12 @@ class _SignInWithPasswordViewState
   @override
   Widget build(BuildContext context) {
     final authToken = ref.watch(authTokenProvider);
-    if (authToken != null) {
-      navigate(const VoucherListView(), clearStack: true);
-    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
-      body: _buildSignInForm(context, false),
+      body: authToken == null
+          ? _buildSignInForm(context, false)
+          : navigate(const VoucherListView(), clearStack: true),
     );
   }
 
@@ -108,11 +107,10 @@ class _SignInWithPasswordViewState
     try {
       setState(() => isLoading = true);
       if (widget.formKey.currentState!.validate()) {
-        final authToken = await ref.watch(signInWithPasswordCommandProvider)(
+        await ref.watch(signInWithPasswordCommandProvider)(
           widget.usernameController.text,
           widget.passwordController.text,
         );
-        ref.watch(authTokenProvider.notifier).state = authToken;
       }
     } catch (error) {
       if (error is SignInException) {

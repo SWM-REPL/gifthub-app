@@ -31,13 +31,12 @@ class _SignInViewState extends ConsumerState<SignInView> {
   @override
   Widget build(BuildContext context) {
     final authToken = ref.watch(authTokenProvider);
-    if (authToken != null) {
-      navigate(const VoucherListView(), clearStack: true);
-    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
-      body: _buildSignInForm(context, ref),
+      body: authToken == null
+          ? _buildSignInForm(context)
+          : navigate(const VoucherListView(), clearStack: true),
     );
   }
 
@@ -56,7 +55,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
     );
   }
 
-  Widget _buildSignInForm(BuildContext context, WidgetRef ref) {
+  Widget _buildSignInForm(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(30),
@@ -140,7 +139,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
     final bool invertColor = false,
   }) {
     return ElevatedButton.icon(
-      onPressed: _handleSignIn(signIn),
+      onPressed: isLoading ? null : () => _handleSignIn(signIn),
       icon: icon,
       label: Text(
         label,
@@ -169,22 +168,18 @@ class _SignInViewState extends ConsumerState<SignInView> {
     );
   }
 
-  void Function()? _handleSignIn(Future<AuthToken> Function() signIn) {
-    return isLoading
-        ? null
-        : () async {
-            try {
-              setState(() => isLoading = true);
-              final authToken = await signIn();
-              ref.watch(authTokenProvider.notifier).state = authToken;
-            } catch (error) {
-              if (error is SignInException) {
-                setState(() => isLoading = false);
-                showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
-              } else {
-                rethrow;
-              }
-            }
-          };
+  void _handleSignIn(Future<AuthToken> Function() signIn) async {
+    try {
+      setState(() => isLoading = true);
+      await signIn();
+    } catch (error) {
+      if (error is SignInException) {
+        showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+      } else {
+        rethrow;
+      }
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
 }

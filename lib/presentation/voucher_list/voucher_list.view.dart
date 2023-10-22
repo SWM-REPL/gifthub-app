@@ -13,9 +13,10 @@ import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/notification_list/notification_list.view.dart';
+import 'package:gifthub/presentation/providers/appuser.provider.dart';
+import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.view.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.notifier.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -55,22 +56,21 @@ class VoucherListView extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(voucherListStateProvider);
-    return state.when(
-      data: (state) => state.vouchers.isEmpty
-          ? _buildEmpty(context, state)
-          : _buildData(context, ref, state),
+    final voucherIds = ref.watch(voucherIdsProvider);
+    return voucherIds.when(
+      data: (ids) =>
+          ids.isEmpty ? _buildEmpty(context, ref) : _buildData(context, ref),
       loading: () => const Loading(),
       error: (error, stackTrace) =>
           _buildError(context, ref, error, stackTrace),
     );
   }
 
-  Widget _buildEmpty(BuildContext context, VoucherListState state) {
+  Widget _buildEmpty(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         children: [
-          _buildHeader(context, state),
+          _buildHeader(context, ref),
           const Empty('사용할 수 있는 기프티콘이 없습니다.'),
         ],
       ),
@@ -80,41 +80,53 @@ class VoucherListView extends ConsumerWidget {
   Widget _buildData(
     BuildContext context,
     WidgetRef ref,
-    VoucherListState state,
   ) {
-    final subTitleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: Theme.of(context).colorScheme.secondary,
-        );
     final listItems = <Widget>[
-      _buildHeader(context, state),
+      _buildHeader(context, ref),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
           '보유 브랜드 목록',
-          style: subTitleStyle,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
         ),
       ),
-      _buildBrandFilter(context, ref, state),
+      _buildBrandFilter(context, ref),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
           '보유 기프티콘 목록',
-          style: subTitleStyle,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
         ),
       ),
-      ...List.generate(
-        state.pendingCount,
-        (index) => const Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: VoucherPendingCard(),
-        ),
-      ),
-      ...state.vouchers.map(
-        (voucher) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: padding),
-          child: VoucherCard(voucher.id),
-        ),
-      ),
+      ...ref.watch(pendingCountProvider).when(
+            data: (pendingCount) => List.generate(
+              pendingCount,
+              (index) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: VoucherPendingCard(),
+              ),
+            ),
+            loading: () => [],
+            error: (error, stackTrace) {
+              throw error;
+            },
+          ),
+      ...ref.watch(filteredVouchersProvider).when(
+            data: (vouchers) => vouchers.map(
+              (v) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: padding),
+                child: VoucherCard(v.id),
+              ),
+            ),
+            loading: () => [],
+            error: (error, stackTrace) {
+              throw error;
+            },
+          ),
     ];
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
@@ -150,8 +162,14 @@ class VoucherListView extends ConsumerWidget {
 
   Widget _buildHeader(
     BuildContext context,
-    VoucherListState state,
+    WidgetRef ref,
   ) {
+    final appUser = ref.watch(appUserProvider);
+    final nickname = appUser.when(
+      data: (appUser) => appUser.nickname,
+      loading: () => '',
+      error: (error, stackTrace) => throw error,
+    );
     return Container(
       height: 150,
       decoration: BoxDecoration(
@@ -181,7 +199,7 @@ class VoucherListView extends ConsumerWidget {
                         child: Row(
                           children: [
                             Text(
-                              '${state.appUser.nickname}님',
+                              '$nickname님',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -227,23 +245,27 @@ class VoucherListView extends ConsumerWidget {
   Widget _buildBrandFilter(
     BuildContext context,
     WidgetRef ref,
-    VoucherListState state,
   ) {
-    return SizedBox(
-      height: 180,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: state.brands.length + 2,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0 || index == state.brands.length + 1) {
-            return Container();
-          }
-          return _buildBrandCard(context, ref, state.brands[index - 1]);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(width: padding);
-        },
+    final brands = ref.watch(brandsProvider);
+    return brands.when(
+      data: (brands) => SizedBox(
+        height: 180,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: padding),
+          itemCount: brands.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildBrandCard(context, ref, brands[index]);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(width: padding);
+          },
+        ),
       ),
+      loading: () => const Loading(),
+      error: (error, stackTrace) {
+        throw error;
+      },
     );
   }
 
