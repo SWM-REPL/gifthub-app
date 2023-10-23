@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
@@ -12,6 +13,7 @@ import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
 import 'package:gifthub/utility/navigator.dart';
+import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class VoucherDetailView extends ConsumerWidget {
@@ -147,7 +149,13 @@ class VoucherDetailView extends ConsumerWidget {
                   height: 48,
                 ),
                 child: ElevatedButton(
-                  onPressed: () => _onDeletePressed(context, ref),
+                  onPressed: product.when(
+                    data: (product) {
+                      return () => _onDeletePressed(context, ref, product);
+                    },
+                    loading: () => null,
+                    error: (error, stackTrace) => null,
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -268,45 +276,20 @@ class VoucherDetailView extends ConsumerWidget {
     showSnackBar(const Text('준비 중입니다.'));
   }
 
-  void _onDeletePressed(BuildContext context, WidgetRef ref) async {
+  void _onDeletePressed(
+    BuildContext context,
+    WidgetRef ref,
+    Product product,
+  ) async {
     final deleteVoucherCommand = ref.watch(deleteVoucherCommandProvider);
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '삭제하시겠습니까?',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () async {
-                      deleteVoucherCommand(voucherId);
-                      navigateBack(count: 2);
-                    },
-                    child: const Text('삭제하기'),
-                  ),
-                  TextButton(
-                    onPressed: () => navigateBack(),
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                    child: const Text('취소하기'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    showConfirm(
+      title: const Text('기프티콘 삭제'),
+      content: Text('${product.name} 기프티콘을 삭제하시겠습니까?'),
+      onConfirmPressed: () async {
+        deleteVoucherCommand(voucherId);
+        ref.invalidate(voucherIdsProvider);
+        navigateBack();
+      },
     );
   }
 
