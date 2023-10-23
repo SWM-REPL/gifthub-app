@@ -6,9 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
+import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/providers/source.provider.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
@@ -30,13 +29,10 @@ class _SignInWithPasswordViewState
 
   @override
   Widget build(BuildContext context) {
-    final authToken = ref.watch(authTokenProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
-      body: authToken == null
-          ? _buildSignInForm(context, false)
-          : navigate(const VoucherListView(), clearStack: true),
+      body: _buildSignInForm(context, false),
     );
   }
 
@@ -111,14 +107,16 @@ class _SignInWithPasswordViewState
           widget.usernameController.text,
           widget.passwordController.text,
         );
+        navigate(const LoadingScreen(), clearStack: true);
       }
     } catch (error) {
       if (error is SignInException) {
-        setState(() => isLoading = false);
         showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
       } else {
         rethrow;
       }
+    } finally {
+      setState(() => isLoading = false);
     }
   }
 }

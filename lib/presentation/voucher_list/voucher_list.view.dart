@@ -8,8 +8,8 @@ import 'package:word_break_text/word_break_text.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
-import 'package:gifthub/presentation/common/icon_placeholder.widget.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
+import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/notification_list/notification_list.view.dart';
@@ -71,7 +71,7 @@ class VoucherListView extends ConsumerWidget {
       child: Column(
         children: [
           _buildHeader(context, ref),
-          const Empty('사용할 수 있는 기프티콘이 없습니다.'),
+          const PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다.'),
         ],
       ),
     );

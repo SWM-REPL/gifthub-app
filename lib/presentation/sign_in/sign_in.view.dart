@@ -11,10 +11,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
+import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
@@ -30,13 +30,13 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    final authToken = ref.watch(authTokenProvider);
+    Future.delayed(Duration.zero, () {
+      ref.watch(authTokenProvider.notifier).state = null;
+    });
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
-      body: authToken == null
-          ? _buildSignInForm(context)
-          : navigate(const VoucherListView(), clearStack: true),
+      body: _buildSignInForm(context),
     );
   }
 
@@ -172,6 +172,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
     try {
       setState(() => isLoading = true);
       await signIn();
+      navigate(const LoadingScreen(), clearStack: true);
     } catch (error) {
       if (error is SignInException) {
         showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));

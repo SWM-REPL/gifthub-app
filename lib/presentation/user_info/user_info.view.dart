@@ -9,7 +9,7 @@ import 'package:gifthub/presentation/common/labeled_field.widget.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/providers/source.provider.dart';
+import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
@@ -111,7 +111,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(unsubscribeNotificationCommandProvider)();
                     await ref.watch(signOutCommandProvider)();
-                    ref.invalidate(authTokenProvider);
+                    navigate(const SignInView(), clearStack: true);
                   },
                 ),
                 child: const Text('로그아웃'),
@@ -127,7 +127,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(unsubscribeNotificationCommandProvider)();
                     await ref.watch(deregisterCommandProvider)();
-                    ref.invalidate(authTokenProvider);
+                    navigate(const SignInView(), clearStack: true);
                   },
                 ),
                 child: const Text('회원탈퇴'),

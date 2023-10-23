@@ -6,25 +6,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/voucher_detail/voucher_detail.notifier.dart';
-import 'package:gifthub/presentation/voucher_detail/voucher_detail.state.dart';
+import 'package:gifthub/presentation/providers/brand.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/product.provider.dart';
+import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class VoucherDetailView extends ConsumerWidget {
-  final int id;
+  final int voucherId;
+  final int productId;
+  final int brandId;
 
-  const VoucherDetailView(this.id, {super.key});
+  const VoucherDetailView({
+    required this.voucherId,
+    required this.productId,
+    required this.brandId,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildBody(
-        context,
-        ref,
-      ),
+      body: _buildBody(context, ref),
       extendBodyBehindAppBar: true,
     );
   }
@@ -36,20 +42,9 @@ class VoucherDetailView extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(voucherDetailStateProvider(id));
-    return state.when(
-      data: (data) => _buildData(context, ref, data),
-      loading: () => const Loading(),
-      error: (error, stackTrace) =>
-          _buildError(context, ref, error, stackTrace),
-    );
-  }
-
-  Widget _buildData(
-    BuildContext context,
-    WidgetRef ref,
-    VoucherDetailState state,
-  ) {
+    final voucher = ref.watch(voucherProvider(voucherId));
+    final product = ref.watch(productProvider(productId));
+    final brand = ref.watch(brandProvider(brandId));
     return Column(
       children: [
         Expanded(
@@ -58,9 +53,19 @@ class VoucherDetailView extends ConsumerWidget {
             child: Column(
               children: [
                 Opacity(
-                  opacity: state.voucher.isUsable ? 1 : 0.5,
-                  child: Image.network(state.product.imageUrl,
-                      fit: BoxFit.fitWidth),
+                  opacity: voucher.when(
+                    data: (v) => v.isUsable ? 1 : 0.5,
+                    loading: () => 1,
+                    error: (error, stackTrace) => throw error,
+                  ),
+                  child: product.when(
+                    data: (p) => Image.network(
+                      p.imageUrl,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    loading: () => const Loading(),
+                    error: (error, stackTrace) => throw error,
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -78,31 +83,48 @@ class VoucherDetailView extends ConsumerWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 20),
-                        Text(
-                          state.brand.name,
-                          style: Theme.of(context).textTheme.bodySmall,
+                        brand.when(
+                          data: (b) => Text(
+                            b.name,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          loading: () => const Loading(),
+                          error: (error, stackTrace) => throw error,
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          state.product.name,
+                          product.when(
+                            data: (p) => p.name,
+                            loading: () => '',
+                            error: (error, stackTrace) => throw error,
+                          ),
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          state.voucher.balanceFormatted,
+                          voucher.when(
+                            data: (v) => v.balanceFormatted,
+                            loading: () => '',
+                            error: (error, stackTrace) => throw error,
+                          ),
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge
                               ?.copyWith(fontWeight: FontWeight.w800),
                         ),
                         const SizedBox(height: 20),
-                        _buildButtons(context, ref, state),
+                        _buildButtons(context, ref),
                         const SizedBox(height: 30),
-                        if (state.product.description != null)
-                          Text(
-                            state.product.description!,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                        product.when(
+                          data: (p) => p.description != null
+                              ? Text(
+                                  p.description!,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                )
+                              : const Text(''),
+                          loading: () => const Loading(),
+                          error: (error, stackTrace) => throw error,
+                        ),
                       ],
                     ),
                   ),
@@ -153,19 +175,9 @@ class VoucherDetailView extends ConsumerWidget {
     );
   }
 
-  Widget _buildError(
-    BuildContext context,
-    WidgetRef ref,
-    Object error,
-    StackTrace? stackTrace,
-  ) {
-    throw error;
-  }
-
   Widget _buildButtons(
     BuildContext context,
     WidgetRef ref,
-    VoucherDetailState state,
   ) {
     return Column(
       children: [
@@ -195,7 +207,7 @@ class VoucherDetailView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton.icon(
-                onPressed: () => _onEditPressed(ref, state),
+                onPressed: () => _onEditPressed(ref),
                 icon: const Icon(
                   Icons.edit_outlined,
                   color: Colors.grey,
@@ -239,16 +251,16 @@ class VoucherDetailView extends ConsumerWidget {
     showSnackBar(const Text('준비 중입니다.'));
   }
 
-  void _onEditPressed(
-    WidgetRef ref,
-    VoucherDetailState state,
-  ) {
+  void _onEditPressed(WidgetRef ref) async {
+    final voucher = await ref.watch(voucherProvider(voucherId).future);
+    final product = await ref.watch(productProvider(productId).future);
+    final brand = await ref.watch(brandProvider(brandId).future);
     showModal(VoucherEditorView(
-      id: id,
-      brandName: state.brand.name,
-      productName: state.product.name,
-      expiresAt: state.voucher.expiresAt,
-      barcode: state.voucher.barcode,
+      id: voucher.id,
+      brandName: brand.name,
+      productName: product.name,
+      expiresAt: voucher.expiresAt,
+      barcode: voucher.barcode,
     ));
   }
 
@@ -257,6 +269,7 @@ class VoucherDetailView extends ConsumerWidget {
   }
 
   void _onDeletePressed(BuildContext context, WidgetRef ref) async {
+    final deleteVoucherCommand = ref.watch(deleteVoucherCommandProvider);
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -274,9 +287,7 @@ class VoucherDetailView extends ConsumerWidget {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      await ref
-                          .read(voucherDetailStateProvider(id).notifier)
-                          .delete();
+                      deleteVoucherCommand(voucherId);
                       navigateBack(count: 2);
                     },
                     child: const Text('삭제하기'),

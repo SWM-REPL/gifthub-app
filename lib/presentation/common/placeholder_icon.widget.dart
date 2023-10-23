@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 // 📦 Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 
-class Empty extends StatelessWidget {
+class PlaceholderIcon extends StatelessWidget {
   final String message;
 
-  const Empty(
+  const PlaceholderIcon(
     this.message, {
     super.key,
   });

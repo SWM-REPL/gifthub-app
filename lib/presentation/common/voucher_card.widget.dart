@@ -53,7 +53,13 @@ class VoucherCard extends ConsumerWidget {
       child: Card(
         margin: const EdgeInsets.all(0),
         child: InkWell(
-          onTap: () => navigate(VoucherDetailView(id)),
+          onTap: () => navigate(
+            VoucherDetailView(
+              voucherId: voucher.id,
+              productId: product.id,
+              brandId: product.brandId,
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(padding),
             child: Row(
