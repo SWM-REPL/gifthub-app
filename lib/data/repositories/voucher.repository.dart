@@ -50,10 +50,10 @@ class VoucherRepositoryImpl implements VoucherRepository {
   Future<void> updateVoucher(
     int id, {
     String? barcode,
+    int? balance,
     DateTime? expiresAt,
     String? productName,
     String? brandName,
-    int? balance,
   }) async {
     await _voucherApi.updateVoucherById(
       id,

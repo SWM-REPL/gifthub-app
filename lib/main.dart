@@ -4,6 +4,7 @@ import 'dart:ui';
 
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // 📦 Package imports:
 import 'package:firebase_core/firebase_core.dart';
@@ -50,6 +51,10 @@ Future<void> main() async {
   KakaoSdk.init(
     nativeAppKey: '9f70664dc7697b1c5b1da7c3d4b5cafe',
   );
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(
     const ProviderScope(

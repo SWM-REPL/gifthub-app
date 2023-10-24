@@ -81,6 +81,7 @@ class VoucherApi {
   }) async {
     await dio.post('/vouchers/$id/usage', data: {
       'amount': amount,
+      'place': 'TEMPORARY_PLACE',
     });
   }
 }

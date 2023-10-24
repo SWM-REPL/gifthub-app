@@ -40,7 +40,7 @@ class CreateVoucherByImageCommand extends Command {
 
       final texts = textlines.map((t) => t.text).toList();
       await _voucherRepository.createVoucherByTexts(texts);
-      logSuccess({'texts': texts});
+      logSuccess({'texts': texts.reduce((value, element) => value + element)});
     } catch (error, stacktrace) {
       logFailure(error, stacktrace);
       rethrow;

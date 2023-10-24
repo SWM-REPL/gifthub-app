@@ -17,6 +17,7 @@ class UpdateVoucherCommand extends Command {
   Future<void> call({
     required int id,
     required String barcode,
+    int? balance,
     required DateTime expiresAt,
     required String productName,
     required String brandName,
@@ -25,6 +26,7 @@ class UpdateVoucherCommand extends Command {
       await _voucherRepository.updateVoucher(
         id,
         barcode: barcode,
+        balance: balance,
         expiresAt: expiresAt,
         productName: productName,
         brandName: brandName,

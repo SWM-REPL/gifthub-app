@@ -7,47 +7,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
+import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class VoucherEditorView extends ConsumerStatefulWidget {
-  final int? id;
+  final int? voucherId;
+  final int? productId;
+  final int? brandId;
 
   final formKey = GlobalKey<FormState>();
   final brandNameController = TextEditingController();
   final productNameController = TextEditingController();
   final expiresAtController = TextEditingController();
   final barcodeController = TextEditingController();
+  final balanceController = TextEditingController();
 
   VoucherEditorView({
-    String? brandName,
-    String? productName,
-    DateTime? expiresAt,
-    String? barcode,
-    this.id,
+    this.voucherId,
+    this.productId,
+    this.brandId,
     super.key,
-  }) {
-    if (id == null) {
-      return;
-    }
-    brandNameController.text = brandName ?? '';
-    productNameController.text = productName ?? '';
-    expiresAtController.text = expiresAt != null ? dateFormat(expiresAt) : '';
-    barcodeController.text = barcode ?? '';
-  }
+  });
 
   @override
   ConsumerState<VoucherEditorView> createState() => _VoucherEditorViewState();
 }
 
 class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
+  bool showBalance = false;
   bool showDataPicker = false;
 
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, _loadInfo);
+  }
+
+  void _loadInfo() async {
+    if (widget.voucherId != null &&
+        widget.productId != null &&
+        widget.brandId != null) {
+      final voucher = await ref.read(voucherProvider(widget.voucherId!).future);
+      final product = await ref.read(productProvider(widget.productId!).future);
+      final brand = await ref.read(brandProvider(widget.brandId!).future);
+
+      widget.brandNameController.text = brand.name;
+      widget.productNameController.text = product.name;
+      widget.expiresAtController.text = dateFormat(voucher.expiresAt);
+      widget.barcodeController.text = voucher.barcode;
+      widget.balanceController.text = voucher.balance.toString();
+
+      setState(() {
+        showBalance = product.isReusable;
+      });
+    }
   }
 
   @override
@@ -104,6 +121,12 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
                     ],
                   ),
                 ),
+                if (showBalance) const Divider(),
+                if (showBalance)
+                  LabeledTextField(
+                    labelText: '잔액',
+                    controller: widget.balanceController,
+                  ),
                 const Divider(),
                 LabeledTextField(
                   labelText: '바코드',
@@ -120,7 +143,19 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
                   return;
                 }
 
-                if (widget.id == null) {
+                if (widget.voucherId != null) {
+                  await ref.watch(updateVoucherCommandProvider)(
+                    id: widget.voucherId!,
+                    barcode: widget.barcodeController.text,
+                    balance: int.tryParse(widget.balanceController.text),
+                    expiresAt: DateTime.tryParse(
+                      widget.expiresAtController.text,
+                    )!,
+                    productName: widget.productNameController.text,
+                    brandName: widget.brandNameController.text,
+                  );
+                  ref.invalidate(voucherProvider(widget.voucherId!));
+                } else {
                   await ref.watch(createVoucherByValuesCommandProvider)(
                     barcode: widget.barcodeController.text,
                     expiresAt: DateTime.tryParse(
@@ -130,17 +165,6 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
                     brandName: widget.brandNameController.text,
                   );
                   ref.invalidate(voucherIdsProvider);
-                } else {
-                  await ref.watch(updateVoucherCommandProvider)(
-                    id: widget.id!,
-                    barcode: widget.barcodeController.text,
-                    expiresAt: DateTime.tryParse(
-                      widget.expiresAtController.text,
-                    )!,
-                    productName: widget.productNameController.text,
-                    brandName: widget.brandNameController.text,
-                  );
-                  ref.invalidate(voucherProvider(widget.id!));
                 }
                 navigateBack();
               },

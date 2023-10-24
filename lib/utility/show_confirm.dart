@@ -8,7 +8,9 @@ void showConfirm({
   Widget? title,
   Widget? content,
   void Function()? onConfirmPressed,
+  String confirmText = '확인',
   void Function()? onCanclePressed,
+  String cancleText = '취소',
 }) {
   final context = navigatorKey.currentState?.overlay?.context;
   if (context == null) {
@@ -17,28 +19,26 @@ void showConfirm({
 
   showDialog<String>(
     context: context,
-    builder: (BuildContext context) => AlertDialog(
+    builder: (context) => AlertDialog(
       title: title,
       content: content,
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context, 'Cancel');
-            if (onCanclePressed != null) {
+      actions: [
+        if (onCanclePressed != null)
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
               onCanclePressed();
-            }
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context, 'Confirm');
-            if (onConfirmPressed != null) {
+            },
+            child: Text(cancleText),
+          ),
+        if (onConfirmPressed != null)
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, 'Confirm');
               onConfirmPressed();
-            }
-          },
-          child: const Text('OK'),
-        ),
+            },
+            child: Text(confirmText),
+          ),
       ],
     ),
   );

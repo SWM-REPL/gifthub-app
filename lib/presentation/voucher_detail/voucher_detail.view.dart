@@ -11,17 +11,21 @@ import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
+import 'package:gifthub/presentation/voucher_detail/voucher_barcode.view.dart';
 import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
+import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class VoucherDetailView extends ConsumerWidget {
+class VoucherDetailView extends ConsumerStatefulWidget {
   final int voucherId;
   final int productId;
   final int brandId;
 
-  const VoucherDetailView({
+  final amountController = TextEditingController();
+
+  VoucherDetailView({
     required this.voucherId,
     required this.productId,
     required this.brandId,
@@ -29,7 +33,12 @@ class VoucherDetailView extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<VoucherDetailView> createState() => _VoucherDetailViewState();
+}
+
+class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
@@ -44,9 +53,9 @@ class VoucherDetailView extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final voucher = ref.watch(voucherProvider(voucherId));
-    final product = ref.watch(productProvider(productId));
-    final brand = ref.watch(brandProvider(brandId));
+    final voucher = ref.watch(voucherProvider(widget.voucherId));
+    final product = ref.watch(productProvider(widget.productId));
+    final brand = ref.watch(brandProvider(widget.brandId));
     return Column(
       children: [
         Expanded(
@@ -167,7 +176,11 @@ class VoucherDetailView extends ConsumerWidget {
               const SizedBox(width: 5),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => _onUsePressed(ref),
+                  onPressed: voucher.when(
+                    data: (v) => v.isUsable ? () => _onUsePressed(ref) : null,
+                    loading: () => null,
+                    error: (error, stackTrace) => null,
+                  ),
                   child: const SizedBox(
                     height: 48,
                     child: Center(
@@ -215,7 +228,7 @@ class VoucherDetailView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton.icon(
-                onPressed: () => _onEditPressed(ref),
+                onPressed: () => _onEditPressed(),
                 icon: const Icon(
                   Icons.edit_outlined,
                   color: Colors.grey,
@@ -259,17 +272,14 @@ class VoucherDetailView extends ConsumerWidget {
     showSnackBar(const Text('준비 중입니다.'));
   }
 
-  void _onEditPressed(WidgetRef ref) async {
-    final voucher = await ref.watch(voucherProvider(voucherId).future);
-    final product = await ref.watch(productProvider(productId).future);
-    final brand = await ref.watch(brandProvider(brandId).future);
-    showModal(VoucherEditorView(
-      id: voucher.id,
-      brandName: brand.name,
-      productName: product.name,
-      expiresAt: voucher.expiresAt,
-      barcode: voucher.barcode,
-    ));
+  void _onEditPressed() {
+    showModal(
+      VoucherEditorView(
+        voucherId: widget.voucherId,
+        productId: widget.productId,
+        brandId: widget.brandId,
+      ),
+    );
   }
 
   void _onSharePressed(WidgetRef ref) {
@@ -286,7 +296,7 @@ class VoucherDetailView extends ConsumerWidget {
       title: const Text('기프티콘 삭제'),
       content: Text('${product.name} 기프티콘을 삭제하시겠습니까?'),
       onConfirmPressed: () async {
-        deleteVoucherCommand(voucherId);
+        deleteVoucherCommand(widget.voucherId);
         ref.invalidate(voucherIdsProvider);
         navigateBack();
       },
@@ -294,6 +304,39 @@ class VoucherDetailView extends ConsumerWidget {
   }
 
   void _onUsePressed(WidgetRef ref) async {
-    showSnackBar(const Text('준비 중입니다.'));
+    final voucher = await ref.watch(voucherProvider(widget.voucherId).future);
+    final product = await ref.watch(productProvider(widget.productId).future);
+
+    showConfirm(
+      title: const Text('기프티콘 사용'),
+      content: product.isReusable
+          ? _buildAmountField(voucher.balance)
+          : const Text('기프티콘을 사용하시겠습니까?'),
+      onConfirmPressed: () async {
+        final amount = int.tryParse(widget.amountController.text);
+        await ref.watch(useVoucherCommandProvider)(voucher.id, amount);
+        ref.invalidate(voucherProvider(voucher.id));
+        navigate(VoucherBarcodeView(voucher.barcode));
+      },
+      confirmText: '사용하기',
+    );
+  }
+
+  Widget _buildAmountField(int balance) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('${currencyFormat(balance)} 중 사용할 금액을 입력해주세요'),
+        const SizedBox(height: 50),
+        TextFormField(
+          controller: widget.amountController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: '금액',
+          ),
+          keyboardType: TextInputType.number,
+        ),
+      ],
+    );
   }
 }

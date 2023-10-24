@@ -20,10 +20,10 @@ abstract class VoucherRepository {
   Future<void> updateVoucher(
     int id, {
     String? barcode,
+    int? balance,
     DateTime? expiresAt,
     String? productName,
     String? brandName,
-    int? balance,
   });
 
   Future<void> deleteVoucher(int id);

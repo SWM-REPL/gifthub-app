@@ -102,7 +102,9 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
-      Future.delayed(Duration.zero, _processSharedIntents);
+      Future.delayed(Duration.zero, () async {
+        await _processSharedIntents();
+      });
     }
     return MaterialApp(
       navigatorKey: navigatorKey,
