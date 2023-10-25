@@ -15,6 +15,7 @@ import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
+import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/card.theme.dart';
@@ -139,6 +140,7 @@ class _AppState extends ConsumerState<App> {
       (f) => createVoucherByImageCommand(f.path),
     ));
     ref.invalidate(voucherIdsProvider);
+    ref.invalidate(pendingCountProvider);
     setState(() {
       _sharedFiles = [];
       _sharedText = '';
