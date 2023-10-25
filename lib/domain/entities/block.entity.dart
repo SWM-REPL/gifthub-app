@@ -1,6 +1,5 @@
 // 🎯 Dart imports:
 import 'dart:math';
-import 'dart:ui';
 
 // 📦 Package imports:
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -12,20 +11,14 @@ class RecognizedTextLine extends TextLine {
   static const _threshold = 10;
 
   RecognizedTextLine({
-    required String text,
-    required List<TextElement> elements,
-    required Rect boundingBox,
-    required List<String> recognizedLanguages,
-    required List<Point<int>> cornerPoints,
-    required double? angle,
+    required super.text,
+    required super.elements,
+    required super.boundingBox,
+    required super.recognizedLanguages,
+    required super.cornerPoints,
+    required super.angle,
   }) : super(
-          text: text,
-          elements: elements,
-          boundingBox: boundingBox,
-          recognizedLanguages: recognizedLanguages,
-          cornerPoints: cornerPoints,
           confidence: null,
-          angle: angle,
         );
 
   factory RecognizedTextLine.from(TextLine textLine) {

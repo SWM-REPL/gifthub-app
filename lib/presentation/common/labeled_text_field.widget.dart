@@ -13,14 +13,14 @@ class LabeledTextField extends StatelessWidget {
   final void Function(PointerDownEvent)? onTap;
 
   const LabeledTextField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
     this.enabled = true,
     this.obsecureText = false,
     this.keyboardType = TextInputType.text,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
