@@ -296,10 +296,11 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
       title: const Text('기프티콘 삭제'),
       content: Text('${product.name} 기프티콘을 삭제하시겠습니까?'),
       onConfirmPressed: () async {
-        deleteVoucherCommand(widget.voucherId);
+        await deleteVoucherCommand(widget.voucherId);
         ref.invalidate(voucherIdsProvider);
         navigateBack();
       },
+      confirmText: '삭제하기',
     );
   }
 
