@@ -317,7 +317,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
         final amount = int.tryParse(widget.amountController.text);
         await ref.watch(useVoucherCommandProvider)(voucher.id, amount);
         ref.invalidate(voucherProvider(voucher.id));
-        navigate(VoucherBarcodeView(voucher.barcode));
+        showModal(VoucherBarcodeView(voucher.barcode));
       },
       confirmText: '사용하기',
     );
