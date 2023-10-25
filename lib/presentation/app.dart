@@ -73,7 +73,7 @@ class _AppState extends ConsumerState<App> {
 
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      ref.watch(subscribeNotificationCommandProvider)();
+      ref.watch(registerDeviceCommandProvider)();
     }).onError((error) {
       throw error;
     });

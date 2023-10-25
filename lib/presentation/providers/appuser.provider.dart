@@ -17,7 +17,7 @@ final appUserProvider = FutureProvider<AppUser>((ref) async {
   try {
     await Future.delayed(
       Duration.zero,
-      () => ref.watch(subscribeNotificationCommandProvider)(),
+      () => ref.watch(registerDeviceCommandProvider)(),
     );
   } catch (error) {
     if (error is DioException) {

@@ -8,10 +8,10 @@ import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class UnsubscribeNotificationCommand extends Command {
+class DeregisterDeviceCommand extends Command {
   final NotificationRepository _notificationRepository;
 
-  UnsubscribeNotificationCommand({
+  DeregisterDeviceCommand({
     required NotificationRepository notificationRepository,
     required FirebaseAnalytics analytics,
   })  : _notificationRepository = notificationRepository,

@@ -55,10 +55,10 @@ class _NotificationSettingViewState
                 value: voucherExpirationNotification,
                 onChanged: (switchOn) async {
                   if (switchOn) {
-                    await ref.watch(subscribeNotificationCommandProvider)();
+                    await ref.watch(registerDeviceCommandProvider)();
                     ref.invalidate(appUserProvider);
                   } else {
-                    await ref.watch(unsubscribeNotificationCommandProvider)();
+                    await ref.watch(deregisterDeviceCommandProvider)();
                     ref.invalidate(appUserProvider);
                   }
                   setState(() {

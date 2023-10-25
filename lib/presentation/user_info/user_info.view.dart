@@ -109,7 +109,7 @@ class UserInfoView extends ConsumerWidget {
                   title: const Text('로그아웃'),
                   content: const Text('정말로 로그아웃을 하시겠습니까?'),
                   onConfirmPressed: () async {
-                    await ref.watch(unsubscribeNotificationCommandProvider)();
+                    await ref.watch(deregisterDeviceCommandProvider)();
                     await ref.watch(signOutCommandProvider)();
                     navigate(const SignInView(), clearStack: true);
                   },
@@ -125,7 +125,7 @@ class UserInfoView extends ConsumerWidget {
                   title: const Text('회원 탈퇴'),
                   content: const Text('정말로 회원 탈퇴를 하시겠습니까?'),
                   onConfirmPressed: () async {
-                    await ref.watch(unsubscribeNotificationCommandProvider)();
+                    await ref.watch(deregisterDeviceCommandProvider)();
                     await ref.watch(deregisterCommandProvider)();
                     navigate(const SignInView(), clearStack: true);
                   },

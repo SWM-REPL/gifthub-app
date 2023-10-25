@@ -6,10 +6,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 
-class SubscribeNotificationCommand extends Command {
+class RegisterDeviceCommand extends Command {
   final NotificationRepository _notificationRepository;
 
-  SubscribeNotificationCommand({
+  RegisterDeviceCommand({
     required NotificationRepository notificationRepository,
     required FirebaseAnalytics analytics,
   })  : _notificationRepository = notificationRepository,

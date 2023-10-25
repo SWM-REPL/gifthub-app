@@ -6,12 +6,14 @@ import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
 import 'package:gifthub/domain/commands/delete_voucher.command.dart';
 import 'package:gifthub/domain/commands/deregister.command.dart';
+import 'package:gifthub/domain/commands/deregister_device.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notification.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
 import 'package:gifthub/domain/commands/fetch_pending_voucher_count.command.dart';
 import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
+import 'package:gifthub/domain/commands/register_device_command.dart';
 import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_google.command.dart';
@@ -19,8 +21,6 @@ import 'package:gifthub/domain/commands/sign_in_with_kakao.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_naver.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
-import 'package:gifthub/domain/commands/subscribe_notification.command.dart';
-import 'package:gifthub/domain/commands/unsubscribe_notification.command.dart';
 import 'package:gifthub/domain/commands/update_user.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
@@ -161,17 +161,16 @@ final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
   );
 });
 
-final subscribeNotificationCommandProvider =
-    Provider<SubscribeNotificationCommand>((ref) {
-  return SubscribeNotificationCommand(
+final registerDeviceCommandProvider = Provider<RegisterDeviceCommand>((ref) {
+  return RegisterDeviceCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
-final unsubscribeNotificationCommandProvider =
-    Provider<UnsubscribeNotificationCommand>((ref) {
-  return UnsubscribeNotificationCommand(
+final deregisterDeviceCommandProvider =
+    Provider<DeregisterDeviceCommand>((ref) {
+  return DeregisterDeviceCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
