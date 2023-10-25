@@ -32,4 +32,12 @@ class NotificationApi {
       'token': fcmToken,
     });
   }
+
+  Future<void> allowExpirationNotifications() {
+    return dio.post('/notifications/expiration/allow', data: {});
+  }
+
+  Future<void> disallowExpirationNotifications() {
+    return dio.post('/notifications/expiration/deny', data: {});
+  }
 }

@@ -39,4 +39,14 @@ class NotificationRepositoryImpl implements NotificationRepository {
   Future<void> unsubscribeNotification(String fcmToken) async {
     await _notificationApi.unsubscribeNotification(fcmToken);
   }
+
+  @override
+  Future<void> allowExpirationNotifications() async {
+    await _notificationApi.allowExpirationNotifications();
+  }
+
+  @override
+  Future<void> disallowExpirationNotifications() async {
+    await _notificationApi.disallowExpirationNotifications();
+  }
 }

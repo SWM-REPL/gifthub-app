@@ -25,4 +25,19 @@ class AppUser extends User with EquatableMixin {
         oauth,
         allowNotifications,
       ];
+
+  AppUser copyWith({
+    int? id,
+    String? nickname,
+    String? username,
+    List<OAuth>? oauth,
+    bool? allowNotifications,
+  }) =>
+      AppUser(
+        id: id ?? super.id,
+        nickname: nickname ?? super.nickname,
+        username: username ?? super.username,
+        oauth: oauth ?? this.oauth,
+        allowNotifications: allowNotifications ?? this.allowNotifications,
+      );
 }
