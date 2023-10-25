@@ -5,6 +5,9 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_stat_icon" />
+        <meta-data
             android:name="com.naver.sdk.clientId"
             android:value="@string/client_id" />
         <meta-data
