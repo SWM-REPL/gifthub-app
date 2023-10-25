@@ -38,7 +38,15 @@ class Voucher with EquatableMixin {
 
   String get balanceFormatted => currencyFormat(balance);
   String get expiresAtFormatted {
-    final difference = expiresAt.difference(DateTime.now());
+    final difference = expiresAt.difference(
+      DateTime.now().copyWith(
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+      ),
+    );
     if (difference.inDays < 0) {
       return '만료됨';
     } else if (difference.inDays == 0) {
