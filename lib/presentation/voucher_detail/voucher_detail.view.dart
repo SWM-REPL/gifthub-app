@@ -312,7 +312,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
       title: const Text('기프티콘 사용'),
       content: product.isReusable
           ? _buildAmountField(voucher.balance)
-          : const Text('기프티콘을 사용하시겠습니까?'),
+          : const Text('사용하기 버튼으르 누르면 쿠폰이 바로 나옵니다. 바코드가 외부에 노출되지 않도록 주의해주세요.'),
       onConfirmPressed: () async {
         final amount = int.tryParse(widget.amountController.text);
         await ref.watch(useVoucherCommandProvider)(voucher.id, amount);
