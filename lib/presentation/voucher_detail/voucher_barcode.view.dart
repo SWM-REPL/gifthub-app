@@ -25,10 +25,6 @@ class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.leanBack,
     );
@@ -42,9 +38,6 @@ class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
       SystemUiMode.manual,
       overlays: SystemUiOverlay.values,
     );
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     super.dispose();
   }
 
@@ -74,13 +67,14 @@ class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
   }
 
   Widget _buildBody(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.8;
     return TapRegion(
       onTapInside: (event) => navigateBack(),
       onTapOutside: (event) => navigateBack(),
       child: Center(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
-          height: MediaQuery.of(context).size.height / 2,
+          width: width,
+          height: width * 0.75,
           child: BarcodeWidget(
             data: widget.barcode,
             barcode: Barcode.code128(),
