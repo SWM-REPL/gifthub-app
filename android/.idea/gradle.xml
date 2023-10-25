@@ -10,15 +10,18 @@
         <option name="modules">
           <set>
             <option value="$USER_HOME$/.pub-cache/git/receive_sharing_intent-abedc3d6d5b80df396e9c300fd1a052cbab08827/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_analytics-10.5.1/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-2.17.0/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.3.5/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_messaging-14.6.7/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_analytics-10.6.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_naver_login-1.8.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_secure_storage-9.0.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.5.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.10.0/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/kakao_flutter_sdk_common-1.6.0/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_android-2.2.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_sign_in_android-6.1.20/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/kakao_flutter_sdk_common-1.6.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_android-2.2.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/screen_brightness_android-0.1.0+2/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/sign_in_with_apple-5.0.0/android" />
             <option value="$PROJECT_DIR$" />
