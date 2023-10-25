@@ -17,6 +17,7 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.view.dart';
+import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -30,6 +31,11 @@ class VoucherListView extends ConsumerWidget {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showModal(VoucherEditorView()),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
