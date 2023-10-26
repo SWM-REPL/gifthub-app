@@ -23,7 +23,10 @@ class SignInWithNaverCommand extends Command {
 
   Future<AuthToken> call() async {
     try {
-      final authToken = await _authRepository.signInWithNaver();
+      final authToken = await _authRepository.signInWithNaver(
+        deviceToken: await _tokenRepository.getDeviceToken(),
+        fcmToken: await _tokenRepository.getFcmToken(),
+      );
       await _tokenRepository.saveAuthToken(authToken);
       logSuccess();
       return authToken;

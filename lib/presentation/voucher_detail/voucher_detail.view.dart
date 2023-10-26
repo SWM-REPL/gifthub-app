@@ -269,7 +269,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
   }
 
   void _onImageSavePressed(WidgetRef ref) {
-    showSnackBar(const Text('준비 중입니다.'));
+    showSnackBar(text: '준비 중입니다.');
   }
 
   void _onEditPressed() {
@@ -283,7 +283,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
   }
 
   void _onSharePressed(WidgetRef ref) {
-    showSnackBar(const Text('준비 중입니다.'));
+    showSnackBar(text: '준비 중입니다.');
   }
 
   void _onDeletePressed(

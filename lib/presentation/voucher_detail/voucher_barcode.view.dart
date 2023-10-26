@@ -46,7 +46,7 @@ class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
       lastBrightness = await ScreenBrightness().current;
       await ScreenBrightness().setScreenBrightness(1.0);
     } catch (error) {
-      showSnackBar(const Text('화면 밝기 조절에 실패했습니다.'));
+      showSnackBar(text: '화면 밝기 조절에 실패했습니다.');
     }
   }
 
@@ -54,7 +54,7 @@ class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
     try {
       await ScreenBrightness().setScreenBrightness(lastBrightness);
     } catch (error) {
-      showSnackBar(const Text('화면 밝기 조절에 실패했습니다.'));
+      showSnackBar(text: '화면 밝기 조절에 실패했습니다.');
     }
   }
 

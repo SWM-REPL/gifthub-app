@@ -111,7 +111,7 @@ class _SignInWithPasswordViewState
       }
     } catch (error) {
       if (error is SignInException) {
-        showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+        showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
       } else {
         rethrow;
       }

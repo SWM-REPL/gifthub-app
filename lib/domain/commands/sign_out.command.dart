@@ -29,7 +29,10 @@ class SignOutCommand extends Command {
   }
 
   Future<void> _signOut() async {
-    await _authRepository.signOut();
+    await _authRepository.signOut(
+      deviceToken: await _tokenRepository.getDeviceToken(),
+      fcmToken: await _tokenRepository.getFcmToken(),
+    );
     await _tokenRepository.deleteAuthToken();
   }
 }

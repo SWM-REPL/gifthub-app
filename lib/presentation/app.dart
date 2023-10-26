@@ -14,6 +14,7 @@ import 'package:gifthub/global_keys.dart';
 import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
@@ -72,10 +73,9 @@ class _AppState extends ConsumerState<App> {
   }
 
   void _initializeFirebaseMessaging() {
-    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      ref.watch(registerDeviceCommandProvider)();
-    }).onError((error) {
-      throw error;
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
+      await ref.watch(tokenRepositoryProvider).deleteAuthToken();
+      ref.watch(authTokenProvider.notifier).state = null;
     });
 
     FirebaseMessaging.onMessage.listen((message) async {
@@ -89,7 +89,7 @@ class _AppState extends ConsumerState<App> {
 
       ref.invalidate(notificationsProvider);
       showSnackBar(
-        Column(
+        content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title!, style: Theme.of(context).textTheme.bodyLarge),

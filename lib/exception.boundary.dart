@@ -45,7 +45,7 @@ class ExceptionBoundary extends ConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => showSnackBar(
         // ignore: avoid_dynamic_calls
-        Text(exception.response?.data['error']),
+        text: exception.response?.data['error'],
       ),
     );
   }

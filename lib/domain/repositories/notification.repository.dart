@@ -8,10 +8,6 @@ abstract class NotificationRepository {
 
   Future<void> deleteNotification(int id);
 
-  Future<void> subscribeNotification(String fcmToken);
-
-  Future<void> unsubscribeNotification(String fcmToken);
-
   Future<void> allowExpirationNotifications();
 
   Future<void> disallowExpirationNotifications();

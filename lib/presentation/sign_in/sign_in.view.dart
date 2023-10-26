@@ -175,7 +175,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
       navigate(const LoadingScreen(), clearStack: true);
     } catch (error) {
       if (error is SignInException) {
-        showSnackBar(Text(error.message ?? '로그인에 실패했습니다.'));
+        showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
       } else {
         rethrow;
       }

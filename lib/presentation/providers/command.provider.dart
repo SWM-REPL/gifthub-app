@@ -8,14 +8,12 @@ import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
 import 'package:gifthub/domain/commands/delete_voucher.command.dart';
 import 'package:gifthub/domain/commands/deny_expiration_notifications.command.dart';
 import 'package:gifthub/domain/commands/deregister.command.dart';
-import 'package:gifthub/domain/commands/deregister_device.command.dart';
 import 'package:gifthub/domain/commands/fetch_brand.command.dart';
 import 'package:gifthub/domain/commands/fetch_new_notification_count.command.dart';
 import 'package:gifthub/domain/commands/fetch_notification.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
 import 'package:gifthub/domain/commands/fetch_pending_voucher_count.command.dart';
 import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
-import 'package:gifthub/domain/commands/register_device_command.dart';
 import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_google.command.dart';
@@ -159,21 +157,6 @@ final deregisterCommandProvider = Provider<DeregisterCommand>((ref) {
   return DeregisterCommand(
     tokenRepository: ref.watch(tokenRepositoryProvider),
     userRepository: ref.watch(userRepositoryProvider),
-    analytics: ref.watch(firebaseAnalyticsProvider),
-  );
-});
-
-final registerDeviceCommandProvider = Provider<RegisterDeviceCommand>((ref) {
-  return RegisterDeviceCommand(
-    notificationRepository: ref.watch(notificationRepositoryProvider),
-    analytics: ref.watch(firebaseAnalyticsProvider),
-  );
-});
-
-final deregisterDeviceCommandProvider =
-    Provider<DeregisterDeviceCommand>((ref) {
-  return DeregisterDeviceCommand(
-    notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

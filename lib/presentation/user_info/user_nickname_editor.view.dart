@@ -131,7 +131,7 @@ class _UserNicknameEditorViewState
       }
     } catch (error) {
       if (error is DioException) {
-        showSnackBar(Text(error.message ?? '알 수 없는 오류가 발생했습니다.'));
+        showSnackBar(text: error.message ?? '알 수 없는 오류가 발생했습니다.');
       } else {
         rethrow;
       }

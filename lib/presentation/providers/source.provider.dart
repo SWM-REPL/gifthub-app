@@ -17,6 +17,7 @@ import 'package:gifthub/data/sources/auth.sdk.dart';
 import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/data/sources/product.api.dart';
+import 'package:gifthub/data/sources/token.sdk.dart';
 import 'package:gifthub/data/sources/token.storage.dart';
 import 'package:gifthub/data/sources/user.api.dart';
 import 'package:gifthub/data/sources/voucher.api.dart';
@@ -30,6 +31,13 @@ import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
+///SECTION - Constants
+
+// const host = 'https://api.dev.gifthub.kr';
+const _host = 'https://dce7-123-142-185-82.ngrok.io';
+const _appVersion = '0.4.1';
+
+///!SECTION - Constants
 ///SECTION - Repositories
 
 final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
@@ -72,6 +80,7 @@ final productRepositoryProvider = Provider<ProductRepository>((ref) {
 final tokenRepositoryProvider = Provider<TokenRepository>((ref) {
   return TokenRepositoryImpl(
     tokenStorage: ref.watch(tokenStorageProvider),
+    tokenSdk: ref.watch(tokenSdkProvider),
   );
 });
 
@@ -89,8 +98,10 @@ final voucherApiProvider = Provider<VoucherApi>((ref) {
 });
 
 final authApiProvider = Provider<AuthApi>((ref) {
-  final dio = ref.watch(dioProvider);
-  return AuthApi(dio);
+  return AuthApi(
+    host: _host,
+    userAgent: 'GiftHub/$_appVersion',
+  );
 });
 
 final userApiProvider = Provider<UserApi>((ref) {
@@ -115,6 +126,10 @@ final authSdkProvider = Provider<AuthSdk>((ref) {
   return AuthSdk();
 });
 
+final tokenSdkProvider = Provider<TokenSdk>((ref) {
+  return TokenSdk();
+});
+
 ///!SECTION - SDKs
 ///SECTION - Storages
 
@@ -135,13 +150,14 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
 });
 
 final dioProvider = Provider<Dio>((ref) {
-  const host = 'https://api.dev.gifthub.kr';
   final authToken = ref.watch(authTokenProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
+  final tokenRepository = ref.watch(tokenRepositoryProvider);
   return Dio(
     BaseOptions(
-      baseUrl: host,
+      baseUrl: _host,
       headers: {
-        'User-Agent': 'GiftHub/0.3.2',
+        'User-Agent': 'GiftHub/$_appVersion',
         'Content-Type': 'application/json',
         if (authToken != null)
           'Authorization': 'Bearer ${authToken.accessToken}',
@@ -154,16 +170,12 @@ final dioProvider = Provider<Dio>((ref) {
             if (authToken != null &&
                 authToken.isStaled &&
                 authToken.isExpired == false) {
-              final response = await Dio().post(
-                '$host/auth/refresh',
-                options: Options(
-                  headers: {
-                    'Authorization': 'Bearer ${authToken.refreshToken}',
-                  },
-                ),
+              final newToken = await authRepository.refreshAuthToken(
+                refreshToken: authToken.refreshToken,
+                deviceToken: await tokenRepository.getDeviceToken(),
+                fcmToken: await tokenRepository.getFcmToken(),
               );
-              // ignore: avoid_dynamic_calls
-              final newToken = AuthToken.fromJson(response.data['data']);
+              tokenRepository.saveAuthToken(newToken);
               ref.watch(authTokenProvider.notifier).state = newToken;
               options.headers['Authorization'] =
                   'Bearer ${newToken.accessToken}';
@@ -172,7 +184,11 @@ final dioProvider = Provider<Dio>((ref) {
             return handler.next(options);
           } catch (error) {
             if (error is DioException) {
-              return handler.reject(UnauthorizedException.from(error));
+              if (error.response?.statusCode == 401) {
+                return handler.reject(UnauthorizedException.from(error));
+              } else {
+                return handler.reject(error);
+              }
             }
             rethrow;
           }

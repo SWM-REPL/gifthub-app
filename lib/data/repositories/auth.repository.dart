@@ -19,55 +19,87 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthToken> signInWithPassword({
     required final String username,
     required final String password,
+    required final String deviceToken,
+    final String? fcmToken,
   }) async {
     final tokens = await _authApi.signIn(
       username: username,
       password: password,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
     );
     return tokens;
   }
 
   @override
-  Future<AuthToken> signInWithKakao() async {
+  Future<AuthToken> signInWithKakao({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
     final kakaoToken = await _authSdk.acquireOAuthToken('kakao');
     if (kakaoToken == null) {
       throw SignInException('카카오 로그인에 실패했습니다.');
     }
 
-    final tokens = await _authApi.signInWithKakao(kakaoToken);
+    final tokens = await _authApi.signInWithKakao(
+      kakaoAccessToken: kakaoToken,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
     return tokens;
   }
 
   @override
-  Future<AuthToken> signInWithNaver() async {
+  Future<AuthToken> signInWithNaver({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
     final naverToken = await _authSdk.acquireOAuthToken('naver');
     if (naverToken == null) {
       throw SignInException('사용자가 로그인을 취소했습니다.');
     }
 
-    final tokens = await _authApi.signInWithNaver(naverToken);
+    final tokens = await _authApi.signInWithNaver(
+      naverAccessToken: naverToken,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
     return tokens;
   }
 
   @override
-  Future<AuthToken> signInWithGoogle() async {
+  Future<AuthToken> signInWithGoogle({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
     final googleToken = await _authSdk.acquireOAuthToken('google');
     if (googleToken == null) {
       throw SignInException('사용자가 로그인을 취소했습니다.');
     }
 
-    final tokens = await _authApi.signInWithGoogle(googleToken);
+    final tokens = await _authApi.signInWithGoogle(
+      googleAccessToken: googleToken,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
     return tokens;
   }
 
   @override
-  Future<AuthToken> signInWithApple() async {
+  Future<AuthToken> signInWithApple({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
     final appleToken = await _authSdk.acquireOAuthToken('apple');
     if (appleToken == null) {
       throw SignInException('애플 로그인에 실패했습니다.');
     }
 
-    final tokens = await _authApi.signInWithApple(appleToken);
+    final tokens = await _authApi.signInWithApple(
+      appleAccessToken: appleToken,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
     return tokens;
   }
 
@@ -76,24 +108,40 @@ class AuthRepositoryImpl implements AuthRepository {
     required final String nickname,
     required final String username,
     required final String password,
+    required final String deviceToken,
+    final String? fcmToken,
   }) async {
     final tokens = await _authApi.signUp(
       nickname: nickname,
       username: username,
       password: password,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
     );
     return tokens;
   }
 
   @override
-  Future<void> signOut() async {
-    await _authApi.signOut();
+  Future<void> signOut({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
+    await _authApi.signOut(
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
   }
 
   @override
-  Future<AuthToken> refreshAuthToken(final String refreshToken) async {
+  Future<AuthToken> refreshAuthToken({
+    required final String refreshToken,
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
     final tokens = await _authApi.refreshAuthToken(
       refreshToken: refreshToken,
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
     );
     return tokens;
   }

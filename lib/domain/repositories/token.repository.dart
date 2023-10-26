@@ -7,4 +7,8 @@ abstract class TokenRepository {
   Future<void> deleteAuthToken();
 
   Future<AuthToken?> getAuthToken();
+
+  Future<String?> getFcmToken();
+
+  Future<String> getDeviceToken();
 }

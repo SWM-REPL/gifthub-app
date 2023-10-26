@@ -31,6 +31,8 @@ class SignInWithPasswordCommand extends Command {
       final authToken = await _authRepository.signInWithPassword(
         username: username,
         password: password,
+        deviceToken: await _tokenRepository.getDeviceToken(),
+        fcmToken: await _tokenRepository.getFcmToken(),
       );
       await _tokenRepository.saveAuthToken(authToken);
       logSuccess();

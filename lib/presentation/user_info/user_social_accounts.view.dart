@@ -37,7 +37,7 @@ class UserSocialAccountsView extends ConsumerWidget {
       data: (appUser) => _buildData(context, ref, appUser),
       loading: () => const Loading(),
       error: (error, stackTrace) {
-        showSnackBar(Text(error.toString()));
+        showSnackBar(text: error.toString());
         return const SizedBox();
       },
     );
@@ -101,7 +101,7 @@ class UserSocialAccountsView extends ConsumerWidget {
                       await ref.watch(invokeOAuthCommandProvider)(
                         oauth.providerCode,
                       );
-                      showSnackBar(const Text('새로운 소셜 계정이 연동되었습니다'));
+                      showSnackBar(text: '새로운 소셜 계정이 연동되었습니다');
                       ref.invalidate(appUserProvider);
                     }),
               ),

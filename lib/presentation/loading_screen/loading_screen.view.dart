@@ -53,7 +53,9 @@ class LoadingScreen extends ConsumerWidget {
     if (!token.isExpired) {
       try {
         final newToken = await authRepository.refreshAuthToken(
-          token.refreshToken,
+          refreshToken: token.refreshToken,
+          deviceToken: await tokenRepository.getDeviceToken(),
+          fcmToken: await tokenRepository.getFcmToken(),
         );
         await tokenRepository.saveAuthToken(newToken);
         authTokenNotifier.state = newToken;

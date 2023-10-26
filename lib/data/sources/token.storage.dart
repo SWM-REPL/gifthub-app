@@ -3,6 +3,7 @@ import 'dart:convert';
 
 // 📦 Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/dto/oauth_token.dto.dart';
@@ -10,6 +11,7 @@ import 'package:gifthub/domain/entities/auth_token.entity.dart';
 
 class TokenStorage {
   static const _oauthTokenKey = 'OAUTH_TOKEN_KEY';
+  static const _deviceTokenKey = 'DEVICE_TOKEN_KEY';
 
   final FlutterSecureStorage _secureStorage;
 
@@ -42,5 +44,19 @@ class TokenStorage {
     await _secureStorage.delete(key: _oauthTokenKey);
 
     _cachedAuthToken = null;
+  }
+
+  Future<String> getDeviceToken() async {
+    final deviceToken = await _secureStorage.read(key: _deviceTokenKey);
+    if (deviceToken != null) {
+      return deviceToken;
+    }
+
+    final newDeviceToken = const Uuid().v4();
+    await _secureStorage.write(
+      key: _deviceTokenKey,
+      value: newDeviceToken,
+    );
+    return newDeviceToken;
   }
 }

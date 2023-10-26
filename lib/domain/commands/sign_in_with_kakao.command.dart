@@ -23,7 +23,10 @@ class SignInWithKakaoCommand extends Command {
 
   Future<AuthToken> call() async {
     try {
-      final authToken = await _authRepository.signInWithKakao();
+      final authToken = await _authRepository.signInWithKakao(
+        deviceToken: await _tokenRepository.getDeviceToken(),
+        fcmToken: await _tokenRepository.getFcmToken(),
+      );
       await _tokenRepository.saveAuthToken(authToken);
       logSuccess();
       return authToken;
