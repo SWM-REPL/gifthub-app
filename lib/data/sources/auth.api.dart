@@ -137,11 +137,17 @@ class AuthApi {
   }
 
   Future<void> signOut({
+    required final String accessToken,
     required final String deviceToken,
     final String? fcmToken,
   }) async {
     await dio.post(
       '/auth/sign-out',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        },
+      ),
       data: {
         'device_token': deviceToken,
         'fcm_token': fcmToken,

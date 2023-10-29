@@ -123,10 +123,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signOut({
+    required final String accessToken,
     required final String deviceToken,
     final String? fcmToken,
   }) async {
     await _authApi.signOut(
+      accessToken: accessToken,
       deviceToken: deviceToken,
       fcmToken: fcmToken,
     );

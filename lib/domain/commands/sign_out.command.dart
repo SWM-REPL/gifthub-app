@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/commands/command.dart';
+import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 
@@ -20,19 +21,20 @@ class SignOutCommand extends Command {
 
   Future<void> call() async {
     try {
-      await _signOut();
+      final authToken = await _tokenRepository.getAuthToken();
+      if (authToken == null) {
+        throw UnauthorizedException();
+      }
+      await _authRepository.signOut(
+        accessToken: authToken.accessToken,
+        deviceToken: await _tokenRepository.getDeviceToken(),
+        fcmToken: await _tokenRepository.getFcmToken(),
+      );
+      await _tokenRepository.deleteAuthToken();
       logSuccess();
     } catch (error, stacktrace) {
       logFailure(error, stacktrace);
       rethrow;
     }
-  }
-
-  Future<void> _signOut() async {
-    await _authRepository.signOut(
-      deviceToken: await _tokenRepository.getDeviceToken(),
-      fcmToken: await _tokenRepository.getFcmToken(),
-    );
-    await _tokenRepository.deleteAuthToken();
   }
 }

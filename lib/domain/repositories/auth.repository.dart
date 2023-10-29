@@ -38,6 +38,7 @@ abstract class AuthRepository {
   });
 
   Future<void> signOut({
+    required final String accessToken,
     required final String deviceToken,
     final String? fcmToken,
   });
