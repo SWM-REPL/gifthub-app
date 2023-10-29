@@ -9,6 +9,7 @@ class VoucherDto extends Voucher {
     required super.expiresAt,
     required super.price,
     required super.balance,
+    required super.isAccessible,
     super.imageUrl,
   });
 
@@ -20,6 +21,7 @@ class VoucherDto extends Voucher {
       expiresAt: DateTime.parse(json['expires_at']),
       price: json['price'],
       balance: json['balance'],
+      isAccessible: json['is_accessible'],
       imageUrl: json.containsKey('image_url') ? json['image_url'] : null,
     );
   }

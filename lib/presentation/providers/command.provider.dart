@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/commands/allow_expiration_notifications.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
+import 'package:gifthub/domain/commands/delete_notification.command.dart';
 import 'package:gifthub/domain/commands/delete_voucher.command.dart';
 import 'package:gifthub/domain/commands/deny_expiration_notifications.command.dart';
 import 'package:gifthub/domain/commands/deregister.command.dart';
@@ -193,6 +194,14 @@ final allowExpirationNotificationsCommandProvider =
 final denyExpirationNotificationsCommandProvider =
     Provider<DenyExpirationNotificationsCommand>((ref) {
   return DenyExpirationNotificationsCommand(
+    notificationRepository: ref.watch(notificationRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final deleteNotificationCommandProvider =
+    Provider<DeleteNotificationCommand>((ref) {
+  return DeleteNotificationCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );

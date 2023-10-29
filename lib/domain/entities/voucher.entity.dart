@@ -7,8 +7,9 @@ import 'package:gifthub/utility/format_string.dart';
 class Voucher with EquatableMixin {
   final int id;
   final int productId;
-  final String barcode;
+  final String? barcode;
   final DateTime expiresAt;
+  final bool isAccessible;
   final int? price;
   final int? _balance;
   final String? imageUrl;
@@ -16,9 +17,10 @@ class Voucher with EquatableMixin {
   Voucher({
     required this.id,
     required this.productId,
-    required this.barcode,
     required this.expiresAt,
     required this.price,
+    required this.isAccessible,
+    this.barcode,
     this.imageUrl,
     int? balance,
   }) : _balance = balance;
@@ -31,6 +33,7 @@ class Voucher with EquatableMixin {
 
   int get balance => _balance ?? 0;
   bool get isUsable =>
+      isAccessible &&
       balance > 0 &&
       expiresAt.isAfter(DateTime.now().subtract(const Duration(days: 1)));
   bool get isExpired => remainDays < 0;

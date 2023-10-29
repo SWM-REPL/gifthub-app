@@ -2,7 +2,6 @@
 import 'package:gifthub/data/dto/notification.dto.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
-import 'package:gifthub/utility/show_snack_bar.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
   final NotificationApi _notificationApi;
@@ -23,8 +22,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<void> deleteNotification(int id) async {
-    // await _notificationApi.deleteNotification(id);
-    showSnackBar(text: '준비중입니다.');
+    await _notificationApi.deleteNotification(id);
   }
 
   @override

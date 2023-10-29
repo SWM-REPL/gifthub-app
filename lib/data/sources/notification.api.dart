@@ -21,6 +21,10 @@ class NotificationApi {
     return NotificationDto.fromJson(response.data);
   }
 
+  Future<void> deleteNotification(int id) async {
+    await dio.delete('/notifications/$id');
+  }
+
   Future<void> subscribeNotification(final String fcmToken) {
     return dio.post('/notifications/device', data: {
       'token': fcmToken,

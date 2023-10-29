@@ -8,19 +8,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart' as entity;
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/common/voucher_card.widget.dart';
+import 'package:gifthub/presentation/notification_list/notification_card.widget.dart';
 import 'package:gifthub/presentation/notification_list/notification_setting.view.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
-import 'package:gifthub/utility/format_string.dart';
+import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class NotificationListView extends ConsumerWidget {
-  static const double padding = 10;
-
+class NotificationListView extends ConsumerStatefulWidget {
   const NotificationListView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationListView> createState() =>
+      _NotificationListViewState();
+}
+
+class _NotificationListViewState extends ConsumerState<NotificationListView> {
+  static const double padding = GiftHubConstants.padding;
+
+  bool isDeleteMode = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
@@ -54,11 +62,15 @@ class NotificationListView extends ConsumerWidget {
     WidgetRef ref,
     List<entity.Notification> notifications,
   ) {
+    notifications.sort((a, b) => b.notifiedAt.compareTo(a.notifiedAt));
     return ListView.separated(
       padding: const EdgeInsets.all(padding),
       itemCount: notifications.length,
-      itemBuilder: (context, index) =>
-          _buildNotificationCard(context, ref, notifications[index].id),
+      itemBuilder: (context, index) => InkWell(
+        onLongPress: () => setState(() => isDeleteMode = true),
+        onTap: () => setState(() => isDeleteMode = false),
+        child: NotificationCard(notifications[index].id),
+      ),
       separatorBuilder: (context, index) => const SizedBox(height: padding),
     );
   }
@@ -81,67 +93,5 @@ class NotificationListView extends ConsumerWidget {
       );
     }
     throw error;
-  }
-
-  Widget _buildNotificationCard(
-    BuildContext context,
-    WidgetRef ref,
-    int notificationId,
-  ) {
-    final notification = ref.watch(notificationProvider(notificationId));
-    return Card(
-      margin: const EdgeInsets.all(0),
-      child: Padding(
-        padding: const EdgeInsets.all(padding),
-        child: notification.when(
-          data: (notification) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(padding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.notifications,
-                          color: Colors.amber,
-                        ),
-                        Text(
-                          notification.type,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          relativeDateFormat(notification.notifiedAt),
-                        ),
-                        const Text(' 알림'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(padding),
-                child: Text(
-                  notification.message,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              if (notification.voucherId != null)
-                VoucherCard(notification.voucherId!),
-            ],
-          ),
-          loading: () => const Loading(),
-          error: (error, stackTrace) {
-            throw error;
-          },
-        ),
-      ),
-    );
   }
 }

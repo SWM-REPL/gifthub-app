@@ -33,8 +33,7 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
 ///SECTION - Constants
 
-// const host = 'https://api.dev.gifthub.kr';
-const _host = 'https://dce7-123-142-185-82.ngrok.io';
+const _host = 'https://api.dev.gifthub.kr';
 const _appVersion = '0.4.1';
 
 ///!SECTION - Constants

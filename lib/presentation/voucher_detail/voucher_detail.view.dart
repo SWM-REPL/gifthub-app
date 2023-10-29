@@ -56,6 +56,12 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
     final voucher = ref.watch(voucherProvider(widget.voucherId));
     final product = ref.watch(productProvider(widget.productId));
     final brand = ref.watch(brandProvider(widget.brandId));
+    voucher.whenData((v) {
+      if (!v.isAccessible) {
+        showSnackBar(text: '접근할 수 없는 기프티콘입니다.');
+        navigateBack();
+      }
+    });
     return Column(
       children: [
         Expanded(
@@ -317,7 +323,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
         final amount = int.tryParse(widget.amountController.text);
         await ref.watch(useVoucherCommandProvider)(voucher.id, amount);
         ref.invalidate(voucherProvider(voucher.id));
-        showModal(VoucherBarcodeView(voucher.barcode));
+        showModal(VoucherBarcodeView(voucher.barcode ?? ''));
       },
       confirmText: '사용하기',
     );

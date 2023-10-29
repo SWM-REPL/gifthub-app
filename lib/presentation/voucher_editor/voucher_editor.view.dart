@@ -58,7 +58,7 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
       widget.brandNameController.text = brand.name;
       widget.productNameController.text = product.name;
       widget.expiresAtController.text = dateFormat(voucher.expiresAt);
-      widget.barcodeController.text = voucher.barcode;
+      widget.barcodeController.text = voucher.barcode ?? '';
       widget.balanceController.text = voucher.balance.toString();
 
       setState(() {
