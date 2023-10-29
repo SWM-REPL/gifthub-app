@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
+import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
@@ -18,8 +19,9 @@ class LoadingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future.delayed(Duration.zero, () async {
-      final tokenLoaded = await loadAuthToken(ref);
-      if (tokenLoaded) {
+      final isTokenLoaded = await loadAuthToken(ref);
+      if (isTokenLoaded) {
+        await ref.watch(appUserProvider.future);
         navigate(const VoucherListView(), clearStack: true);
       } else {
         navigate(const SignInView(), clearStack: true);
@@ -47,10 +49,7 @@ class LoadingScreen extends ConsumerWidget {
 
     if (!token.isStaled) {
       authTokenNotifier.state = token;
-      return true;
-    }
-
-    if (!token.isExpired) {
+    } else if (!token.isExpired) {
       try {
         final newToken = await authRepository.refreshAuthToken(
           refreshToken: token.refreshToken,
@@ -59,12 +58,11 @@ class LoadingScreen extends ConsumerWidget {
         );
         await tokenRepository.saveAuthToken(newToken);
         authTokenNotifier.state = newToken;
-        return true;
       } on UnauthorizedException {
         return false;
       }
     }
 
-    return false;
+    return true;
   }
 }

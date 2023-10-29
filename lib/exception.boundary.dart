@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -19,7 +20,7 @@ class ExceptionBoundary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final next = FlutterError.onError;
+    final flutterOnError = FlutterError.onError;
     FlutterError.onError = (details) {
       final exception = details.exception;
       if (exception is UnauthorizedException) {
@@ -27,8 +28,20 @@ class ExceptionBoundary extends ConsumerWidget {
       } else if (exception is DioException) {
         _handleDioException(exception);
       } else {
-        next?.call(details);
+        flutterOnError?.call(details);
       }
+    };
+
+    final platformOnError = PlatformDispatcher.instance.onError;
+    PlatformDispatcher.instance.onError = (exception, stackTrace) {
+      if (exception is UnauthorizedException) {
+        _handleUnauthorizedException(ref);
+      } else if (exception is DioException) {
+        _handleDioException(exception);
+      } else {
+        platformOnError?.call(exception, stackTrace);
+      }
+      return true;
     };
     return child;
   }

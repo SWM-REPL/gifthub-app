@@ -12,9 +12,6 @@ void showSnackBar({
   if (scaffoldMessenger == null) {
     return;
   }
-  if (Scaffold.maybeOf(scaffoldMessenger.context) == null) {
-    return;
-  }
 
   scaffoldMessenger.hideCurrentSnackBar();
   scaffoldMessenger.showSnackBar(

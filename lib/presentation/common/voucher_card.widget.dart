@@ -12,11 +12,12 @@ import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_detail/voucher_detail.view.dart';
+import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class VoucherCard extends ConsumerWidget {
-  static const double height = 80;
-  static const double padding = 10;
+  static const padding = GiftHubConstants.padding;
+  static const height = 80.0;
 
   final int id;
 
