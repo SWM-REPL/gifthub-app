@@ -73,7 +73,7 @@ class _SignInWithPasswordViewState
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: isLoading ? null : _handleSignIn,
+              onPressed: isLoading ? null : () => _handleSignIn(),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
               ),
@@ -110,11 +110,10 @@ class _SignInWithPasswordViewState
         navigate(const LoadingScreen(), clearStack: true);
       }
     } catch (error) {
-      if (error is SignInException) {
-        showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
-      } else {
+      if (error is! SignInException) {
         rethrow;
       }
+      showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
     } finally {
       setState(() => isLoading = false);
     }

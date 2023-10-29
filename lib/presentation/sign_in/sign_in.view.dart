@@ -105,7 +105,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
                   Icons.apple,
                   color: Theme.of(context).textTheme.labelLarge!.color,
                 ),
-                label: 'Apple로 계속하기',
+                label: '애플로 계속하기',
                 backgroundColor: Colors.white,
               ),
             TextButton(
@@ -174,11 +174,10 @@ class _SignInViewState extends ConsumerState<SignInView> {
       await signIn();
       navigate(const LoadingScreen(), clearStack: true);
     } catch (error) {
-      if (error is SignInException) {
-        showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
-      } else {
+      if (error is! SignInException) {
         rethrow;
       }
+      showSnackBar(text: error.message ?? '로그인에 실패했습니다.');
     } finally {
       setState(() => isLoading = false);
     }

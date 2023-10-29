@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 
 class OAuth with EquatableMixin {
   final String id;
-  final String name;
+  final String? name;
   final String providerCode;
   final String? email;
 

@@ -34,17 +34,20 @@ class AuthSdk {
 
   Future<String?> acquireAppleToken() async {
     try {
-      final appleToken = await SignInWithApple.getAppleIDCredential(scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ]);
+      final appleToken = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
       return appleToken.identityToken;
     } catch (exception) {
-      if (exception is SignInWithAppleAuthorizationException) {
-        return null;
+      if (exception is! SignInWithAppleAuthorizationException) {
+        rethrow;
       }
-      rethrow;
     }
+
+    throw SignInException('애플 로그인에 실패했습니다.');
   }
 
   Future<String?> acquireNaverToken() async {
