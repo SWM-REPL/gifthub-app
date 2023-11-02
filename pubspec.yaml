@@ -60,6 +60,7 @@ dependencies:
   barcode_widget: ^2.0.4
   screen_brightness: ^0.2.2+1
   share_plus: ^7.2.1
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:

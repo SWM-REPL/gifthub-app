@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/common/labeled_field.widget.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
+import 'package:gifthub/utility/show_snack_bar.dart';
 
 class UserInfoView extends ConsumerWidget {
   final usernameController = TextEditingController();
@@ -129,6 +132,19 @@ class UserInfoView extends ConsumerWidget {
                   },
                 ),
                 child: const Text('회원탈퇴'),
+              ),
+              const SizedBox(
+                height: 20,
+                child: VerticalDivider(),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final success = await launchUrl(contactUsUri);
+                  if (!success) {
+                    showSnackBar(text: '문의하기 페이지를 열 수 없습니다.');
+                  }
+                },
+                child: const Text('문의하기'),
               ),
             ],
           )

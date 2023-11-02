@@ -33,8 +33,10 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
 ///SECTION - Constants
 
-const _host = 'https://api.dev.gifthub.kr';
+const _apiHost = 'https://api.dev.gifthub.kr';
 const _appVersion = '0.4.1';
+const host = 'https://gifthub.kr';
+final contactUsUri = Uri.parse('https://google.com');
 
 ///!SECTION - Constants
 ///SECTION - Repositories
@@ -98,7 +100,7 @@ final voucherApiProvider = Provider<VoucherApi>((ref) {
 
 final authApiProvider = Provider<AuthApi>((ref) {
   return AuthApi(
-    host: _host,
+    host: _apiHost,
     userAgent: 'GiftHub/$_appVersion',
   );
 });
@@ -154,7 +156,7 @@ final dioProvider = Provider<Dio>((ref) {
   final tokenRepository = ref.watch(tokenRepositoryProvider);
   return Dio(
     BaseOptions(
-      baseUrl: _host,
+      baseUrl: _apiHost,
       headers: {
         'User-Agent': 'GiftHub/$_appVersion',
         'Content-Type': 'application/json',
