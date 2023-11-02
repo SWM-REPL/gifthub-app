@@ -139,10 +139,10 @@ class _AppState extends ConsumerState<App> {
     await Future.wait(_sharedFiles.map(
       (f) => createVoucherByImageCommand(f.path),
     ));
-    ref.invalidate(pendingCountProvider);
     setState(() {
       _sharedFiles = [];
       _sharedText = '';
     });
+    ref.invalidate(pendingCountProvider);
   }
 }

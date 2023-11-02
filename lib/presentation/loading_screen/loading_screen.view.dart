@@ -9,6 +9,7 @@ import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
+import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.view.dart';
 import 'package:gifthub/utility/navigator.dart';
@@ -22,6 +23,7 @@ class LoadingScreen extends ConsumerWidget {
       final isTokenLoaded = await loadAuthToken(ref);
       if (isTokenLoaded) {
         await ref.watch(appUserProvider.future);
+        ref.invalidate(voucherIdsProvider);
         navigate(const VoucherListView(), clearStack: true);
       } else {
         navigate(const SignInView(), clearStack: true);

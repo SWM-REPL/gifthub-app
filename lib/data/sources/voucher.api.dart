@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/data/dto/giftcard.dto.dart';
 import 'package:gifthub/data/dto/voucher.dto.dart';
 
 class VoucherApi {
@@ -83,5 +84,15 @@ class VoucherApi {
       'amount': amount,
       'place': 'TEMPORARY_PLACE',
     });
+  }
+
+  Future<GiftcardDto> shareVoucher({
+    required final int id,
+    required final String message,
+  }) async {
+    final response = await dio.post('/vouchers/$id/share', data: {
+      'message': message,
+    });
+    return GiftcardDto.fromJson(response.data);
   }
 }

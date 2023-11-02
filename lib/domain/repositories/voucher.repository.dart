@@ -1,4 +1,5 @@
 // 🌎 Project imports:
+import 'package:gifthub/domain/entities/giftcard.entity.dart';
 import 'package:gifthub/domain/entities/voucher.entity.dart';
 
 abstract class VoucherRepository {
@@ -31,5 +32,10 @@ abstract class VoucherRepository {
   Future<void> useVoucher(
     int id, {
     int? amount,
+  });
+
+  Future<Giftcard> shareVoucher({
+    required int id,
+    required String message,
   });
 }

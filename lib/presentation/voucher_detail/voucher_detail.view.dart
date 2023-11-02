@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/product.entity.dart';
@@ -12,7 +13,7 @@ import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_detail/voucher_barcode.view.dart';
-import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
+import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
@@ -24,6 +25,7 @@ class VoucherDetailView extends ConsumerStatefulWidget {
   final int brandId;
 
   final amountController = TextEditingController();
+  final messageController = TextEditingController();
 
   VoucherDetailView({
     required this.voucherId,
@@ -280,7 +282,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
 
   void _onEditPressed() {
     showModal(
-      VoucherEditorView(
+      VoucherEditor(
         voucherId: widget.voucherId,
         productId: widget.productId,
         brandId: widget.brandId,
@@ -288,8 +290,39 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
     );
   }
 
-  void _onSharePressed(WidgetRef ref) {
-    showSnackBar(text: '준비 중입니다.');
+  void _onSharePressed(WidgetRef ref) async {
+    showConfirm(
+      title: const Text('기프티콘 공유하기'),
+      content: const Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('선물이 완료된 기프티콘은 더이상 사용자의 기프티콘 목록에 표시되지 않습니다.'),
+          Text(''),
+          Text('정말 선물하시겠습니까?'),
+        ],
+      ),
+      onConfirmPressed: () => showConfirm(
+        title: const Text('기프티콘 공유하기'),
+        content: _buildMessageField(),
+        onConfirmPressed: () async {
+          final message = widget.messageController.text;
+          final giftcard = await ref.watch(
+            shareVoucherCommandProvider(
+              ShareVoucherParameter(
+                voucherId: widget.voucherId,
+                message: message,
+              ),
+            ),
+          )();
+          Share.share(
+            '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\nhttps://gifthub.kr/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
+            subject: '공유 링크 보내기',
+          );
+        },
+      ),
+      confirmText: '선물하기',
+    );
   }
 
   void _onDeletePressed(
@@ -342,6 +375,26 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
             hintText: '금액',
           ),
           keyboardType: TextInputType.number,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMessageField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text('메시지를 입력해주세요'),
+        const SizedBox(height: 20),
+        TextFormField(
+          maxLines: null,
+          controller: widget.messageController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: '받을 사람에게 보낼 메시지',
+          ),
+          keyboardType: TextInputType.text,
         ),
       ],
     );

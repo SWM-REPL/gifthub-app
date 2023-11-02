@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/dto/oauth_token.dto.dart';
+import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 
 class AuthApi {
   late final Dio dio;
@@ -160,16 +161,24 @@ class AuthApi {
     required final String deviceToken,
     final String? fcmToken,
   }) async {
-    final response = await dio.post(
-      '/auth/refresh',
-      options: Options(headers: {
-        'Authorization': 'Bearer $refreshToken',
-      }),
-      data: {
-        'device_token': deviceToken,
-        'fcm_token': fcmToken,
-      },
-    );
-    return AuthTokenDto.fromJson(response.data);
+    try {
+      final response = await dio.post(
+        '/auth/refresh',
+        options: Options(headers: {
+          'Authorization': 'Bearer $refreshToken',
+        }),
+        data: {
+          'device_token': deviceToken,
+          'fcm_token': fcmToken,
+        },
+      );
+      return AuthTokenDto.fromJson(response.data);
+    } on DioException catch (error) {
+      if (error.response?.statusCode == 401) {
+        throw UnauthorizedException.from(error);
+      } else {
+        rethrow;
+      }
+    }
   }
 }

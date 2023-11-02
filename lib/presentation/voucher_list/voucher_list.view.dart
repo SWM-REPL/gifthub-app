@@ -17,7 +17,7 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.view.dart';
-import 'package:gifthub/presentation/voucher_editor/voucher_editor.view.dart';
+import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -32,7 +32,7 @@ class VoucherListView extends ConsumerWidget {
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showModal(VoucherEditorView()),
+        onPressed: () => showModal(VoucherEditor()),
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add),
       ),
@@ -137,8 +137,8 @@ class VoucherListView extends ConsumerWidget {
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
       itemCount: listItems.length,
-      itemBuilder: (BuildContext context, int index) => listItems[index],
-      separatorBuilder: (BuildContext context, int index) {
+      itemBuilder: (context, index) => listItems[index],
+      separatorBuilder: (context, index) {
         return const SizedBox(height: padding);
       },
     );

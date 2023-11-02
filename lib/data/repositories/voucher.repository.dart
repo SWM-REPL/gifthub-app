@@ -2,6 +2,7 @@
 import 'package:intl/intl.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/data/dto/giftcard.dto.dart';
 import 'package:gifthub/data/dto/voucher.dto.dart';
 import 'package:gifthub/data/sources/voucher.api.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
@@ -79,6 +80,17 @@ class VoucherRepositoryImpl implements VoucherRepository {
     await _voucherApi.useVoucher(
       id,
       amount: amount,
+    );
+  }
+
+  @override
+  Future<GiftcardDto> shareVoucher({
+    required int id,
+    required String message,
+  }) async {
+    return await _voucherApi.shareVoucher(
+      id: id,
+      message: message,
     );
   }
 }

@@ -1,4 +1,5 @@
 // 📦 Package imports:
+import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
@@ -16,6 +17,7 @@ import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
 import 'package:gifthub/domain/commands/fetch_pending_voucher_count.command.dart';
 import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
+import 'package:gifthub/domain/commands/share_voucher.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_google.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_kakao.command.dart';
@@ -204,5 +206,28 @@ final deleteNotificationCommandProvider =
   return DeleteNotificationCommand(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+class ShareVoucherParameter extends Equatable {
+  final int voucherId;
+  final String message;
+
+  const ShareVoucherParameter({
+    required this.voucherId,
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [voucherId, message];
+}
+
+final shareVoucherCommandProvider = Provider.family
+    .autoDispose<ShareVoucherCommand, ShareVoucherParameter>((ref, parameter) {
+  return ShareVoucherCommand(
+    voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+    voucherId: parameter.voucherId,
+    message: parameter.message,
   );
 });

@@ -14,7 +14,7 @@ import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class VoucherEditorView extends ConsumerStatefulWidget {
+class VoucherEditor extends ConsumerStatefulWidget {
   final int? voucherId;
   final int? productId;
   final int? brandId;
@@ -26,7 +26,7 @@ class VoucherEditorView extends ConsumerStatefulWidget {
   final barcodeController = TextEditingController();
   final balanceController = TextEditingController();
 
-  VoucherEditorView({
+  VoucherEditor({
     this.voucherId,
     this.productId,
     this.brandId,
@@ -34,10 +34,10 @@ class VoucherEditorView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<VoucherEditorView> createState() => _VoucherEditorViewState();
+  ConsumerState<VoucherEditor> createState() => _VoucherEditorState();
 }
 
-class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
+class _VoucherEditorState extends ConsumerState<VoucherEditor> {
   bool showBalance = false;
   bool showDataPicker = false;
 
@@ -103,6 +103,7 @@ class _VoucherEditorViewState extends ConsumerState<VoucherEditorView> {
                       LabeledTextField(
                         labelText: '만료일자',
                         controller: widget.expiresAtController,
+                        enabled: false,
                       ),
                       if (showDataPicker)
                         SizedBox(
