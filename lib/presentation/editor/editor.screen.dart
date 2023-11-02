@@ -14,7 +14,7 @@ import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class VoucherEditor extends ConsumerStatefulWidget {
+class EditorScreen extends ConsumerStatefulWidget {
   final int? voucherId;
   final int? productId;
   final int? brandId;
@@ -26,7 +26,7 @@ class VoucherEditor extends ConsumerStatefulWidget {
   final barcodeController = TextEditingController();
   final balanceController = TextEditingController();
 
-  VoucherEditor({
+  EditorScreen({
     this.voucherId,
     this.productId,
     this.brandId,
@@ -34,10 +34,10 @@ class VoucherEditor extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<VoucherEditor> createState() => _VoucherEditorState();
+  ConsumerState<EditorScreen> createState() => _EditorScreenState();
 }
 
-class _VoucherEditorState extends ConsumerState<VoucherEditor> {
+class _EditorScreenState extends ConsumerState<EditorScreen> {
   bool showBalance = false;
   bool showDataPicker = false;
 

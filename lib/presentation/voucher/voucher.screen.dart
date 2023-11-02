@@ -8,19 +8,19 @@ import 'package:share_plus/share_plus.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
+import 'package:gifthub/presentation/editor/editor.screen.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
-import 'package:gifthub/presentation/voucher_detail/voucher_barcode.view.dart';
-import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
+import 'package:gifthub/presentation/voucher/voucher_barcode.screen.dart';
 import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class VoucherDetailView extends ConsumerStatefulWidget {
+class VoucherScreen extends ConsumerStatefulWidget {
   final int voucherId;
   final int productId;
   final int brandId;
@@ -28,7 +28,7 @@ class VoucherDetailView extends ConsumerStatefulWidget {
   final amountController = TextEditingController();
   final messageController = TextEditingController();
 
-  VoucherDetailView({
+  VoucherScreen({
     required this.voucherId,
     required this.productId,
     required this.brandId,
@@ -36,10 +36,10 @@ class VoucherDetailView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<VoucherDetailView> createState() => _VoucherDetailViewState();
+  ConsumerState<VoucherScreen> createState() => _VoucherScreenState();
 }
 
-class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
+class _VoucherScreenState extends ConsumerState<VoucherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -283,7 +283,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
 
   void _onEditPressed() {
     showModal(
-      VoucherEditor(
+      EditorScreen(
         voucherId: widget.voucherId,
         productId: widget.productId,
         brandId: widget.brandId,
@@ -357,7 +357,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
         final amount = int.tryParse(widget.amountController.text);
         await ref.watch(useVoucherCommandProvider)(voucher.id, amount);
         ref.invalidate(voucherProvider(voucher.id));
-        showModal(VoucherBarcodeView(voucher.barcode ?? ''));
+        showModal(VoucherBarcodeScreen(voucher.barcode ?? ''));
       },
       confirmText: '사용하기',
     );

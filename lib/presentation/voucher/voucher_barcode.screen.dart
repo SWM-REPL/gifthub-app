@@ -10,16 +10,16 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class VoucherBarcodeView extends StatefulWidget {
+class VoucherBarcodeScreen extends StatefulWidget {
   final String barcode;
 
-  const VoucherBarcodeView(this.barcode, {super.key});
+  const VoucherBarcodeScreen(this.barcode, {super.key});
 
   @override
-  State<VoucherBarcodeView> createState() => _VoucherBarcodeViewState();
+  State<VoucherBarcodeScreen> createState() => _VoucherBarcodeScreenState();
 }
 
-class _VoucherBarcodeViewState extends State<VoucherBarcodeView> {
+class _VoucherBarcodeScreenState extends State<VoucherBarcodeScreen> {
   double lastBrightness = 0.5;
 
   @override

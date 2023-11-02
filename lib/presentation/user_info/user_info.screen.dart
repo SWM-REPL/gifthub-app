@@ -11,7 +11,7 @@ import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
-import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
+import 'package:gifthub/presentation/sign_in/sign_in.screen.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/theme/constant.theme.dart';
@@ -19,11 +19,11 @@ import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class UserInfoView extends ConsumerWidget {
+class UserInfoScreen extends ConsumerWidget {
   final usernameController = TextEditingController();
   final nicknameController = TextEditingController();
 
-  UserInfoView({super.key});
+  UserInfoScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,7 +120,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(signOutCommandProvider)();
                     ref.invalidate(authTokenProvider);
-                    navigate(const SignInView(), clearStack: true);
+                    navigate(const SignInScreen(), clearStack: true);
                   },
                 ),
                 child: const Text('로그아웃'),
@@ -136,7 +136,7 @@ class UserInfoView extends ConsumerWidget {
                   onConfirmPressed: () async {
                     await ref.watch(deregisterCommandProvider)();
                     ref.invalidate(authTokenProvider);
-                    navigate(const SignInView(), clearStack: true);
+                    navigate(const SignInScreen(), clearStack: true);
                   },
                 ),
                 child: const Text('회원탈퇴'),

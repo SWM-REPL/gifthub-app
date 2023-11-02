@@ -11,20 +11,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
-import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
+import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
-class SignInView extends ConsumerStatefulWidget {
-  const SignInView({super.key});
+class SignInScreen extends ConsumerStatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  ConsumerState<SignInView> createState() => _SignInViewState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInViewState extends ConsumerState<SignInView> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   bool isLoading = false;
 
   @override

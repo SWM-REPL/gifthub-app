@@ -12,19 +12,19 @@ import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
-import 'package:gifthub/presentation/notification_list/notification_list.view.dart';
+import 'package:gifthub/presentation/editor/editor.screen.dart';
+import 'package:gifthub/presentation/home/home.state.dart';
+import 'package:gifthub/presentation/notifications/notifications.screen.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
-import 'package:gifthub/presentation/user_info/user_info.view.dart';
-import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
+import 'package:gifthub/presentation/user_info/user_info.screen.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class VoucherListView extends ConsumerWidget {
+class HomeScreen extends ConsumerWidget {
   static const double padding = 10;
 
-  const VoucherListView({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +32,7 @@ class VoucherListView extends ConsumerWidget {
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showModal(VoucherEditor()),
+        onPressed: () => showModal(EditorScreen()),
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add),
       ),
@@ -54,7 +54,7 @@ class VoucherListView extends ConsumerWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () => navigate(const NotificationListView()),
+          onPressed: () => navigate(const NotificationsScreen()),
           icon: const Icon(Icons.notifications_outlined),
         ),
       ],
@@ -201,7 +201,7 @@ class VoucherListView extends ConsumerWidget {
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.all(4),
                         ),
-                        onPressed: () => navigate(UserInfoView()),
+                        onPressed: () => navigate(UserInfoScreen()),
                         child: Row(
                           children: [
                             Text(

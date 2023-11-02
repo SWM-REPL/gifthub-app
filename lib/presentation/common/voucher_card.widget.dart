@@ -11,7 +11,7 @@ import 'package:gifthub/domain/entities/voucher.entity.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
-import 'package:gifthub/presentation/voucher_detail/voucher_detail.view.dart';
+import 'package:gifthub/presentation/voucher/voucher.screen.dart';
 import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -55,7 +55,7 @@ class VoucherCard extends ConsumerWidget {
         margin: const EdgeInsets.all(0),
         child: InkWell(
           onTap: () => navigate(
-            VoucherDetailView(
+            VoucherScreen(
               voucherId: voucher.id,
               productId: product.id,
               brandId: product.brandId,

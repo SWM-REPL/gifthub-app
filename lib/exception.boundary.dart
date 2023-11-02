@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
-import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
+import 'package:gifthub/presentation/sign_in/sign_in.screen.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
@@ -50,7 +50,7 @@ class ExceptionBoundary extends ConsumerWidget {
     Future.delayed(Duration.zero, () async {
       ref.invalidate(authTokenProvider);
       ref.watch(tokenRepositoryProvider).deleteAuthToken();
-      navigate(const SignInView(), clearStack: true);
+      navigate(const SignInScreen(), clearStack: true);
     });
   }
 

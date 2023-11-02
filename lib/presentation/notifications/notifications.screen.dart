@@ -8,21 +8,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart' as entity;
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/notification_list/notification_card.widget.dart';
-import 'package:gifthub/presentation/notification_list/notification_setting.view.dart';
+import 'package:gifthub/presentation/common/notification_card.widget.dart';
+import 'package:gifthub/presentation/notifications/notifications_setting.screen.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class NotificationListView extends ConsumerStatefulWidget {
-  const NotificationListView({super.key});
+class NotificationsScreen extends ConsumerStatefulWidget {
+  const NotificationsScreen({super.key});
 
   @override
-  ConsumerState<NotificationListView> createState() =>
-      _NotificationListViewState();
+  ConsumerState<NotificationsScreen> createState() =>
+      _NotificationsScreenState();
 }
 
-class _NotificationListViewState extends ConsumerState<NotificationListView> {
+class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   static const double padding = GiftHubConstants.padding;
 
   bool isDeleteMode = false;
@@ -40,7 +40,7 @@ class _NotificationListViewState extends ConsumerState<NotificationListView> {
       title: const Text('알림'),
       actions: [
         IconButton(
-          onPressed: () => navigate(const NotificationSettingView()),
+          onPressed: () => navigate(const NotificationsSettingScreen()),
           icon: const Icon(Icons.settings_outlined),
         ),
       ],

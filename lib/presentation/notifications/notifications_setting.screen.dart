@@ -8,16 +8,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 
-class NotificationSettingView extends ConsumerStatefulWidget {
-  const NotificationSettingView({super.key});
+class NotificationsSettingScreen extends ConsumerStatefulWidget {
+  const NotificationsSettingScreen({super.key});
 
   @override
-  ConsumerState<NotificationSettingView> createState() =>
-      _NotificationSettingViewState();
+  ConsumerState<NotificationsSettingScreen> createState() =>
+      _NotificationsSettingScreenState();
 }
 
-class _NotificationSettingViewState
-    extends ConsumerState<NotificationSettingView> {
+class _NotificationsSettingScreenState
+    extends ConsumerState<NotificationsSettingScreen> {
   bool voucherExpirationNotification = false;
 
   @override

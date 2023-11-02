@@ -11,12 +11,12 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
-import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
+import 'package:gifthub/presentation/home/home.state.dart';
+import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
-import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/theme/appbar.theme.dart';
 import 'package:gifthub/theme/button.theme.dart';
 import 'package:gifthub/theme/card.theme.dart';
