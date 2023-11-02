@@ -14,6 +14,7 @@ import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher_detail/voucher_barcode.view.dart';
 import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
+import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
@@ -316,7 +317,7 @@ class _VoucherDetailViewState extends ConsumerState<VoucherDetailView> {
             ),
           )();
           Share.share(
-            '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\nhttps://gifthub.kr/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
+            '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\n${GiftHubConstants.host}/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
             subject: '공유 링크 보내기',
           );
         },

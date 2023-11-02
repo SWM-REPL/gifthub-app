@@ -30,14 +30,11 @@ import 'package:gifthub/domain/repositories/product.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
+import 'package:gifthub/theme/constant.theme.dart';
 
 ///SECTION - Constants
 
-const _apiHost = 'https://api.dev.gifthub.kr';
-const _appVersion = '0.4.1';
-const host = 'https://gifthub.kr';
-final contactUsUri = Uri.parse('https://google.com');
-final eventUri = Uri.parse('https://naver.com');
+final contactUsUri = Uri.parse(GiftHubConstants.contactUsUri);
 
 ///!SECTION - Constants
 ///SECTION - Repositories
@@ -101,8 +98,8 @@ final voucherApiProvider = Provider<VoucherApi>((ref) {
 
 final authApiProvider = Provider<AuthApi>((ref) {
   return AuthApi(
-    host: _apiHost,
-    userAgent: 'GiftHub/$_appVersion',
+    host: GiftHubConstants.apiHost,
+    userAgent: 'GiftHub/${GiftHubConstants.appVersion}',
   );
 });
 
@@ -157,9 +154,9 @@ final dioProvider = Provider<Dio>((ref) {
   final tokenRepository = ref.watch(tokenRepositoryProvider);
   return Dio(
     BaseOptions(
-      baseUrl: _apiHost,
+      baseUrl: GiftHubConstants.apiHost,
       headers: {
-        'User-Agent': 'GiftHub/$_appVersion',
+        'User-Agent': 'GiftHub/${GiftHubConstants.appVersion}',
         'Content-Type': 'application/json',
         if (authToken != null)
           'Authorization': 'Bearer ${authToken.accessToken}',

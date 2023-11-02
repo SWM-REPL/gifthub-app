@@ -106,12 +106,9 @@ class UserInfoView extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: GiftHubConstants.padding),
-          TapRegion(
-            onTapInside: (event) => launchUrl(eventUri),
-            child: Container(
-              height: 100,
-              decoration: const BoxDecoration(color: Colors.red),
-            ),
+          Container(
+            height: 100,
+            decoration: const BoxDecoration(color: Colors.red),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
