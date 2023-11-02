@@ -137,6 +137,20 @@ class AuthApi {
     return AuthTokenDto.fromJson(response.data);
   }
 
+  Future<AuthTokenDto> signUpWithRandom({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
+    final response = await dio.post(
+      '/auth/sign-up/anonymous',
+      data: {
+        'device_token': deviceToken,
+        'fcm_token': fcmToken,
+      },
+    );
+    return AuthTokenDto.fromJson(response.data);
+  }
+
   Future<void> signOut({
     required final String accessToken,
     required final String deviceToken,

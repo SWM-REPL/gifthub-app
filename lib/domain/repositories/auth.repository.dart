@@ -37,6 +37,11 @@ abstract class AuthRepository {
     final String? fcmToken,
   });
 
+  Future<AuthToken> signUpWithRandom({
+    required final String deviceToken,
+    final String? fcmToken,
+  });
+
   Future<void> signOut({
     required final String accessToken,
     required final String deviceToken,

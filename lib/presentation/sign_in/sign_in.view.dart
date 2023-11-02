@@ -13,7 +13,6 @@ import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/presentation/loading_screen/loading_screen.view.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
@@ -30,9 +29,6 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () {
-      ref.watch(authTokenProvider.notifier).state = null;
-    });
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(context),
@@ -58,7 +54,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
   Widget _buildSignInForm(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Image.asset('assets/icon.png'),
@@ -115,6 +111,24 @@ class _SignInViewState extends ConsumerState<SignInView> {
                 children: [
                   Text(
                     '아이디로 계속하기',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).textTheme.labelMedium!.color,
+                    size: Theme.of(context).textTheme.labelMedium!.fontSize,
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () => _handleSignIn(
+                  () => ref.watch(signUpWithRandomCommandProvider)()),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '비회원으로 계속하기',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   Icon(

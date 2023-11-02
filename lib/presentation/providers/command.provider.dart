@@ -24,6 +24,7 @@ import 'package:gifthub/domain/commands/sign_in_with_kakao.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_naver.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
+import 'package:gifthub/domain/commands/sign_up_with_random.command.dart';
 import 'package:gifthub/domain/commands/update_user.command.dart';
 import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
@@ -142,6 +143,15 @@ final signInWithKakaoCommandProvider = Provider<SignInWithKakaoCommand>((ref) {
 
 final signInWithNaverCommandProvider = Provider<SignInWithNaverCommand>((ref) {
   return SignInWithNaverCommand(
+    authRepository: ref.watch(authRepositoryProvider),
+    tokenRepository: ref.watch(tokenRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final signUpWithRandomCommandProvider =
+    Provider<SignUpWithRandomCommand>((ref) {
+  return SignUpWithRandomCommand(
     authRepository: ref.watch(authRepositoryProvider),
     tokenRepository: ref.watch(tokenRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),

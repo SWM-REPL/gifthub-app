@@ -122,6 +122,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<AuthToken> signUpWithRandom({
+    required final String deviceToken,
+    final String? fcmToken,
+  }) async {
+    final tokens = await _authApi.signUpWithRandom(
+      deviceToken: deviceToken,
+      fcmToken: fcmToken,
+    );
+    return tokens;
+  }
+
+  @override
   Future<void> signOut({
     required final String accessToken,
     required final String deviceToken,
