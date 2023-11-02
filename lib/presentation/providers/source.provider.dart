@@ -37,6 +37,7 @@ const _apiHost = 'https://api.dev.gifthub.kr';
 const _appVersion = '0.4.1';
 const host = 'https://gifthub.kr';
 final contactUsUri = Uri.parse('https://google.com');
+final eventUri = Uri.parse('https://naver.com');
 
 ///!SECTION - Constants
 ///SECTION - Repositories
