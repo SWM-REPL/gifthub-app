@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
@@ -16,13 +15,11 @@ import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/notification_list/notification_list.view.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
-import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.view.dart';
 import 'package:gifthub/presentation/voucher_editor/voucher_editor.widget.dart';
 import 'package:gifthub/presentation/voucher_list/voucher_list.state.dart';
 import 'package:gifthub/utility/navigator.dart';
-import 'package:gifthub/utility/show_confirm.dart';
 
 class VoucherListView extends ConsumerWidget {
   static const double padding = 10;
@@ -92,7 +89,6 @@ class VoucherListView extends ConsumerWidget {
   ) {
     final listItems = <Widget>[
       _buildHeader(context, ref),
-      _buildBanner(context),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
@@ -248,21 +244,6 @@ class VoucherListView extends ConsumerWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildBanner(BuildContext context) {
-    return TapRegion(
-      onTapInside: (event) => showConfirm(
-        title: const Text('페이지 이동'),
-        content: const Text('이벤트 페이지로 이동하시겠습니까?'),
-        onConfirmPressed: () => launchUrl(eventUri),
-        onCanclePressed: () {},
-      ),
-      child: Container(
-        height: 100,
-        decoration: const BoxDecoration(color: Colors.red),
       ),
     );
   }

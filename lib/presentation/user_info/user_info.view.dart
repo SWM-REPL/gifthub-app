@@ -14,6 +14,7 @@ import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.view.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
+import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
@@ -102,6 +103,14 @@ class UserInfoView extends ConsumerWidget {
                 loading: () => const SizedBox.shrink(),
                 error: (error, stackTrace) => const SizedBox.shrink(),
               ),
+            ),
+          ),
+          const SizedBox(height: GiftHubConstants.padding),
+          TapRegion(
+            onTapInside: (event) => launchUrl(eventUri),
+            child: Container(
+              height: 100,
+              decoration: const BoxDecoration(color: Colors.red),
             ),
           ),
           Row(
