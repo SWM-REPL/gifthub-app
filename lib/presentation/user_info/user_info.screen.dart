@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/presentation/common/event_banner.widget.dart';
 import 'package:gifthub/presentation/common/labeled_field.widget.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
@@ -106,10 +107,7 @@ class UserInfoScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: GiftHubConstants.padding),
-          Container(
-            height: 100,
-            decoration: const BoxDecoration(color: Colors.red),
-          ),
+          const EventBanner(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

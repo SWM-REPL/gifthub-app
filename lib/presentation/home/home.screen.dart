@@ -8,6 +8,7 @@ import 'package:word_break_text/word_break_text.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
+import 'package:gifthub/presentation/common/event_banner.widget.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
@@ -89,6 +90,7 @@ class HomeScreen extends ConsumerWidget {
   ) {
     final listItems = <Widget>[
       _buildHeader(context, ref),
+      const EventBanner(),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
