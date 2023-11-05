@@ -11,6 +11,8 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
+import 'package:gifthub/presentation/giftcard/giftcard.screen.dart';
+import 'package:gifthub/presentation/home/home.screen.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
@@ -123,6 +125,21 @@ class _AppState extends ConsumerState<App> {
         textTheme: GiftHubTextTheme.theme,
       ),
       home: const LoadingScreen(),
+      onGenerateRoute: (settings) {
+        final uri = Uri.parse(settings.name!);
+
+        if (uri.pathSegments.length == 3 &&
+            uri.pathSegments.first == 'giftcards' &&
+            uri.pathSegments.last == 'deeplink') {
+          return MaterialPageRoute(
+            builder: (context) => GiftcardScreen(
+              id: uri.pathSegments[1],
+            ),
+            settings: settings,
+          );
+        }
+        return MaterialPageRoute(builder: (context) => const HomeScreen());
+      },
     );
   }
 

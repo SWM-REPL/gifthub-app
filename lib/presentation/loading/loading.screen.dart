@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/home/home.screen.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
@@ -24,7 +23,13 @@ class LoadingScreen extends ConsumerWidget {
       if (isTokenLoaded) {
         await ref.watch(appUserProvider.future);
         ref.invalidate(voucherIdsProvider);
-        navigate(const HomeScreen(), clearStack: true);
+        // navigate(const HomeScreen(), clearStack: true);
+        Future.microtask(() {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/giftcards/abcde/deeplink',
+            (route) => false,
+          );
+        });
       } else {
         navigate(const SignInScreen(), clearStack: true);
       }

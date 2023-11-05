@@ -1,0 +1,1 @@
+class GiftcardNotFoundException implements Exception {}

@@ -72,7 +72,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
-  custom_lint: ^0.5.1
+  custom_lint: ^0.5.4
   riverpod_lint: ^2.0.0
   import_sorter: ^4.6.0
 

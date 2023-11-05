@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // 🌎 Project imports:
 import 'package:gifthub/data/repositories/auth.repository.dart';
 import 'package:gifthub/data/repositories/brand.repository.dart';
+import 'package:gifthub/data/repositories/giftcard.repository.dart';
 import 'package:gifthub/data/repositories/notification.repository.dart';
 import 'package:gifthub/data/repositories/product.repository.dart';
 import 'package:gifthub/data/repositories/token.repository.dart';
@@ -15,6 +16,7 @@ import 'package:gifthub/data/repositories/voucher.repository.dart';
 import 'package:gifthub/data/sources/auth.api.dart';
 import 'package:gifthub/data/sources/auth.sdk.dart';
 import 'package:gifthub/data/sources/brand.api.dart';
+import 'package:gifthub/data/sources/giftcard.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/data/sources/product.api.dart';
 import 'package:gifthub/data/sources/token.sdk.dart';
@@ -25,6 +27,7 @@ import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/domain/repositories/auth.repository.dart';
 import 'package:gifthub/domain/repositories/brand.repository.dart';
+import 'package:gifthub/domain/repositories/giftcard.repository.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/domain/repositories/product.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
@@ -83,6 +86,12 @@ final tokenRepositoryProvider = Provider<TokenRepository>((ref) {
   );
 });
 
+final giftcardRepositoryProvider = Provider<GiftcardRepository>((ref) {
+  return GiftcardRepositoryImpl(
+    giftcardApi: ref.watch(giftcardApiProvider),
+  );
+});
+
 ///!SECTION - Repositories
 ///SECTION - APIs
 
@@ -116,6 +125,11 @@ final brandApiProvider = Provider<BrandApi>((ref) {
 final productApiProvider = Provider<ProductApi>((ref) {
   final dio = ref.watch(dioProvider);
   return ProductApi(dio);
+});
+
+final giftcardApiProvider = Provider<GiftcardApi>((ref) {
+  final dio = ref.watch(dioProvider);
+  return GiftcardApi(dio);
 });
 
 ///!SECTION - APIs

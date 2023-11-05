@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/commands/acquire_giftcard.command.dart';
 import 'package:gifthub/domain/commands/allow_expiration_notifications.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
@@ -239,5 +240,14 @@ final shareVoucherCommandProvider = Provider.family
     analytics: ref.watch(firebaseAnalyticsProvider),
     voucherId: parameter.voucherId,
     message: parameter.message,
+  );
+});
+
+final acquireGiftcardCommandProvider =
+    Provider.family.autoDispose<AcquireGiftcardComand, String>((ref, id) {
+  return AcquireGiftcardComand(
+    id,
+    giftcardRepository: ref.watch(giftcardRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
