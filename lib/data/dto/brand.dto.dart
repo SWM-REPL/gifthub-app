@@ -12,7 +12,7 @@ class BrandDto extends Brand {
     return BrandDto(
       id: json['id'],
       name: json['name'],
-      logoUrl: json['imageUrl'],
+      logoUrl: json['image_url'],
     );
   }
 }
