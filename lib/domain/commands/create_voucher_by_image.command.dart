@@ -10,26 +10,29 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 class CreateVoucherByImageCommand extends Command {
   final VoucherRepository _voucherRepository;
   final TextRecognizer _textRecognizer;
-  final String _imagePath;
+  final Uri _imageUri;
 
   CreateVoucherByImageCommand({
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
-    required String imagePath,
+    required Uri imageUri,
     TextRecognizer? textRecognizer,
   })  : _voucherRepository = voucherRepository,
-        _imagePath = imagePath,
+        _imageUri = imageUri,
         _textRecognizer = textRecognizer ??
             TextRecognizer(script: TextRecognitionScript.korean),
         super('create_voucher_by_image', analytics);
 
   Future<void> call() async {
     try {
+      final imagePath = _imageUri.toFilePath();
+      final imageExtension = imagePath.split('.').last;
       final uploadTarget =
-          await _voucherRepository.getPresignedUrlToUploadImage();
-      await _voucherRepository.uploadImage(_imagePath, uploadTarget);
+          await _voucherRepository.getPresignedUrlToUploadImage(imageExtension);
+      final uploadFilename = Uri.parse(uploadTarget).path.split('/').last;
+      await _voucherRepository.uploadImage(imagePath, uploadTarget);
 
-      final image = InputImage.fromFilePath(_imagePath);
+      final image = InputImage.fromFilePath(imagePath);
       final recognizedText = await _textRecognizer.processImage(image);
       final List<RecognizedTextLine> textlines = [];
 
@@ -46,7 +49,7 @@ class CreateVoucherByImageCommand extends Command {
       }
 
       final texts = textlines.map((t) => t.text).toList();
-      await _voucherRepository.createVoucherByTexts(texts);
+      await _voucherRepository.createVoucherByTexts(texts, uploadFilename);
       logSuccess({'texts': texts.reduce((value, element) => value + element)});
     } catch (error, stacktrace) {
       logFailure(error, stacktrace);

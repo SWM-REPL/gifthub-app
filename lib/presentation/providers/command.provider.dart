@@ -83,7 +83,7 @@ final createVoucherByImageCommandProvider = Provider.family
   return CreateVoucherByImageCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
-    imagePath: path,
+    imageUri: Uri.parse(path),
   );
 });
 

@@ -45,9 +45,13 @@ class VoucherApi {
     });
   }
 
-  Future<void> createVoucherByTexts(final List<String> texts) async {
+  Future<void> createVoucherByTexts(
+    final List<String> texts,
+    String filename,
+  ) async {
     await dio.post('/vouchers', data: {
       'texts': texts,
+      'filename': filename,
     });
   }
 
@@ -96,8 +100,8 @@ class VoucherApi {
     return GiftcardDto.fromJson(response.data);
   }
 
-  Future<String> getPresignedUrlToUploadImage() async {
-    final response = await dio.get('/vouchers/images');
+  Future<String> getPresignedUrlToUploadImage(String imageExtension) async {
+    final response = await dio.get('/vouchers/images/$imageExtension');
     // ignore: avoid_dynamic_calls
     return response.data['presigned_url'];
   }

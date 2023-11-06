@@ -16,7 +16,7 @@ abstract class VoucherRepository {
     required String brandName,
   });
 
-  Future<void> createVoucherByTexts(List<String> texts);
+  Future<void> createVoucherByTexts(List<String> texts, String filename);
 
   Future<void> updateVoucher(
     int id, {
@@ -39,7 +39,7 @@ abstract class VoucherRepository {
     required String message,
   });
 
-  Future<String> getPresignedUrlToUploadImage();
+  Future<String> getPresignedUrlToUploadImage(String imageExtension);
 
   Future<void> uploadImage(String imagePath, String uploadTarget);
 }
