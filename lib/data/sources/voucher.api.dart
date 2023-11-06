@@ -95,4 +95,25 @@ class VoucherApi {
     });
     return GiftcardDto.fromJson(response.data);
   }
+
+  Future<String> getPresignedUrlToUploadImage() async {
+    final response = await dio.get('/vouchers/images');
+    // ignore: avoid_dynamic_calls
+    return response.data['presigned_url'];
+  }
+
+  Future<void> uploadImage(
+    final String imagePath,
+    final String uploadTarget,
+  ) async {
+    String fileName = imagePath.split('/').last;
+    await dio.put(
+      uploadTarget,
+      data: FormData.fromMap(
+        {
+          'file': await MultipartFile.fromFile(imagePath, filename: fileName),
+        },
+      ),
+    );
+  }
 }

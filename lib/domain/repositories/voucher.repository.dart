@@ -38,4 +38,8 @@ abstract class VoucherRepository {
     required int id,
     required String message,
   });
+
+  Future<String> getPresignedUrlToUploadImage();
+
+  Future<void> uploadImage(String imagePath, String uploadTarget);
 }

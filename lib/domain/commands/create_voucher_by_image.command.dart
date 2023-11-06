@@ -25,6 +25,10 @@ class CreateVoucherByImageCommand extends Command {
 
   Future<void> call() async {
     try {
+      final uploadTarget =
+          await _voucherRepository.getPresignedUrlToUploadImage();
+      await _voucherRepository.uploadImage(_imagePath, uploadTarget);
+
       final image = InputImage.fromFilePath(_imagePath);
       final recognizedText = await _textRecognizer.processImage(image);
       final List<RecognizedTextLine> textlines = [];

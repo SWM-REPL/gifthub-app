@@ -93,4 +93,14 @@ class VoucherRepositoryImpl implements VoucherRepository {
       message: message,
     );
   }
+
+  @override
+  Future<String> getPresignedUrlToUploadImage() async {
+    return await _voucherApi.getPresignedUrlToUploadImage();
+  }
+
+  @override
+  Future<void> uploadImage(String imagePath, String uploadTarget) async {
+    await _voucherApi.uploadImage(imagePath, uploadTarget);
+  }
 }
