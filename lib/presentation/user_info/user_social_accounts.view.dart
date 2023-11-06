@@ -1,3 +1,6 @@
+// 🎯 Dart imports:
+import 'dart:io';
+
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -48,7 +51,8 @@ class UserSocialAccountsView extends ConsumerWidget {
       OAuth(id: '', name: '', providerCode: 'kakao', email: ''),
       OAuth(id: '', name: '', providerCode: 'naver', email: ''),
       OAuth(id: '', name: '', providerCode: 'google', email: ''),
-      OAuth(id: '', name: '', providerCode: 'apple', email: ''),
+      if (Platform.isIOS)
+        OAuth(id: '', name: '', providerCode: 'apple', email: ''),
     ];
     return Padding(
       padding: const EdgeInsets.all(10),
