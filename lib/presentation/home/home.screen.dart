@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
@@ -17,6 +19,7 @@ import 'package:gifthub/presentation/home/home_brands.widget.dart';
 import 'package:gifthub/presentation/home/home_header.widget.dart';
 import 'package:gifthub/presentation/notifications/notifications.screen.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
+import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
@@ -29,13 +32,40 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showModal(EditorScreen()),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: const Icon(Icons.add),
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        backgroundColor: colorScheme.primary,
+        spacing: padding,
+        children: [
+          SpeedDialChild(
+            onTap: () => showModal(EditorScreen()),
+            backgroundColor: colorScheme.surface,
+            foregroundColor: colorScheme.primary,
+            label: '텍스트로 등록하기',
+            child: const Icon(Icons.notes),
+          ),
+          SpeedDialChild(
+            onTap: () async {
+              final images = await ImagePicker().pickMultiImage();
+              await Future.wait(images.map(
+                (image) => ref.watch(
+                  createVoucherByImageCommandProvider(image.path),
+                )(),
+              ));
+              ref.invalidate(voucherIdsProvider);
+              ref.invalidate(pendingCountProvider);
+            },
+            backgroundColor: colorScheme.surface,
+            foregroundColor: colorScheme.primary,
+            label: '이미지로 등록하기',
+            child: const Icon(Icons.image),
+          ),
+        ],
       ),
     );
   }
@@ -64,9 +94,16 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     final vouchers = ref.watch(vouchersProvider);
+    final pendingCount = ref.watch(pendingCountProvider);
     return vouchers.when(
-      data: (v) =>
-          v.isEmpty ? _buildEmpty(context, ref) : _buildData(context, ref),
+      data: (v) => pendingCount.when(
+        data: (count) => count == 0 && v.isEmpty
+            ? _buildEmpty(context, ref)
+            : _buildData(context, ref),
+        loading: () => const Loading(),
+        error: (error, stacktrace) =>
+            _buildError(context, ref, error, stacktrace),
+      ),
       loading: () => const Loading(),
       error: (error, stacktrace) =>
           _buildError(context, ref, error, stacktrace),
