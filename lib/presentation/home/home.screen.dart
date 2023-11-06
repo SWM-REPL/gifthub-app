@@ -18,7 +18,9 @@ import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/presentation/notifications/notifications.screen.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
+import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
+import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
 import 'package:gifthub/presentation/user_info/user_info.screen.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -74,6 +76,12 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildEmpty(BuildContext context, WidgetRef ref) {
+    Future.microtask(() async {
+      final settingStorage = await ref.watch(settingStorageProvider.future);
+      if (settingStorage.isTutorialPending) {
+        showModal(const TutorialScreen());
+      }
+    });
     return Center(
       child: Column(
         children: [
