@@ -87,6 +87,7 @@ class _AppState extends ConsumerState<App> {
 
       if (data['notification_type'] == 'REGISTERED') {
         ref.invalidate(voucherIdsProvider);
+        ref.invalidate(pendingCountProvider);
       }
 
       ref.invalidate(notificationsProvider);

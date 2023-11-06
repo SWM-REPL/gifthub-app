@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/event_banner.widget.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
@@ -15,13 +13,12 @@ import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/editor/editor.screen.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
+import 'package:gifthub/presentation/home/home_brands.widget.dart';
+import 'package:gifthub/presentation/home/home_header.widget.dart';
 import 'package:gifthub/presentation/notifications/notifications.screen.dart';
-import 'package:gifthub/presentation/providers/appuser.provider.dart';
-import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
-import 'package:gifthub/presentation/user_info/user_info.screen.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -65,10 +62,11 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final voucherIds = ref.watch(voucherIdsProvider);
-    return voucherIds.when(
-      data: (ids) =>
-          ids.isEmpty ? _buildEmpty(context, ref) : _buildData(context, ref),
+    final homeState = ref.watch(homeStateProvider);
+    return homeState.when(
+      data: (state) => state.isEmpty
+          ? _buildEmpty(context, ref)
+          : _buildData(context, state),
       loading: () => const Loading(),
       error: (error, stackTrace) =>
           _buildError(context, ref, error, stackTrace),
@@ -82,11 +80,11 @@ class HomeScreen extends ConsumerWidget {
         showModal(const TutorialScreen());
       }
     });
-    return Center(
+    return const Center(
       child: Column(
         children: [
-          _buildHeader(context, ref),
-          const PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다.'),
+          HomeHeader(),
+          PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다.'),
         ],
       ),
     );
@@ -94,21 +92,23 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildData(
     BuildContext context,
-    WidgetRef ref,
+    HomeState state,
   ) {
     final listItems = <Widget>[
-      _buildHeader(context, ref),
+      const HomeHeader(),
       const EventBanner(),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: padding),
-        child: Text(
-          '보유 브랜드 목록',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
+      if (state.brands.isNotEmpty) ...[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: padding),
+          child: Text(
+            '보유 브랜드 목록',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+          ),
         ),
-      ),
-      _buildBrandList(context, ref),
+        const HomeBrands(),
+      ],
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
@@ -118,31 +118,19 @@ class HomeScreen extends ConsumerWidget {
               ),
         ),
       ),
-      ...ref.watch(pendingCountProvider).when(
-            data: (pendingCount) => List.generate(
-              pendingCount,
-              (index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: padding),
-                child: VoucherPendingCard(),
-              ),
-            ),
-            loading: () => [],
-            error: (error, stackTrace) {
-              throw error;
-            },
-          ),
-      ...ref.watch(filteredVouchersProvider).when(
-            data: (vouchers) => vouchers.map(
-              (v) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: padding),
-                child: VoucherCard(v.id),
-              ),
-            ),
-            loading: () => [],
-            error: (error, stackTrace) {
-              throw error;
-            },
-          ),
+      ...List.generate(
+        state.pendingCount,
+        (index) => const Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: VoucherPendingCard(),
+        ),
+      ),
+      ...state.filteredVouchers.map(
+        (v) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: padding),
+          child: VoucherCard(v.id),
+        ),
+      ),
     ];
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
@@ -174,159 +162,5 @@ class HomeScreen extends ConsumerWidget {
       );
     }
     throw error;
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
-    final appUser = ref.watch(appUserProvider);
-    final nickname = appUser.when(
-      data: (appUser) => appUser.nickname,
-      loading: () => '',
-      error: (error, stackTrace) => throw error,
-    );
-    return Container(
-      height: 150,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(padding * 2),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(padding * 2),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text('안녕하세요.'),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(4),
-                        ),
-                        onPressed: () => navigate(UserInfoScreen()),
-                        child: Row(
-                          children: [
-                            Text(
-                              '$nickname님',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withAlpha(128),
-                                    decorationThickness: 8,
-                                  ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              color: Theme.of(context).colorScheme.secondary,
-                              size: 16,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  WordBreakText(
-                    '만료 예정 기프티콘을 확인하세요!',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 0,
-              child: Image.asset('assets/icon-circle.png'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBrandList(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
-    final brands = ref.watch(brandsProvider);
-    return brands.when(
-      data: (brands) => SizedBox(
-        height: 180,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: padding),
-          itemCount: brands.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildBrandCard(context, ref, brands[index]);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(width: padding);
-          },
-        ),
-      ),
-      loading: () => const Loading(),
-      error: (error, stackTrace) {
-        throw error;
-      },
-    );
-  }
-
-  Widget _buildBrandCard(
-    BuildContext context,
-    WidgetRef ref,
-    Brand brand,
-  ) {
-    final brandFilter = ref.watch(brandFilterProvider);
-    final isSelected = brandFilter?.id == brand.id;
-    return TapRegion(
-      onTapInside: (event) {
-        final brandFilterNotifier = ref.watch(brandFilterProvider.notifier);
-        brandFilterNotifier.state = isSelected ? null : brand;
-      },
-      child: SizedBox(
-        width: 130,
-        height: 180,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(
-              color: isSelected
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.transparent,
-              width: 2,
-            ),
-          ),
-          margin: EdgeInsets.zero,
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.network(
-                  brand.logoUrl,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-                Text(brand.name),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
