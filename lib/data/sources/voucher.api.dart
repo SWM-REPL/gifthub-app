@@ -111,7 +111,7 @@ class VoucherApi {
     final String uploadTarget,
   ) async {
     String fileName = imagePath.split('/').last;
-    await dio.put(
+    await Dio().put(
       uploadTarget,
       data: FormData.fromMap(
         {
