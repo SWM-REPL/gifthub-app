@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: _buildAppBar(context, ref),
       body: _buildBody(context, ref),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
@@ -70,7 +70,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context, WidgetRef ref) {
     return AppBar(
       title: Row(
         children: [
@@ -86,7 +86,32 @@ class HomeScreen extends ConsumerWidget {
       actions: [
         IconButton(
           onPressed: () => navigate(const NotificationsScreen()),
-          icon: const Icon(Icons.notifications_outlined),
+          icon: Stack(
+            children: [
+              const Icon(
+                Icons.notifications_outlined,
+                size: 24,
+              ),
+              ref.watch(notificationCountProvider).when(
+                    data: (count) => count == 0
+                        ? const SizedBox()
+                        : Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                    loading: () => const SizedBox(),
+                    error: (error, stacktrace) => const SizedBox(),
+                  ),
+            ],
+          ),
         ),
       ],
     );
