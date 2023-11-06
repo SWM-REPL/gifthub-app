@@ -127,11 +127,13 @@ class _EditorScreenState extends ConsumerState<EditorScreen> {
                   LabeledTextField(
                     labelText: '잔액',
                     controller: widget.balanceController,
+                    keyboardType: TextInputType.number,
                   ),
                 const Divider(),
                 LabeledTextField(
                   labelText: '바코드',
                   controller: widget.barcodeController,
+                  keyboardType: TextInputType.number,
                 ),
               ],
             ),
