@@ -66,6 +66,7 @@ class UserInfoScreen extends ConsumerWidget {
             child: Column(
               children: [
                 LabeledTextField(
+                  showForwardIcon: false,
                   labelText: '아이디',
                   controller: usernameController,
                   enabled: false,

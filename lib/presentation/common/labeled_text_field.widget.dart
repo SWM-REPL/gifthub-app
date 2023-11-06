@@ -9,6 +9,7 @@ class LabeledTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool enabled;
   final bool obsecureText;
+  final bool showForwardIcon;
   final TextInputType keyboardType;
   final void Function(PointerDownEvent)? onTap;
 
@@ -18,6 +19,7 @@ class LabeledTextField extends StatelessWidget {
     required this.controller,
     this.enabled = true,
     this.obsecureText = false,
+    this.showForwardIcon = true,
     this.keyboardType = TextInputType.text,
     this.onTap,
   });
@@ -25,6 +27,7 @@ class LabeledTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabeledField(
+      showForwardIcon: showForwardIcon,
       labelText: labelText,
       onTap: onTap,
       child: TextFormField(

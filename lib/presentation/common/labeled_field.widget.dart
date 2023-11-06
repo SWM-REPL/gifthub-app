@@ -5,11 +5,13 @@ class LabeledField extends StatelessWidget {
   final Widget child;
   final void Function(PointerDownEvent)? onTap;
   final String labelText;
+  final bool showForwardIcon;
 
   const LabeledField({
     super.key,
-    required this.labelText,
     required this.child,
+    required this.labelText,
+    this.showForwardIcon = true,
     this.onTap,
   });
 
@@ -28,11 +30,12 @@ class LabeledField extends StatelessWidget {
           Expanded(
             child: child,
           ),
-          Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 16,
-          ),
+          if (showForwardIcon)
+            Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 16,
+            ),
           const SizedBox(width: 10),
         ],
       ),
