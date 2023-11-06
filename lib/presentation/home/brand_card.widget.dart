@@ -19,7 +19,7 @@ class BrandCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeStateProvider);
+    final brandInfo = ref.watch(brandInfoProvider);
     final brandFilter = ref.watch(brandFilterProvider);
     final isSelected = brandFilter?.id == brand.id;
     return TapRegion(
@@ -59,8 +59,8 @@ class BrandCard extends ConsumerWidget {
               ),
               Text(
                 currencyFormat(
-                  state.when(
-                    data: (state) => state.brandTotalBalance[brand],
+                  brandInfo.when(
+                    data: (infos) => infos[brand.id]?.totalBalance,
                     loading: () => null,
                     error: (error, stacktrace) => null,
                   ),
@@ -72,8 +72,8 @@ class BrandCard extends ConsumerWidget {
                     ),
               ),
               Text(
-                '${state.when(
-                  data: (state) => state.brandVoucherCount[brand],
+                '${brandInfo.when(
+                  data: (infos) => infos[brand.id]?.voucherCount,
                   loading: () => 0,
                   error: (error, stacktrace) => 0,
                 )}개',
