@@ -94,8 +94,18 @@ class _AppState extends ConsumerState<App> {
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title!, style: Theme.of(context).textTheme.bodyLarge),
-            Text(body!, style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              title!,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: GiftHubColors.surface,
+                  ),
+            ),
+            Text(
+              body!,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: GiftHubColors.surface,
+                  ),
+            ),
           ],
         ),
       );
@@ -105,7 +115,7 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
-      Future.delayed(Duration.zero, () async {
+      Future.microtask(() async {
         await _processSharedIntents();
       });
     }
@@ -156,10 +166,10 @@ class _AppState extends ConsumerState<App> {
     await Future.wait(_sharedFiles.map(
       (f) => createVoucherByImageCommand(f.path),
     ));
+    ref.invalidate(pendingCountProvider);
     setState(() {
       _sharedFiles = [];
       _sharedText = '';
     });
-    ref.invalidate(pendingCountProvider);
   }
 }
