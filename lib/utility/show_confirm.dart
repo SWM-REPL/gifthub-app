@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
+import 'package:gifthub/utility/navigator.dart';
 
 void showConfirm({
   Widget? title,
@@ -23,22 +24,24 @@ void showConfirm({
       title: title,
       content: content,
       actions: [
-        if (onCanclePressed != null)
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, 'Cancel');
+        TextButton(
+          onPressed: () {
+            navigateBack();
+            if (onCanclePressed != null) {
               onCanclePressed();
-            },
-            child: Text(cancleText),
-          ),
-        if (onConfirmPressed != null)
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, 'Confirm');
+            }
+          },
+          child: Text(cancleText),
+        ),
+        TextButton(
+          onPressed: () {
+            navigateBack();
+            if (onConfirmPressed != null) {
               onConfirmPressed();
-            },
-            child: Text(confirmText),
-          ),
+            }
+          },
+          child: Text(confirmText),
+        ),
       ],
     ),
   );
