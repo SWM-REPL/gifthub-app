@@ -8,6 +8,7 @@ import 'package:gifthub/domain/entities/voucher.entity.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 
@@ -67,4 +68,9 @@ final pendingCountProvider = FutureProvider<int>((ref) async {
   final pendingCount =
       await ref.watch(fetchPendingVoucherCountCommandProvider)(appUser.id);
   return pendingCount;
+});
+
+final notificationCountProvider = FutureProvider<int>((ref) async {
+  final notifications = await ref.watch(notificationsProvider.future);
+  return notifications.where((noti) => noti.checkedAt == null).length;
 });
