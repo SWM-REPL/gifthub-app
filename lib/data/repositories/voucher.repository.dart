@@ -43,8 +43,11 @@ class VoucherRepositoryImpl implements VoucherRepository {
   }
 
   @override
-  Future<void> createVoucherByTexts(List<String> texts) async {
-    await _voucherApi.createVoucherByTexts(texts);
+  Future<void> createVoucherByTexts(
+    List<String> texts,
+    String filename,
+  ) async {
+    await _voucherApi.createVoucherByTexts(texts, filename);
   }
 
   @override
@@ -92,5 +95,15 @@ class VoucherRepositoryImpl implements VoucherRepository {
       id: id,
       message: message,
     );
+  }
+
+  @override
+  Future<String> getPresignedUrlToUploadImage(String imageExtension) async {
+    return await _voucherApi.getPresignedUrlToUploadImage(imageExtension);
+  }
+
+  @override
+  Future<void> uploadImage(String imagePath, String uploadTarget) async {
+    await _voucherApi.uploadImage(imagePath, uploadTarget);
   }
 }
