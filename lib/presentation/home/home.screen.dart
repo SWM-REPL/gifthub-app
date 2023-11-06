@@ -133,23 +133,18 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
     ];
-    return Stack(
-      children: [
-        ListView.separated(
-          physics: const ClampingScrollPhysics(),
-          itemCount: listItems.length,
-          itemBuilder: (context, index) => listItems[index],
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: padding);
-          },
-        ),
-        RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(voucherIdsProvider);
-          },
-          child: ListView(),
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(voucherIdsProvider);
+      },
+      child: ListView.separated(
+        physics: const ClampingScrollPhysics(),
+        itemCount: listItems.length,
+        itemBuilder: (context, index) => listItems[index],
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: padding);
+        },
+      ),
     );
   }
 
