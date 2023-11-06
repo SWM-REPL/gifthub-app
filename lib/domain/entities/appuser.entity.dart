@@ -8,6 +8,7 @@ import 'package:gifthub/domain/entities/user.entity.dart';
 class AppUser extends User with EquatableMixin {
   final List<OAuth> oauth;
   final bool allowNotifications;
+  final bool isAnonymous;
 
   AppUser({
     required super.id,
@@ -15,6 +16,7 @@ class AppUser extends User with EquatableMixin {
     required super.username,
     required this.oauth,
     required this.allowNotifications,
+    required this.isAnonymous,
   });
 
   @override
@@ -24,6 +26,7 @@ class AppUser extends User with EquatableMixin {
         super.username,
         oauth,
         allowNotifications,
+        isAnonymous,
       ];
 
   AppUser copyWith({
@@ -32,6 +35,7 @@ class AppUser extends User with EquatableMixin {
     String? username,
     List<OAuth>? oauth,
     bool? allowNotifications,
+    bool? isAnonymous,
   }) =>
       AppUser(
         id: id ?? super.id,
@@ -39,5 +43,6 @@ class AppUser extends User with EquatableMixin {
         username: username ?? super.username,
         oauth: oauth ?? this.oauth,
         allowNotifications: allowNotifications ?? this.allowNotifications,
+        isAnonymous: isAnonymous ?? this.isAnonymous,
       );
 }
