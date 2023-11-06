@@ -11,35 +11,6 @@ import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 
-class HomeState with EquatableMixin {
-  final List<Brand> brands;
-  final List<Voucher> filteredVouchers;
-  final int pendingCount;
-
-  HomeState({
-    required this.brands,
-    required this.filteredVouchers,
-    required this.pendingCount,
-  });
-
-  bool get isEmpty => filteredVouchers.isEmpty && pendingCount == 0;
-
-  @override
-  List<Object?> get props => [
-        brands,
-        filteredVouchers,
-        pendingCount,
-      ];
-}
-
-final homeStateProvider = FutureProvider<HomeState>((ref) async {
-  return HomeState(
-    brands: await ref.watch(brandsProvider.future),
-    filteredVouchers: await ref.watch(filteredVouchersProvider.future),
-    pendingCount: await ref.watch(pendingCountProvider.future),
-  );
-});
-
 final brandFilterProvider = StateProvider<Brand?>((ref) => null);
 
 final filteredVouchersProvider = FutureProvider<List<Voucher>>((ref) async {
@@ -50,11 +21,45 @@ final filteredVouchersProvider = FutureProvider<List<Voucher>>((ref) async {
     if (brandFilter == null) {
       return true;
     }
-    final product =
-        products.firstWhere((product) => product.id == voucher.productId);
+    final product = products.firstWhere((p) => p.id == voucher.productId);
     return product.brandId == brandFilter.id;
   }).toList();
   return filteredVouchers;
+});
+
+class BrandInfo with EquatableMixin {
+  final int voucherCount;
+  final int totalBalance;
+
+  BrandInfo({
+    required this.voucherCount,
+    required this.totalBalance,
+  });
+
+  @override
+  List<Object?> get props => [
+        voucherCount,
+        totalBalance,
+      ];
+}
+
+final brandInfoProvider = FutureProvider<Map<int, BrandInfo>>((ref) async {
+  final vouchers = await ref.watch(vouchersProvider.future);
+  final products = await ref.watch(productsProvider.future);
+  final brands = await ref.watch(brandsProvider.future);
+  final brandInfos = <int, BrandInfo>{};
+  for (final brand in brands) {
+    brandInfos[brand.id] = BrandInfo(voucherCount: 0, totalBalance: 0);
+  }
+  for (final voucher in vouchers) {
+    final product = products.firstWhere((p) => p.id == voucher.productId);
+    final brandInfo = brandInfos[product.brandId]!;
+    brandInfos[product.brandId] = BrandInfo(
+      voucherCount: brandInfo.voucherCount + 1,
+      totalBalance: brandInfo.totalBalance + voucher.balance,
+    );
+  }
+  return brandInfos;
 });
 
 final pendingCountProvider = FutureProvider<int>((ref) async {

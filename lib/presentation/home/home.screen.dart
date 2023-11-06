@@ -16,6 +16,7 @@ import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/presentation/home/home_brands.widget.dart';
 import 'package:gifthub/presentation/home/home_header.widget.dart';
 import 'package:gifthub/presentation/notifications/notifications.screen.dart';
+import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
@@ -62,14 +63,13 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeStateProvider);
-    return homeState.when(
-      data: (state) => state.isEmpty
-          ? _buildEmpty(context, ref)
-          : _buildData(context, ref, state),
+    final vouchers = ref.watch(vouchersProvider);
+    return vouchers.when(
+      data: (v) =>
+          v.isEmpty ? _buildEmpty(context, ref) : _buildData(context, ref),
       loading: () => const Loading(),
-      error: (error, stackTrace) =>
-          _buildError(context, ref, error, stackTrace),
+      error: (error, stacktrace) =>
+          _buildError(context, ref, error, stacktrace),
     );
   }
 
@@ -93,23 +93,31 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildData(
     BuildContext context,
     WidgetRef ref,
-    HomeState state,
   ) {
+    final brands = ref.watch(brandsProvider);
+    final pendingCount = ref.watch(pendingCountProvider);
+    final filteredVoucher = ref.watch(filteredVouchersProvider);
     final listItems = <Widget>[
       const HomeHeader(),
       const EventBanner(),
-      if (state.brands.isNotEmpty) ...[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: padding),
-          child: Text(
-            '보유 브랜드 목록',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
+      ...brands.when(
+        data: (b) => b.isEmpty
+            ? []
+            : [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: padding),
+                  child: Text(
+                    '보유 브랜드 목록',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                  ),
                 ),
-          ),
-        ),
-        const HomeBrands(),
-      ],
+                const HomeBrands()
+              ],
+        loading: () => [],
+        error: (error, stacktrace) => [],
+      ),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: padding),
         child: Text(
@@ -119,37 +127,40 @@ class HomeScreen extends ConsumerWidget {
               ),
         ),
       ),
-      ...List.generate(
-        state.pendingCount,
-        (index) => const Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: VoucherPendingCard(),
+      ...pendingCount.when(
+        data: (count) => List.generate(
+          count,
+          (index) => const Padding(
+            padding: EdgeInsets.symmetric(horizontal: padding),
+            child: VoucherPendingCard(),
+          ),
         ),
+        loading: () => [],
+        error: (error, stacktrace) => [],
       ),
-      ...state.filteredVouchers.map(
-        (v) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: padding),
-          child: VoucherCard(v.id),
+      ...filteredVoucher.when(
+        data: (v) => v.map(
+          (v) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: padding),
+            child: VoucherCard(v.id),
+          ),
         ),
+        loading: () => [],
+        error: (error, stacktrace) => [],
       ),
     ];
-    return Stack(
-      children: [
-        ListView.separated(
-          physics: const ClampingScrollPhysics(),
-          itemCount: listItems.length,
-          itemBuilder: (context, index) => listItems[index],
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: padding);
-          },
-        ),
-        RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(voucherIdsProvider);
-          },
-          child: ListView(),
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(voucherIdsProvider);
+      },
+      child: ListView.separated(
+        physics: const ClampingScrollPhysics(),
+        itemCount: listItems.length,
+        itemBuilder: (context, index) => listItems[index],
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: padding);
+        },
+      ),
     );
   }
 

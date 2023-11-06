@@ -20,15 +20,15 @@ class HomeBrands extends ConsumerWidget {
     final brands = ref.watch(brandsProvider);
     return brands.when(
       data: (brands) => SizedBox(
-        height: 180,
+        height: 152,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: padding),
           itemCount: brands.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (context, index) {
             return BrandCard(brands[index]);
           },
-          separatorBuilder: (BuildContext context, int index) {
+          separatorBuilder: (context, index) {
             return const SizedBox(width: padding);
           },
         ),
