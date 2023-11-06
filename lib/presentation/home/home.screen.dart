@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
     return homeState.when(
       data: (state) => state.isEmpty
           ? _buildEmpty(context, ref)
-          : _buildData(context, state),
+          : _buildData(context, ref, state),
       loading: () => const Loading(),
       error: (error, stackTrace) =>
           _buildError(context, ref, error, stackTrace),
@@ -92,6 +92,7 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildData(
     BuildContext context,
+    WidgetRef ref,
     HomeState state,
   ) {
     final listItems = <Widget>[
@@ -132,13 +133,23 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
     ];
-    return ListView.separated(
-      physics: const ClampingScrollPhysics(),
-      itemCount: listItems.length,
-      itemBuilder: (context, index) => listItems[index],
-      separatorBuilder: (context, index) {
-        return const SizedBox(height: padding);
-      },
+    return Stack(
+      children: [
+        ListView.separated(
+          physics: const ClampingScrollPhysics(),
+          itemCount: listItems.length,
+          itemBuilder: (context, index) => listItems[index],
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: padding);
+          },
+        ),
+        RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(voucherIdsProvider);
+          },
+          child: ListView(),
+        ),
+      ],
     );
   }
 
