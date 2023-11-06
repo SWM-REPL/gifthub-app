@@ -118,13 +118,17 @@ class UserInfoScreen extends ConsumerWidget {
                         title: const Text('로그아웃'),
                         content: user.isAnonymous
                             ? const Text(
-                                '임시 회원은 로그아웃 시 모든 기프티콘이 삭제되며 복구할 수 없습니다. 비회원 상태로 로그아웃 하기 전 "내 정보 수정" 페이지에서 소셜 계정을 연동할 수 있습니다.\n\n정말로 로그아웃을 하시겠습니까?')
+                                '임시 회원은 로그아웃 시 모든 기프티콘이 삭제되며 복구할 수 없습니다.\n\n비회원 상태로 로그아웃 하기 전 "내 정보 수정" 페이지에서 소셜 계정을 연동할 수 있습니다.\n\n정말로 로그아웃을 하시겠습니까?')
                             : const Text('정말로 로그아웃을 하시겠습니까?'),
                         onConfirmPressed: () async {
                           final settingRepository =
                               await ref.watch(settingRepositoryProvider.future);
                           settingRepository.clear();
-                          await ref.watch(signOutCommandProvider)();
+                          if (user.isAnonymous) {
+                            await ref.watch(deregisterCommandProvider)();
+                          } else {
+                            await ref.watch(signOutCommandProvider)();
+                          }
                           ref.invalidate(authTokenProvider);
                           navigate(const SignInScreen(), clearStack: true);
                         },
