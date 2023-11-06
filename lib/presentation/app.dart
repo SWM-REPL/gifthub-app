@@ -162,10 +162,8 @@ class _AppState extends ConsumerState<App> {
   }
 
   Future<void> _processSharedIntents() async {
-    final createVoucherByImageCommand =
-        ref.watch(createVoucherByImageCommandProvider);
     await Future.wait(_sharedFiles.map(
-      (f) => createVoucherByImageCommand(f.path),
+      (f) => ref.watch(createVoucherByImageCommandProvider(f.path))(),
     ));
     ref.invalidate(pendingCountProvider);
     setState(() {

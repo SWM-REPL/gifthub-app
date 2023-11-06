@@ -78,11 +78,12 @@ final createVoucherByValuesCommandProvider =
   );
 });
 
-final createVoucherByImageCommandProvider =
-    Provider<CreateVoucherByImageCommand>((ref) {
+final createVoucherByImageCommandProvider = Provider.family
+    .autoDispose<CreateVoucherByImageCommand, String>((ref, path) {
   return CreateVoucherByImageCommand(
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
+    imagePath: path,
   );
 });
 

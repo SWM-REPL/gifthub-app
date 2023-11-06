@@ -10,19 +10,22 @@ import 'package:gifthub/domain/repositories/voucher.repository.dart';
 class CreateVoucherByImageCommand extends Command {
   final VoucherRepository _voucherRepository;
   final TextRecognizer _textRecognizer;
+  final String _imagePath;
 
   CreateVoucherByImageCommand({
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
+    required String imagePath,
     TextRecognizer? textRecognizer,
   })  : _voucherRepository = voucherRepository,
+        _imagePath = imagePath,
         _textRecognizer = textRecognizer ??
             TextRecognizer(script: TextRecognitionScript.korean),
         super('create_voucher_by_image', analytics);
 
-  Future<void> call(String imagePath) async {
+  Future<void> call() async {
     try {
-      final image = InputImage.fromFilePath(imagePath);
+      final image = InputImage.fromFilePath(_imagePath);
       final recognizedText = await _textRecognizer.processImage(image);
       final List<RecognizedTextLine> textlines = [];
 
