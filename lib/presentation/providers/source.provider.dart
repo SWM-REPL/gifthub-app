@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/repositories/auth.repository.dart';
@@ -10,6 +11,7 @@ import 'package:gifthub/data/repositories/brand.repository.dart';
 import 'package:gifthub/data/repositories/giftcard.repository.dart';
 import 'package:gifthub/data/repositories/notification.repository.dart';
 import 'package:gifthub/data/repositories/product.repository.dart';
+import 'package:gifthub/data/repositories/setting.repository.dart';
 import 'package:gifthub/data/repositories/token.repository.dart';
 import 'package:gifthub/data/repositories/user.repository.dart';
 import 'package:gifthub/data/repositories/voucher.repository.dart';
@@ -19,6 +21,7 @@ import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/giftcard.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/data/sources/product.api.dart';
+import 'package:gifthub/data/sources/setting.storage.dart';
 import 'package:gifthub/data/sources/token.sdk.dart';
 import 'package:gifthub/data/sources/token.storage.dart';
 import 'package:gifthub/data/sources/user.api.dart';
@@ -30,6 +33,7 @@ import 'package:gifthub/domain/repositories/brand.repository.dart';
 import 'package:gifthub/domain/repositories/giftcard.repository.dart';
 import 'package:gifthub/domain/repositories/notification.repository.dart';
 import 'package:gifthub/domain/repositories/product.repository.dart';
+import 'package:gifthub/domain/repositories/setting.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
@@ -92,6 +96,13 @@ final giftcardRepositoryProvider = Provider<GiftcardRepository>((ref) {
   );
 });
 
+final settingRepositoryProvider =
+    FutureProvider<SettingRepository>((ref) async {
+  return SettingRepositoryImpl(
+    settingStoreage: await ref.watch(settingStorageProvider.future),
+  );
+});
+
 ///!SECTION - Repositories
 ///SECTION - APIs
 
@@ -151,6 +162,11 @@ final tokenStorageProvider = Provider<TokenStorage>((ref) {
   return TokenStorage(flutterSecureStorage);
 });
 
+final settingStorageProvider = FutureProvider<SettingStorage>((ref) async {
+  final settingPreference = await ref.watch(settingPreferenceProvider.future);
+  return SettingStorage(settingPreference);
+});
+
 ///!SECTION - Storages
 ///SECTION - Others
 
@@ -160,6 +176,13 @@ final authTokenProvider = StateProvider<AuthToken?>((ref) {
 
 final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
   return const FlutterSecureStorage();
+});
+
+final settingPreferenceProvider =
+    FutureProvider<SharedPreferences>((ref) async {
+  final instance = await SharedPreferences.getInstance();
+  await instance.reload();
+  return instance;
 });
 
 final dioProvider = Provider<Dio>((ref) {

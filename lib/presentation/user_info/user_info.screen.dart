@@ -116,6 +116,9 @@ class UserInfoScreen extends ConsumerWidget {
                   title: const Text('로그아웃'),
                   content: const Text('정말로 로그아웃을 하시겠습니까?'),
                   onConfirmPressed: () async {
+                    final settingRepository =
+                        await ref.watch(settingRepositoryProvider.future);
+                    settingRepository.clear();
                     await ref.watch(signOutCommandProvider)();
                     ref.invalidate(authTokenProvider);
                     navigate(const SignInScreen(), clearStack: true);
@@ -132,6 +135,9 @@ class UserInfoScreen extends ConsumerWidget {
                   title: const Text('회원 탈퇴'),
                   content: const Text('정말로 회원 탈퇴를 하시겠습니까?'),
                   onConfirmPressed: () async {
+                    final settingRepository =
+                        await ref.watch(settingRepositoryProvider.future);
+                    settingRepository.clear();
                     await ref.watch(deregisterCommandProvider)();
                     ref.invalidate(authTokenProvider);
                     navigate(const SignInScreen(), clearStack: true);

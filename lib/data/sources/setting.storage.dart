@@ -1,19 +1,27 @@
 // 📦 Package imports:
-import 'package:localstorage/localstorage.dart';
+
+// 📦 Package imports:
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingStorage {
   static const _pendingTutorialKey = 'TUTORIAL_KEY';
 
-  final LocalStorage storage;
+  final SharedPreferences prefs;
 
-  SettingStorage(this.storage);
+  SettingStorage(this.prefs);
 
   bool get isTutorialPending {
-    final pendingTutorial = storage.getItem(_pendingTutorialKey);
-    return pendingTutorial == null ? true : pendingTutorial as bool;
+    final pendingTutorial = prefs.getBool(_pendingTutorialKey);
+    return pendingTutorial ?? true;
   }
 
   set isTutorialPending(bool value) {
-    storage.setItem(_pendingTutorialKey, value);
+    prefs.setBool(_pendingTutorialKey, value);
+  }
+
+  Future<void> clear() async {
+    await Future.wait([
+      prefs.remove(_pendingTutorialKey),
+    ]);
   }
 }
