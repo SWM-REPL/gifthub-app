@@ -17,8 +17,8 @@ class BrandCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final brandFilter = ref.watch(brandFilterProvider);
     final isSelected = brandFilter?.id == brand.id;
-    return TapRegion(
-      onTapInside: (event) {
+    return GestureDetector(
+      onTap: () {
         final brandFilterNotifier = ref.watch(brandFilterProvider.notifier);
         brandFilterNotifier.state = isSelected ? null : brand;
       },

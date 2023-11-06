@@ -9,8 +9,8 @@ class EventBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TapRegion(
-      onTapInside: (event) => handleTapInside(),
+    return GestureDetector(
+      onTap: () => handleTapInside(),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Image.asset('assets/event-banner.png'),
