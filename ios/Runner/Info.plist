@@ -87,7 +87,7 @@
 		</dict>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>모바일 상품권 이미지를 등록하시려면 사진에 접근 권한을 허용해주세요.</string>
+	<string>사진을 통해 모바일 상품권을 등록하기 위해서는 라쿤이가 사진을 볼 수 있어야 해요.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
