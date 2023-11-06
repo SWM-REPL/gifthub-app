@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/theme/constant.theme.dart';
+import 'package:gifthub/utility/format_string.dart';
 
 class BrandCard extends ConsumerWidget {
   static const padding = GiftHubConstants.padding;
@@ -18,6 +19,7 @@ class BrandCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(homeStateProvider);
     final brandFilter = ref.watch(brandFilterProvider);
     final isSelected = brandFilter?.id == brand.id;
     return TapRegion(
@@ -56,7 +58,13 @@ class BrandCard extends ConsumerWidget {
                     ),
               ),
               Text(
-                '18,500원',
+                currencyFormat(
+                  state.when(
+                    data: (state) => state.brandTotalBalance[brand],
+                    loading: () => null,
+                    error: (error, stacktrace) => null,
+                  ),
+                ),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -64,7 +72,11 @@ class BrandCard extends ConsumerWidget {
                     ),
               ),
               Text(
-                '4개',
+                '${state.when(
+                  data: (state) => state.brandVoucherCount[brand],
+                  loading: () => 0,
+                  error: (error, stacktrace) => 0,
+                )}개',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
