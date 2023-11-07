@@ -76,28 +76,48 @@ class VoucherButtons extends ConsumerWidget {
                 endIndent: 10,
                 thickness: 1,
               ),
-              TextButton.icon(
-                onPressed: () => _onSharePressed(ref),
-                icon: Icon(
-                  voucher.when(
-                    data: (v) => v.isShared
-                        ? Icons.cancel_rounded
-                        : Icons.share_outlined,
-                    loading: () => Icons.share_outlined,
-                    error: (error, stackTrace) => throw error,
-                  ),
-                  color: Colors.grey,
-                ),
-                label: Text(
-                  voucher.when(
-                    data: (v) => v.isShared ? '공유 취소하기' : '공유하기',
-                    loading: () => '',
-                    error: (error, stackTrace) => throw error,
-                  ),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Colors.grey,
+              voucher.when(
+                data: (v) => v.isShared
+                    ? TextButton.icon(
+                        onPressed: () => _onRetrievePressed(ref),
+                        icon: const Icon(
+                          Icons.settings_backup_restore_outlined,
+                          color: Colors.grey,
+                        ),
+                        label: Text(
+                          '회수하기',
+                          style:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: Colors.grey,
+                                  ),
+                        ),
+                      )
+                    : TextButton.icon(
+                        onPressed: () => _onSharePressed(ref),
+                        icon: const Icon(Icons.share_outlined,
+                            color: Colors.grey),
+                        label: Text(
+                          '공유하기',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(color: Colors.grey),
+                        ),
                       ),
+                loading: () => TextButton.icon(
+                  onPressed: null,
+                  icon: const Icon(
+                    Icons.share_outlined,
+                    color: Colors.grey,
+                  ),
+                  label: Text(
+                    '공유하기',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
                 ),
+                error: (error, stackTrace) => throw error,
               ),
             ],
           ),
@@ -124,57 +144,78 @@ class VoucherButtons extends ConsumerWidget {
   }
 
   void _onSharePressed(WidgetRef ref) async {
-    showConfirm(
+    final isConfirmed = await showConfirm(
       title: const Text('기프티콘 공유하기'),
       content: const Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('선물이 완료된 기프티콘은 더이상 사용자의 기프티콘 목록에 표시되지 않습니다.'),
-          Text(''),
+          SizedBox(height: GiftHubConstants.padding),
           Text('정말 선물하시겠습니까?'),
         ],
       ),
-      onConfirmPressed: () => showConfirm(
-        title: const Text('기프티콘 공유하기'),
-        content: _buildMessageField(),
-        onConfirmPressed: () async {
-          final message = messageController.text;
-          final giftcard = await ref.watch(
-            shareVoucherCommandProvider(
-              ShareVoucherParameter(
-                voucherId: voucherId,
-                message: message,
-              ),
-            ),
-          )();
-          Share.share(
-            '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\n${GiftHubConstants.host}/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
-            subject: '공유 링크 보내기',
-          );
-        },
-      ),
       confirmText: '선물하기',
+    );
+    if (isConfirmed == null || !isConfirmed) {
+      return;
+    }
+
+    final isSendClicked = await showConfirm(
+      title: const Text('기프티콘 공유하기'),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('메시지를 입력해주세요'),
+          const SizedBox(height: 20),
+          TextFormField(
+            maxLines: null,
+            controller: messageController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: '받을 사람에게 보낼 메시지',
+            ),
+            keyboardType: TextInputType.text,
+          ),
+        ],
+      ),
+    );
+    if (isSendClicked == null || !isSendClicked) {
+      return;
+    }
+
+    final message = messageController.text;
+    final giftcard = await ref.watch(
+      shareVoucherCommandProvider(
+        ShareVoucherParameter(
+          voucherId: voucherId,
+          message: message,
+        ),
+      ),
+    )();
+
+    Share.share(
+      '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\n${GiftHubConstants.host}/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
+      subject: '공유 링크 보내기',
     );
   }
 
-  Widget _buildMessageField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Text('메시지를 입력해주세요'),
-        const SizedBox(height: 20),
-        TextFormField(
-          maxLines: null,
-          controller: messageController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: '받을 사람에게 보낼 메시지',
-          ),
-          keyboardType: TextInputType.text,
-        ),
-      ],
+  void _onRetrievePressed(WidgetRef ref) async {
+    showConfirm(
+      title: const Text('기프티콘 공유 취소하기'),
+      content: const Column(
+        children: [
+          Text('선물을 취소하면 공유된 링크를 통해 기프티콘을 받을 수 없습니다.'),
+          SizedBox(height: GiftHubConstants.padding),
+          Text('정말 취소하시겠습니까?'),
+        ],
+      ),
+      onConfirmPressed: () =>
+          ref.watch(retrieveVoucherCommandProvider(voucherId))(),
+      confirmText: '공유 취소하기',
+      onCanclePressed: () {},
+      cancleText: '공유 취소하지 않기',
     );
   }
 }
