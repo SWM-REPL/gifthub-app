@@ -1,5 +1,9 @@
+// 🎯 Dart imports:
+import 'dart:io';
+
 // 📦 Package imports:
 import 'package:dio/dio.dart';
+import 'package:mime/mime.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/dto/giftcard.dto.dart';
@@ -116,14 +120,16 @@ class VoucherApi {
     final String imagePath,
     final String uploadTarget,
   ) async {
-    String fileName = imagePath.split('/').last;
+    final file = File.fromUri(Uri.parse(imagePath));
     await Dio().put(
       uploadTarget,
-      data: FormData.fromMap(
-        {
-          'file': await MultipartFile.fromFile(imagePath, filename: fileName),
+      options: Options(
+        headers: {
+          Headers.contentTypeHeader: lookupMimeType(file.path),
+          Headers.contentLengthHeader: file.lengthSync(),
         },
       ),
+      data: file.openRead(),
     );
   }
 
