@@ -111,4 +111,9 @@ class VoucherRepositoryImpl implements VoucherRepository {
   Future<void> uploadImage(String imagePath, String uploadTarget) async {
     await _voucherApi.uploadImage(imagePath, uploadTarget);
   }
+
+  @override
+  Future<String> getImageUrl(int id) async {
+    return await _voucherApi.getImageUrl(id);
+  }
 }

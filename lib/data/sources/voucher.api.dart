@@ -126,4 +126,10 @@ class VoucherApi {
       ),
     );
   }
+
+  Future<String> getImageUrl(final int id) async {
+    final response = await dio.get('/vouchers/$id/image');
+    // ignore: avoid_dynamic_calls
+    return response.data['image_url'];
+  }
 }
