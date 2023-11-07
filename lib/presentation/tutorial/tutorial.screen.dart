@@ -1,3 +1,6 @@
+// 🎯 Dart imports:
+import 'dart:io';
+
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -66,22 +69,28 @@ class TutorialScreen extends ConsumerWidget {
                       const TutorialStep(
                         padding,
                         step: 1,
-                        text: '공유하기 메뉴를 열어줍니다',
+                        text: '기프티콘 사진을 선택한 후 공유하기 메뉴를 열어줍니다',
                       ),
                       const SizedBox(height: padding * 2),
                       TutorialStep(
                         padding,
                         step: 2,
-                        text: '이전 앱을 스크롤 한 후 마지막 "더 보기"를 선택합니다',
-                        image: Image.asset('assets/share-step2-ios.jpg'),
+                        text: '여러가지 어플 중 "GiftHub"를 찾아 선택합니다',
+                        image: Platform.isIOS
+                            ? Image.asset('assets/share-step2-ios.jpg')
+                            : Platform.isAndroid
+                                ? Image.asset('assets/share-step2-android.jpg')
+                                : null,
                       ),
-                      const SizedBox(height: padding * 2),
-                      TutorialStep(
-                        padding,
-                        step: 3,
-                        text: '오른쪽 위 "편집"을 클릭한 후 "GiftHub"를 찾아 추가합니다.',
-                        image: Image.asset('assets/share-step3-ios.jpg'),
-                      ),
+                      if (Platform.isIOS) ...[
+                        const SizedBox(height: padding * 2),
+                        TutorialStep(
+                          padding,
+                          step: 3,
+                          text: '오른쪽 위 "올리기"를 클릭합니다',
+                          image: Image.asset('assets/share-step3-ios.jpg'),
+                        ),
+                      ],
                     ],
                   ),
                 ],
@@ -102,7 +111,7 @@ class TutorialScreen extends ConsumerWidget {
 
                 // Wait for 500ms to prevent the dialog from being closed immediately
                 await Future.delayed(const Duration(milliseconds: 500));
-                // Use shareXFiles when it's available in Android 11
+                // TODO: Use shareXFiles when it's available in Android 11
                 // https://github.com/fluttercommunity/plus_plugins/issues/1612
                 // ignore: deprecated_member_use
                 await Share.shareFiles(paths);
@@ -121,12 +130,18 @@ class TutorialScreen extends ConsumerWidget {
                 fixedSize:
                     Size(MediaQuery.of(context).size.width - 2 * padding, 60),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.ios_share),
-                  SizedBox(width: 4),
-                  Text('공유하기 메뉴 열기'),
+                  const Icon(Icons.ios_share),
+                  const SizedBox(width: 4),
+                  Text(
+                    '연습 하러 가기',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ],
               ),
             ),
