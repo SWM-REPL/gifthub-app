@@ -20,7 +20,7 @@ class HomeBrands extends ConsumerWidget {
     final brands = ref.watch(brandsProvider);
     return brands.when(
       data: (brands) => SizedBox(
-        height: 152,
+        height: 164,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: padding),
