@@ -1,11 +1,16 @@
 // 🐦 Flutter imports:
 import 'package:flutter/widgets.dart';
 
-class VoucherRawImageScreen extends StatelessWidget {
-  const VoucherRawImageScreen({super.key});
+// 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class VoucherRawImageScreen extends ConsumerWidget {
+  final String presignedUrl;
+
+  const VoucherRawImageScreen(this.presignedUrl, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Image.network(presignedUrl);
   }
 }
