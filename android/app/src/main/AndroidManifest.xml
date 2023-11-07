@@ -72,9 +72,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:scheme="http" />
                 <data android:host="gifthub.kr" />
-                <data android:pathPrefix="/giftcards/*/deeplink" />
+                <data android:pathPattern="/giftcards/.*/deeplink" />
             </intent-filter>
         </activity>
         <activity
