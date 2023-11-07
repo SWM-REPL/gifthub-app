@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
@@ -49,15 +50,16 @@ class BrandCard extends ConsumerWidget {
                 height: 76,
                 fit: BoxFit.cover,
               ),
-              Text(
+              AutoSizeText(
                 brand.name,
+                maxLines: 1,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                       height: 1.53846,
                     ),
               ),
-              Text(
+              AutoSizeText(
                 currencyFormat(
                   brandInfo.when(
                     data: (infos) => infos[brand.id]?.totalBalance,
@@ -65,6 +67,7 @@ class BrandCard extends ConsumerWidget {
                     error: (error, stacktrace) => null,
                   ),
                 ),
+                maxLines: 1,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
