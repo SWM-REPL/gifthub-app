@@ -9,10 +9,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:gifthub/presentation/editor/editor.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
+import 'package:gifthub/presentation/voucher/voucher_raw_image.screen.dart';
 import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
-import 'package:gifthub/utility/show_snack_bar.dart';
 
 class VoucherButtons extends ConsumerWidget {
   final int voucherId;
@@ -129,8 +129,8 @@ class VoucherButtons extends ConsumerWidget {
     );
   }
 
-  void _onImageSavePressed(WidgetRef ref) {
-    showSnackBar(text: '준비 중입니다.');
+  void _onImageSavePressed(WidgetRef ref) async {
+    showModal(const VoucherRawImageScreen());
   }
 
   void _onEditPressed() {
