@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/domain/exceptions/giftcard_expired.exception.dart';
 import 'package:gifthub/domain/exceptions/giftcard_not_found.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/home/home.screen.dart';
@@ -35,8 +36,15 @@ class GiftcardScreen extends ConsumerWidget {
         navigate(const HomeScreen(), clearStack: true);
       } on GiftcardNotFoundException {
         showConfirm(
-          title: const Text('엥? 이런 카드는 없는데요?'),
+          title: const Text('이런 카드는 없는데요?'),
           content: const Text('쏘마 씨앗방 1에 있는 REPL 팀에게 문의해주세요'),
+          onConfirmPressed: () => exit(0),
+          confirmText: '알겠어요',
+        );
+      } on GiftcardExpiredException {
+        showConfirm(
+          title: const Text('이미 만료된 선물입니다'),
+          content: const Text('다른 사람이 먼저 받아갔나봐요'),
           onConfirmPressed: () => exit(0),
           confirmText: '알겠어요',
         );
