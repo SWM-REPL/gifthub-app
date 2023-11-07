@@ -23,7 +23,15 @@ final vouchersProvider = FutureProvider<List<Voucher>>((ref) async {
   final vouchers = await Future.wait(voucherIds.map((id) async {
     return await ref.watch(voucherProvider(id).future);
   }));
-  vouchers.sort((a, b) => a.expiresAt.compareTo(b.expiresAt));
+  vouchers.sort((a, b) {
+    if (a.isUsable && !b.isUsable) {
+      return -1;
+    } else if (!a.isUsable && b.isUsable) {
+      return 1;
+    } else {
+      return a.expiresAt.compareTo(b.expiresAt);
+    }
+  });
   return vouchers;
 });
 
