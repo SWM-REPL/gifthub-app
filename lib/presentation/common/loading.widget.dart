@@ -1,8 +1,16 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
+// 🌎 Project imports:
+import 'package:gifthub/theme/color.theme.dart';
+
 class Loading extends StatefulWidget {
-  const Loading({super.key});
+  final double size;
+
+  const Loading({
+    this.size = 150,
+    super.key,
+  });
 
   @override
   State<Loading> createState() => _LoadingState();
@@ -33,8 +41,9 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
         turns: _animation,
         child: Image.asset(
           'assets/icon.png',
-          width: 150,
-          height: 150,
+          width: widget.size,
+          height: widget.size,
+          color: GiftHubColors.secondary,
         ),
       ),
     );
