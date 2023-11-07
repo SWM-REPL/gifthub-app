@@ -44,4 +44,6 @@ abstract class VoucherRepository {
   Future<String> getPresignedUrlToUploadImage(String imageExtension);
 
   Future<void> uploadImage(String imagePath, String uploadTarget);
+
+  Future<String> getImageUrl(int id);
 }
