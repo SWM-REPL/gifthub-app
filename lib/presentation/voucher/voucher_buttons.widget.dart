@@ -194,6 +194,7 @@ class VoucherButtons extends ConsumerWidget {
         ),
       ),
     )();
+    ref.invalidate(voucherProvider(voucherId));
 
     Share.share(
       '🎁 선물이 도착했어요 🎁\n\n💌 함께 온 메시지\n$message\n\n${GiftHubConstants.host}/giftcards/${giftcard.id}\n\n🔑 비밀번호: ${giftcard.password}',
@@ -205,17 +206,21 @@ class VoucherButtons extends ConsumerWidget {
     showConfirm(
       title: const Text('기프티콘 공유 취소하기'),
       content: const Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('선물을 취소하면 공유된 링크를 통해 기프티콘을 받을 수 없습니다.'),
           SizedBox(height: GiftHubConstants.padding),
           Text('정말 취소하시겠습니까?'),
         ],
       ),
-      onConfirmPressed: () =>
-          ref.watch(retrieveVoucherCommandProvider(voucherId))(),
-      confirmText: '공유 취소하기',
+      onConfirmPressed: () {
+        ref.watch(retrieveVoucherCommandProvider(voucherId))();
+        ref.invalidate(voucherProvider(voucherId));
+      },
+      confirmText: '네',
       onCanclePressed: () {},
-      cancleText: '공유 취소하지 않기',
+      cancleText: '아니요',
     );
   }
 }
