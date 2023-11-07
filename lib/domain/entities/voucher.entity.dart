@@ -10,6 +10,7 @@ class Voucher with EquatableMixin {
   final String? barcode;
   final DateTime expiresAt;
   final bool isAccessible;
+  final bool isShared;
   final int? price;
   final int? _balance;
   final String? imageUrl;
@@ -20,6 +21,7 @@ class Voucher with EquatableMixin {
     required this.expiresAt,
     required this.price,
     required this.isAccessible,
+    required this.isShared,
     this.barcode,
     this.imageUrl,
     int? balance,
