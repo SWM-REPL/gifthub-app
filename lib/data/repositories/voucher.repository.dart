@@ -113,7 +113,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
   }
 
   @override
-  Future<String> getImageUrl(int id) async {
-    return await _voucherApi.getImageUrl(id);
+  Future<String> getImagePresignedUrl(int id) async {
+    return await _voucherApi.getImagePresignedUrl(id);
   }
 }

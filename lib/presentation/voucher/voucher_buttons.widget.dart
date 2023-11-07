@@ -36,13 +36,21 @@ class VoucherButtons extends ConsumerWidget {
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
-            onPressed: () => _onImageSavePressed(ref),
+            onPressed: voucher.when(
+              data: (v) => () => v.imageUrl != null
+                  ? _onImageSavePressed(ref)
+                  : showConfirm(
+                      content: const Text('원본 이미지가 등록되지 않았습니다.'),
+                    ),
+              loading: () => null,
+              error: (error, stackTrace) => throw error,
+            ),
             icon: const Icon(
-              Icons.file_download_outlined,
+              Icons.search_outlined,
               color: Colors.grey,
             ),
             label: Text(
-              '이미지 저장',
+              '원본 이미지 보기',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: Colors.grey,
                   ),
@@ -130,7 +138,10 @@ class VoucherButtons extends ConsumerWidget {
   }
 
   void _onImageSavePressed(WidgetRef ref) async {
-    showModal(const VoucherRawImageScreen());
+    final presignedUrl = await ref.watch(
+      fetchVoucherImageUrlCommandProvider(voucherId),
+    )();
+    showModal(VoucherRawImageScreen(presignedUrl));
   }
 
   void _onEditPressed() {

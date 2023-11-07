@@ -18,7 +18,7 @@ class FetchVoucherImageUrlCommand extends Command {
 
   Future<String> call() async {
     try {
-      final url = await _voucherRepository.getImageUrl(id);
+      final url = await _voucherRepository.getImagePresignedUrl(id);
       logSuccess({
         'id': id.toString(),
         'url': url,
