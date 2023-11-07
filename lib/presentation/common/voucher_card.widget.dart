@@ -85,6 +85,7 @@ class VoucherCard extends ConsumerWidget {
                         AutoSizeText(
                           product.name,
                           style: textTheme.bodyLarge,
+                          maxLines: 2,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
