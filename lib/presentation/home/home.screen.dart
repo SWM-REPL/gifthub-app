@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
@@ -146,7 +147,12 @@ class HomeScreen extends ConsumerWidget {
       child: Column(
         children: [
           HomeHeader(),
-          PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다.'),
+          PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다'),
+          AutoSizeText(
+            '오른쪽 하단의 기프티콘 추가하기 버튼을 이용해보세요',
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
