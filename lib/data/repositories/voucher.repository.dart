@@ -98,6 +98,11 @@ class VoucherRepositoryImpl implements VoucherRepository {
   }
 
   @override
+  Future<void> retrieveVoucher(int id) async {
+    return await _voucherApi.retrieveVoucher(id: id);
+  }
+
+  @override
   Future<String> getPresignedUrlToUploadImage(String imageExtension) async {
     return await _voucherApi.getPresignedUrlToUploadImage(imageExtension);
   }

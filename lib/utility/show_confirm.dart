@@ -3,22 +3,21 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/global_keys.dart';
-import 'package:gifthub/utility/navigator.dart';
 
-void showConfirm({
+Future<bool?> showConfirm({
   Widget? title,
   Widget? content,
   void Function()? onConfirmPressed,
   String confirmText = '확인',
   void Function()? onCanclePressed,
   String cancleText = '취소',
-}) {
+}) async {
   final context = navigatorKey.currentState?.overlay?.context;
   if (context == null) {
-    return;
+    return false;
   }
 
-  showDialog<String>(
+  return await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: title,
@@ -26,19 +25,19 @@ void showConfirm({
       actions: [
         TextButton(
           onPressed: () {
-            navigateBack();
             if (onCanclePressed != null) {
               onCanclePressed();
             }
+            Navigator.of(context).pop(false);
           },
           child: Text(cancleText),
         ),
         TextButton(
           onPressed: () {
-            navigateBack();
             if (onConfirmPressed != null) {
               onConfirmPressed();
             }
+            Navigator.of(context).pop(true);
           },
           child: Text(confirmText),
         ),

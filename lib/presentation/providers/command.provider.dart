@@ -17,6 +17,7 @@ import 'package:gifthub/domain/commands/fetch_notification.command.dart';
 import 'package:gifthub/domain/commands/fetch_notifications.command.dart';
 import 'package:gifthub/domain/commands/fetch_pending_voucher_count.command.dart';
 import 'package:gifthub/domain/commands/invoke_oauth.command.dart';
+import 'package:gifthub/domain/commands/retrieve_voucher.command.dart';
 import 'package:gifthub/domain/commands/revoke_oauth.command.dart';
 import 'package:gifthub/domain/commands/share_voucher.command.dart';
 import 'package:gifthub/domain/commands/sign_in_with_apple.command.dart';
@@ -241,6 +242,15 @@ final shareVoucherCommandProvider = Provider.family
     analytics: ref.watch(firebaseAnalyticsProvider),
     voucherId: parameter.voucherId,
     message: parameter.message,
+  );
+});
+
+final retrieveVoucherCommandProvider =
+    Provider.family.autoDispose<RetrieveVoucherCommand, int>((ref, id) {
+  return RetrieveVoucherCommand(
+    voucherId: id,
+    voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 

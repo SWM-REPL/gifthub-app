@@ -10,6 +10,7 @@ class VoucherDto extends Voucher {
     required super.price,
     required super.balance,
     required super.isAccessible,
+    required super.isShared,
     super.imageUrl,
   });
 
@@ -22,6 +23,7 @@ class VoucherDto extends Voucher {
       price: json['price'],
       balance: json['balance'],
       isAccessible: json['is_accessible'],
+      isShared: json['is_shared'],
       imageUrl: json.containsKey('image_url') ? json['image_url'] : null,
     );
   }

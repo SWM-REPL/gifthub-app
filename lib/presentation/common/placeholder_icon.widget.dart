@@ -27,6 +27,7 @@ class PlaceholderIcon extends StatelessWidget {
             AutoSizeText(
               message,
               maxLines: 1,
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ],

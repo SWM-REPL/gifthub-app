@@ -100,6 +100,12 @@ class VoucherApi {
     return GiftcardDto.fromJson(response.data);
   }
 
+  Future<void> retrieveVoucher({
+    required final int id,
+  }) async {
+    await dio.delete('/vouchers/$id/share');
+  }
+
   Future<String> getPresignedUrlToUploadImage(String imageExtension) async {
     final response = await dio.get('/vouchers/images/$imageExtension');
     // ignore: avoid_dynamic_calls
