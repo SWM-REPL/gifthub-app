@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/data/sources/giftcard.api.dart';
+import 'package:gifthub/domain/exceptions/giftcard_expired.exception.dart';
 import 'package:gifthub/domain/exceptions/giftcard_not_found.exception.dart';
 import 'package:gifthub/domain/repositories/giftcard.repository.dart';
 
@@ -22,7 +23,9 @@ class GiftcardRepositoryImpl implements GiftcardRepository {
         rethrow;
       }
 
-      if (e.response!.statusCode == 404) {
+      if (e.response!.statusCode == 400) {
+        throw GiftcardExpiredException();
+      } else if (e.response!.statusCode == 404) {
         throw GiftcardNotFoundException();
       }
     }

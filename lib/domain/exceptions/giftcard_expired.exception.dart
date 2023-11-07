@@ -1,0 +1,1 @@
+class GiftcardExpiredException implements Exception {}
