@@ -23,24 +23,22 @@ Future<bool?> showConfirm({
       title: title,
       content: content,
       actions: [
-        TextButton(
-          onPressed: () {
-            if (onCanclePressed != null) {
+        if (onCanclePressed != null)
+          TextButton(
+            onPressed: () {
               onCanclePressed();
-            }
-            Navigator.of(context).pop(false);
-          },
-          child: Text(cancleText),
-        ),
-        TextButton(
-          onPressed: () {
-            if (onConfirmPressed != null) {
+              Navigator.of(context).pop(false);
+            },
+            child: Text(cancleText),
+          ),
+        if (onConfirmPressed != null)
+          TextButton(
+            onPressed: () {
               onConfirmPressed();
-            }
-            Navigator.of(context).pop(true);
-          },
-          child: Text(confirmText),
-        ),
+              Navigator.of(context).pop(true);
+            },
+            child: Text(confirmText),
+          ),
       ],
     ),
   );
