@@ -22,6 +22,7 @@ import 'package:gifthub/data/sources/brand.api.dart';
 import 'package:gifthub/data/sources/giftcard.api.dart';
 import 'package:gifthub/data/sources/notification.api.dart';
 import 'package:gifthub/data/sources/product.api.dart';
+import 'package:gifthub/data/sources/setting.api.dart';
 import 'package:gifthub/data/sources/setting.storage.dart';
 import 'package:gifthub/data/sources/token.sdk.dart';
 import 'package:gifthub/data/sources/token.storage.dart';
@@ -99,6 +100,7 @@ final giftcardRepositoryProvider = Provider<GiftcardRepository>((ref) {
 final settingRepositoryProvider =
     FutureProvider<SettingRepository>((ref) async {
   return SettingRepositoryImpl(
+    settingApi: ref.watch(settingApiProvider),
     settingStoreage: await ref.watch(settingStorageProvider.future),
   );
 });
@@ -141,6 +143,11 @@ final productApiProvider = Provider<ProductApi>((ref) {
 final giftcardApiProvider = Provider<GiftcardApi>((ref) {
   final dio = ref.watch(dioProvider);
   return GiftcardApi(dio);
+});
+
+final settingApiProvider = Provider<SettingApi>((ref) {
+  final dio = ref.watch(dioProvider);
+  return SettingApi(dio);
 });
 
 ///!SECTION - APIs
