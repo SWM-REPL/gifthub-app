@@ -13,7 +13,6 @@ import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
-import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
@@ -104,23 +103,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 label: '애플로 계속하기',
                 backgroundColor: Colors.white,
               ),
-            TextButton(
-              onPressed: () => navigate(SignInWithPasswordView()),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '아이디로 계속하기',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).textTheme.labelMedium!.color,
-                    size: Theme.of(context).textTheme.labelMedium!.fontSize,
-                  ),
-                ],
-              ),
-            ),
             TextButton(
               onPressed: () => _handleSignIn(
                   () => ref.watch(signUpWithRandomCommandProvider)()),
