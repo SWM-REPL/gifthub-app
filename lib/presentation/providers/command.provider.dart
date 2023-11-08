@@ -58,8 +58,9 @@ final fetchNotificationsCommandProvider =
 });
 
 final fetchNotificationCommandProvider =
-    Provider<FetchNotificationCommand>((ref) {
+    Provider.family.autoDispose<FetchNotificationCommand, int>((ref, id) {
   return FetchNotificationCommand(
+    id,
     notificationRepository: ref.watch(notificationRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );

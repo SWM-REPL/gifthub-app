@@ -11,7 +11,7 @@ final notificationsProvider = FutureProvider<List<Notification>>((ref) async {
 });
 
 final notificationProvider =
-    FutureProvider.family<Notification, int>((ref, id) async {
-  final fetchNotification = ref.watch(fetchNotificationCommandProvider);
-  return await fetchNotification(id);
+    FutureProvider.family.autoDispose<Notification, int>((ref, id) async {
+  final fetchNotification = ref.watch(fetchNotificationCommandProvider(id));
+  return await fetchNotification();
 });
