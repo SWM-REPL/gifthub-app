@@ -9,7 +9,7 @@ class RemoteConfigDto extends RemoteConfig {
 
   factory RemoteConfigDto.fromJson(Map<String, dynamic> json) {
     return RemoteConfigDto(
-      events: (json['events'] as List<Map<String, dynamic>>)
+      events: (List<Map<String, dynamic>>.from(json['events']))
           .map(
             (e) => Event(
               bannerImageUrl: e['image_url'],
@@ -17,7 +17,7 @@ class RemoteConfigDto extends RemoteConfig {
             ),
           )
           .toList(),
-      contactUsUrl: json['contactUsUrl'] as String,
+      contactUsUrl: json['cs_href'] as String,
     );
   }
 }
