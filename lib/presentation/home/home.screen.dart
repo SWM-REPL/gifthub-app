@@ -20,6 +20,7 @@ import 'package:gifthub/presentation/home/home_header.widget.dart';
 import 'package:gifthub/presentation/notifications/notifications.screen.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
@@ -85,7 +86,10 @@ class HomeScreen extends ConsumerWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () => navigate(const NotificationsScreen()),
+          onPressed: () {
+            ref.watch(notificationsProvider.notifier).markAllAsRead();
+            navigate(const NotificationsScreen());
+          },
           icon: Stack(
             children: [
               const Icon(
