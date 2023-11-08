@@ -20,15 +20,11 @@ class NotificationsNotifier extends Notifier<List<Notification>> {
     state = state.where((element) => element.id != notification.id).toList();
   }
 
-  void markAsRead(Notification notification) {
+  void markAllAsRead() {
     final notificationRepository = ref.watch(notificationRepositoryProvider);
     state = state.map((n) {
-      notificationRepository.getNotification(notification.id);
-      if (n.id == notification.id) {
-        return n.copyWith(checkedAt: DateTime.now());
-      } else {
-        return n;
-      }
+      notificationRepository.getNotification(n.id);
+      return n.copyWith(checkedAt: DateTime.now());
     }).toList();
   }
 
