@@ -14,21 +14,13 @@ import 'package:gifthub/presentation/notifications/notifications_setting.screen.
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class NotificationsScreen extends ConsumerStatefulWidget {
+class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
 
-  @override
-  ConsumerState<NotificationsScreen> createState() =>
-      _NotificationsScreenState();
-}
-
-class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   static const double padding = GiftHubConstants.padding;
 
-  bool isDeleteMode = false;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context, ref),
@@ -66,11 +58,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     return ListView.separated(
       padding: const EdgeInsets.all(padding),
       itemCount: notifications.length,
-      itemBuilder: (context, index) => InkWell(
-        onLongPress: () => setState(() => isDeleteMode = true),
-        onTap: () => setState(() => isDeleteMode = false),
-        child: NotificationCard(notifications[index].id),
-      ),
+      itemBuilder: (context, index) =>
+          NotificationCard(notifications[index].id),
       separatorBuilder: (context, index) => const SizedBox(height: padding),
     );
   }
@@ -83,13 +72,15 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   ) {
     if (error is DeviceOfflineException) {
       return Center(
-        child: Column(children: [
-          const Text('Device is offline'),
-          ElevatedButton(
-            onPressed: () => ref.invalidate(notificationsProvider),
-            child: const Text('Retry'),
-          )
-        ]),
+        child: Column(
+          children: [
+            const Text('Device is offline'),
+            ElevatedButton(
+              onPressed: () => ref.invalidate(notificationsProvider),
+              child: const Text('Retry'),
+            )
+          ],
+        ),
       );
     }
     throw error;
