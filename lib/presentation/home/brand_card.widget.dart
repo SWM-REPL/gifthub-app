@@ -6,9 +6,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/format_string.dart';
 
 class BrandCard extends ConsumerWidget {
