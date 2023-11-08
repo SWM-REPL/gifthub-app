@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/presentation/common/event_banner.widget.dart';
 import 'package:gifthub/presentation/common/labeled_field.widget.dart';
 import 'package:gifthub/presentation/common/labeled_text_field.widget.dart';
@@ -15,7 +16,6 @@ import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.screen.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';

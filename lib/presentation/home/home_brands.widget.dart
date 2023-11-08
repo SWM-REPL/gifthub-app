@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/home/brand_card.widget.dart';
 import 'package:gifthub/presentation/providers/brand.provider.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 
 class HomeBrands extends ConsumerWidget {
   static const padding = GiftHubConstants.padding;

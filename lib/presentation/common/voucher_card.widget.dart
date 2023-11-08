@@ -6,13 +6,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/domain/entities/product.entity.dart';
 import 'package:gifthub/domain/entities/voucher.entity.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher/voucher.screen.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class VoucherCard extends ConsumerWidget {

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart' as entity;
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/notification_card.widget.dart';
 import 'package:gifthub/presentation/notifications/notifications_setting.screen.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {

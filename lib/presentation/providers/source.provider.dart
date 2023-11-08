@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/data/repositories/auth.repository.dart';
 import 'package:gifthub/data/repositories/brand.repository.dart';
 import 'package:gifthub/data/repositories/giftcard.repository.dart';
@@ -37,7 +38,6 @@ import 'package:gifthub/domain/repositories/setting.repository.dart';
 import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 
 ///SECTION - Constants
 

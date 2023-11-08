@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
-import 'package:gifthub/theme/constant.theme.dart';
+import 'package:gifthub/constants.dart';
 
 class TutorialStep extends StatelessWidget {
   final double padding;

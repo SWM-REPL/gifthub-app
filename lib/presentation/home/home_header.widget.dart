@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:word_break_text/word_break_text.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/user_info/user_info.screen.dart';
-import 'package:gifthub/theme/constant.theme.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class HomeHeader extends ConsumerWidget {
