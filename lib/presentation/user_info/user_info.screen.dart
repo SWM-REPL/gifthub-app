@@ -132,6 +132,7 @@ class UserInfoScreen extends ConsumerWidget {
                           ref.invalidate(authTokenProvider);
                           navigate(const SignInScreen(), clearStack: true);
                         },
+                        onCanclePressed: () {},
                       ),
                   loading: () => null,
                   error: (error, stackTrace) => null,
@@ -154,6 +155,7 @@ class UserInfoScreen extends ConsumerWidget {
                     ref.invalidate(authTokenProvider);
                     navigate(const SignInScreen(), clearStack: true);
                   },
+                  onCanclePressed: () {},
                 ),
                 child: const Text('회원탈퇴'),
               ),

@@ -166,7 +166,10 @@ class VoucherButtons extends ConsumerWidget {
           Text('정말 선물하시겠습니까?'),
         ],
       ),
+      onConfirmPressed: () {},
+      onCanclePressed: () {},
       confirmText: '선물하기',
+      cancleText: '취소하기',
     );
     if (isConfirmed == null || !isConfirmed) {
       return;
@@ -191,6 +194,10 @@ class VoucherButtons extends ConsumerWidget {
           ),
         ],
       ),
+      onConfirmPressed: () {},
+      onCanclePressed: () {},
+      confirmText: '보내기',
+      cancleText: '취소하기',
     );
     if (isSendClicked == null || !isSendClicked) {
       return;
