@@ -71,6 +71,11 @@ final pendingCountProvider = FutureProvider<int>((ref) async {
 });
 
 final notificationCountProvider = FutureProvider<int>((ref) async {
-  final notifications = await ref.watch(notificationsProvider.future);
-  return notifications.where((noti) => noti.checkedAt == null).length;
+  final count = ref.watch(
+    notificationsProvider.select((notifications) {
+      final unreadNotis = notifications.where((n) => n.checkedAt == null);
+      return unreadNotis.length;
+    }),
+  );
+  return count;
 });

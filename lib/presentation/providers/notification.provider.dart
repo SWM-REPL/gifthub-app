@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/entities/notification.entity.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 
-final notificationsProvider = FutureProvider<List<Notification>>((ref) async {
-  final fetchNotifications = ref.watch(fetchNotificationsCommandProvider);
-  return await fetchNotifications();
+final notificationsProvider = StateProvider<List<Notification>>((ref) {
+  return [];
 });
 
 final notificationProvider =
