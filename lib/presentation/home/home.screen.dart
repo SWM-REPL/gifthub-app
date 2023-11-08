@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
-import 'package:gifthub/presentation/common/event_banner.widget.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
 import 'package:gifthub/presentation/common/voucher_card.widget.dart';
@@ -167,7 +166,6 @@ class HomeScreen extends ConsumerWidget {
     final filteredVoucher = ref.watch(filteredVouchersProvider);
     final listItems = <Widget>[
       const HomeHeader(),
-      const EventBanner(),
       ...brands.when(
         data: (b) => b.isEmpty
             ? []
