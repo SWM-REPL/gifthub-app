@@ -95,10 +95,10 @@ PODS:
     - naveridlogin-sdk-ios (~> 4.1.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - google_mlkit_commons (0.5.0):
+  - google_mlkit_commons (0.6.1):
     - Flutter
     - MLKitVision
-  - google_mlkit_text_recognition (0.10.0):
+  - google_mlkit_text_recognition (0.11.0):
     - Flutter
     - google_mlkit_commons
     - GoogleMLKit/TextRecognition (~> 4.0.0)
@@ -346,8 +346,8 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_naver_login: 1dbf6d21aae5235cdf76a28ac79cf6871899282f
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
-  google_mlkit_commons: 9765447bd869c5d4f750dbd01475c8c42fd47aec
-  google_mlkit_text_recognition: 6e8ae87c6ff2f9f06bc60a8d4ac88756319ce9af
+  google_mlkit_commons: 3857c1e9f23ca02073f8dd34a7a3580feb814cef
+  google_mlkit_text_recognition: 9225b4bf1b176dd18b05c9594e5347834e793440
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd
   GoogleAppMeasurement: 079d7632810e9d9704a99932547ba1554acc4342
   GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
