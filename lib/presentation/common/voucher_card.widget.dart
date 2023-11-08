@@ -52,7 +52,7 @@ class VoucherCard extends ConsumerWidget {
     return Opacity(
       opacity: voucher.isUsable ? 1 : 0.5,
       child: Card(
-        margin: const EdgeInsets.all(0),
+        margin: EdgeInsets.zero,
         child: InkWell(
           onTap: () => navigate(
             VoucherScreen(
