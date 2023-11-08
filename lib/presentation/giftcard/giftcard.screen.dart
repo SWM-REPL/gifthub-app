@@ -44,7 +44,7 @@ class GiftcardScreen extends ConsumerWidget {
       } on GiftcardExpiredException {
         showConfirm(
           title: const Text('이미 만료된 선물입니다'),
-          content: const Text('다른 사람이 먼저 받아갔나봐요'),
+          content: const Text('다른 사람이 먼저 받아갔나봐요 🥲'),
           onConfirmPressed: () => exit(0),
           confirmText: '알겠어요',
         );
