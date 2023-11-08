@@ -3,14 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/domain/entities/notification.entity.dart';
-import 'package:gifthub/presentation/providers/command.provider.dart';
 
-final notificationsProvider = StateProvider<List<Notification>>((ref) {
-  return [];
-});
+class NotificationsNotifier extends Notifier<List<Notification>> {
+  @override
+  List<Notification> build() {
+    return [];
+  }
 
-final notificationProvider =
-    FutureProvider.family.autoDispose<Notification, int>((ref, id) async {
-  final fetchNotification = ref.watch(fetchNotificationCommandProvider(id));
-  return await fetchNotification();
-});
+  void addNotification(Notification notification) {
+    state = [...state, notification];
+  }
+
+  void removeNotification(Notification notification) {
+    state = state.where((element) => element.id != notification.id).toList();
+  }
+
+  void markAsRead(Notification notification) {
+    state = state.map((n) {
+      if (n.id == notification.id) {
+        return n.copyWith(checkedAt: DateTime.now());
+      } else {
+        return n;
+      }
+    }).toList();
+  }
+}
+
+final notificationsProvider =
+    NotifierProvider<NotificationsNotifier, List<Notification>>(
+  () => NotificationsNotifier(),
+);
