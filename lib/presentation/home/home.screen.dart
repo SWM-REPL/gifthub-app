@@ -224,7 +224,9 @@ class HomeScreen extends ConsumerWidget {
         ref.invalidate(voucherIdsProvider);
       },
       child: ListView.separated(
-        physics: const ClampingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: ClampingScrollPhysics(),
+        ),
         itemCount: listItems.length,
         itemBuilder: (context, index) => listItems[index],
         separatorBuilder: (context, index) {
