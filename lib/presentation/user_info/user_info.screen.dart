@@ -14,6 +14,7 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.screen.dart';
+import 'package:gifthub/presentation/user_info/oss_licenses.screen.dart';
 import 'package:gifthub/presentation/user_info/user_nickname_editor.view.dart';
 import 'package:gifthub/presentation/user_info/user_social_accounts.view.dart';
 import 'package:gifthub/utility/navigator.dart';
@@ -171,6 +172,16 @@ class UserInfoScreen extends ConsumerWidget {
                   }
                 },
                 child: const Text('문의하기'),
+              ),
+              const SizedBox(
+                height: 20,
+                child: VerticalDivider(),
+              ),
+              TextButton(
+                onPressed: () {
+                  navigate(const OssLicensesScreen());
+                },
+                child: const Text('오픈소스'),
               ),
             ],
           )
