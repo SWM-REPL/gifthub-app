@@ -33,6 +33,7 @@
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
+            <tools:validation testUrl="https://gifthub.kr/giftcards/0b4c2058-f51e-435f-a607-3f3df6e8357c/deeplink" />
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -63,18 +64,17 @@
             <meta-data
                 android:name="flutter_deeplinking_enabled"
                 android:value="true" />
-            <intent-filter
-                android:autoVerify="true"
-                tools:targetApi="m">
+
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="gifthub.kr" />
-                <data android:pathPattern="/giftcards/.*/deeplink" />
+                <data
+                    android:scheme="https"
+                    android:host="gifthub.kr"
+                    android:pathPattern="/giftcards/.*/deeplink" />
             </intent-filter>
         </activity>
         <activity
