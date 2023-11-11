@@ -53,20 +53,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDCTLBFgpXap-IugweOtNvdwLoh0S6aa4g',
-    appId: '1:932658035694:android:c1b076af07f7d1ad09ecff',
-    messagingSenderId: '932658035694',
-    projectId: 'gifthub-b2dcb',
-    storageBucket: 'gifthub-b2dcb.appspot.com',
+    apiKey: 'AIzaSyCZf3kd_gLe2vhzrtogyZa2Z5rGExdrOx8',
+    appId: '1:265736158066:android:bee7ae1eb51a9c3d963beb',
+    messagingSenderId: '265736158066',
+    projectId: 'gifthub-production-3d052',
+    storageBucket: 'gifthub-production-3d052.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDIlb1wPkhXrb8dKslwyyxdSbug2ShCiVQ',
-    appId: '1:932658035694:ios:9b94c86e1843572209ecff',
-    messagingSenderId: '932658035694',
-    projectId: 'gifthub-b2dcb',
-    storageBucket: 'gifthub-b2dcb.appspot.com',
-    iosClientId: '932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r.apps.googleusercontent.com',
+    apiKey: 'AIzaSyASfJNUog2St-rmwjy6Mn87_f__cVEcqPk',
+    appId: '1:265736158066:ios:68e2272947ac3370963beb',
+    messagingSenderId: '265736158066',
+    projectId: 'gifthub-production-3d052',
+    storageBucket: 'gifthub-production-3d052.appspot.com',
     iosBundleId: 'org.swmaestro.repl.GiftHub',
   );
 }
