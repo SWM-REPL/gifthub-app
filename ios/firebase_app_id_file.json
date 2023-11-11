@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:932658035694:ios:9b94c86e1843572209ecff",
-  "FIREBASE_PROJECT_ID": "gifthub-b2dcb",
-  "GCM_SENDER_ID": "932658035694"
+  "GOOGLE_APP_ID": "1:265736158066:ios:68e2272947ac3370963beb",
+  "FIREBASE_PROJECT_ID": "gifthub-production-3d052",
+  "GCM_SENDER_ID": "265736158066"
 }

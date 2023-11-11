@@ -2,22 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.932658035694-7j3mtghhrq13l7kirfl7k2llgl6jj29r</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDIlb1wPkhXrb8dKslwyyxdSbug2ShCiVQ</string>
+	<string>AIzaSyASfJNUog2St-rmwjy6Mn87_f__cVEcqPk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>932658035694</string>
+	<string>265736158066</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.swmaestro.repl.GiftHub</string>
 	<key>PROJECT_ID</key>
-	<string>gifthub-b2dcb</string>
+	<string>gifthub-production-3d052</string>
 	<key>STORAGE_BUCKET</key>
-	<string>gifthub-b2dcb.appspot.com</string>
+	<string>gifthub-production-3d052.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:932658035694:ios:9b94c86e1843572209ecff</string>
-	<key>SERVER_CLIENT_ID</key>
-	<string>932658035694-hgqkkmbts60ofg8da398ttc0hi72j36i.apps.googleusercontent.com</string>
+	<string>1:265736158066:ios:68e2272947ac3370963beb</string>
 </dict>
 </plist>
