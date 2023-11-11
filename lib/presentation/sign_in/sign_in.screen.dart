@@ -103,24 +103,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 label: '애플로 계속하기',
                 backgroundColor: Colors.white,
               ),
-            TextButton(
-              onPressed: () => _handleSignIn(
-                  () => ref.watch(signUpWithRandomCommandProvider)()),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '비회원으로 계속하기',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).textTheme.labelMedium!.color,
-                    size: Theme.of(context).textTheme.labelMedium!.fontSize,
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
