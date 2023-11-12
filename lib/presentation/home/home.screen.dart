@@ -121,6 +121,40 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildEmpty(BuildContext context, WidgetRef ref) {
+    Future.microtask(() async {
+      final settingStorage = await ref.watch(settingStorageProvider.future);
+      if (settingStorage.isTutorialPending) {
+        showModal(const TutorialScreen());
+      }
+    });
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(voucherIdsProvider);
+      },
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: ClampingScrollPhysics(),
+        ),
+        children: const [
+          Center(
+            child: Column(
+              children: [
+                HomeHeader(),
+                PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다'),
+                AutoSizeText(
+                  '오른쪽 하단의 기프티콘 추가하기 버튼을 이용해보세요',
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     final vouchers = ref.watch(vouchersProvider);
     final pendingCount = ref.watch(pendingCountProvider);
@@ -136,28 +170,6 @@ class HomeScreen extends ConsumerWidget {
       loading: () => const Loading(),
       error: (error, stacktrace) =>
           _buildError(context, ref, error, stacktrace),
-    );
-  }
-
-  Widget _buildEmpty(BuildContext context, WidgetRef ref) {
-    Future.microtask(() async {
-      final settingStorage = await ref.watch(settingStorageProvider.future);
-      if (settingStorage.isTutorialPending) {
-        showModal(const TutorialScreen());
-      }
-    });
-    return const Center(
-      child: Column(
-        children: [
-          HomeHeader(),
-          PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다'),
-          AutoSizeText(
-            '오른쪽 하단의 기프티콘 추가하기 버튼을 이용해보세요',
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
     );
   }
 
