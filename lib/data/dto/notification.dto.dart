@@ -19,9 +19,9 @@ class NotificationDto extends Notification {
           : null,
       type: json['type'],
       message: json['message'],
-      notifiedAt: DateTime.parse(json['notified_at']),
+      notifiedAt: DateTime.parse('${json['notified_at']}Z'),
       checkedAt: (json.containsKey('checked_at') && json['checked_at'] != null)
-          ? DateTime.parse(json['checked_at'])
+          ? DateTime.parse('${json['checked_at']}Z')
           : null,
     );
   }
