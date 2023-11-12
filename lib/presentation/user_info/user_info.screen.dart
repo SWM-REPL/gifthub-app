@@ -1,5 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,12 +70,18 @@ class UserInfoScreen extends ConsumerWidget {
                 LabeledTextField(
                   showForwardIcon: false,
                   labelText: '아이디',
+                  onTap: () async {
+                    await Clipboard.setData(
+                      ClipboardData(text: usernameController.text),
+                    );
+                    showSnackBar(text: '아이디가 복사되었습니다.');
+                  },
                   controller: usernameController,
                   enabled: false,
                 ),
                 const Divider(),
                 LabeledTextField(
-                  onTap: (event) => navigate(UserNicknameEditorView()),
+                  onTap: () => navigate(UserNicknameEditorView()),
                   labelText: '닉네임',
                   controller: nicknameController,
                   enabled: false,
@@ -94,7 +101,7 @@ class UserInfoScreen extends ConsumerWidget {
             ),
             child: LabeledField(
               labelText: '연동된 소셜 계정',
-              onTap: (event) => navigate(const UserSocialAccountsView()),
+              onTap: () => navigate(const UserSocialAccountsView()),
               child: appUser.when(
                 data: (appUser) => Row(
                   mainAxisAlignment: MainAxisAlignment.end,

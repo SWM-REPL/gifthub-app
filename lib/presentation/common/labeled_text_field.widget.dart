@@ -11,7 +11,7 @@ class LabeledTextField extends StatelessWidget {
   final bool obsecureText;
   final bool showForwardIcon;
   final TextInputType keyboardType;
-  final void Function(PointerDownEvent)? onTap;
+  final void Function()? onTap;
 
   const LabeledTextField({
     super.key,
