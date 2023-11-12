@@ -1,10 +1,9 @@
 package org.swmaestro.repl.GiftHub
 
 import android.os.Bundle
-import io.flutter.embedding.android.FlutterFragmentActivity
-import android.util.Log
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import io.flutter.embedding.android.FlutterFragmentActivity
 
 class MainActivity : FlutterFragmentActivity() {
 
