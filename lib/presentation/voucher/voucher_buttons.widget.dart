@@ -232,8 +232,8 @@ class VoucherButtons extends ConsumerWidget {
           Text('정말 취소하시겠습니까?'),
         ],
       ),
-      onConfirmPressed: () {
-        ref.watch(retrieveVoucherCommandProvider(voucherId))();
+      onConfirmPressed: () async {
+        await ref.watch(retrieveVoucherCommandProvider(voucherId))();
         ref.invalidate(voucherProvider(voucherId));
       },
       confirmText: '네',
