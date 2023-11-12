@@ -92,8 +92,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               backgroundColor: const Color(0xff4286f4),
               invertColor: true,
             ),
-            if (Platform.isIOS) const SizedBox(height: 20),
-            if (Platform.isIOS)
+            if (Platform.isIOS) ...[
+              const SizedBox(height: 20),
               loginButton(
                 signIn: () => ref.watch(signInWithAppleCommandProvider)(),
                 icon: Icon(
@@ -103,6 +103,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 label: '애플로 계속하기',
                 backgroundColor: Colors.white,
               ),
+            ],
           ],
         ),
       ),
