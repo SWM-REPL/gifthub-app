@@ -39,12 +39,17 @@ class NotificationsScreen extends ConsumerWidget {
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     final notifications = ref.watch(notificationsProvider);
     notifications.sort((a, b) => b.notifiedAt.compareTo(a.notifiedAt));
-    return ListView.separated(
-      padding: const EdgeInsets.all(padding),
-      itemCount: notifications.length,
-      itemBuilder: (context, index) =>
-          NotificationCard(notifications[index].id),
-      separatorBuilder: (context, index) => const SizedBox(height: padding),
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(notificationsProvider);
+      },
+      child: ListView.separated(
+        padding: const EdgeInsets.all(padding),
+        itemCount: notifications.length,
+        itemBuilder: (context, index) =>
+            NotificationCard(notifications[index].id),
+        separatorBuilder: (context, index) => const SizedBox(height: padding),
+      ),
     );
   }
 }
