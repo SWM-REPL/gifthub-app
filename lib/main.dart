@@ -17,6 +17,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:gifthub/exception.boundary.dart';
 import 'package:gifthub/firebase_options.dart';
 import 'package:gifthub/presentation/app.dart';
+import 'package:gifthub/presentation/providers/provider.logger.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,8 +58,11 @@ Future<void> main() async {
   ]);
 
   runApp(
-    const ProviderScope(
-      child: ExceptionBoundary(
+    ProviderScope(
+      observers: [
+        ProviderLogger(),
+      ],
+      child: const ExceptionBoundary(
         child: App(),
       ),
     ),
