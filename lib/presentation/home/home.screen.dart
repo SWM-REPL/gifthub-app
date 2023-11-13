@@ -128,27 +128,14 @@ class HomeScreen extends ConsumerWidget {
         showModal(const TutorialScreen());
       }
     });
-    return RefreshIndicator(
-      onRefresh: () async {
-        ref.invalidate(voucherIdsProvider);
-      },
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: ClampingScrollPhysics(),
-        ),
-        children: const [
-          Center(
-            child: Column(
-              children: [
-                HomeHeader(),
-                PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다'),
-                AutoSizeText(
-                  '오른쪽 하단의 기프티콘 추가하기 버튼을 이용해보세요',
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+    return const Center(
+      child: Column(
+        children: [
+          PlaceholderIcon('사용할 수 있는 기프티콘이 없습니다'),
+          AutoSizeText(
+            '오른쪽 하단의 기프티콘 추가하기 버튼을 이용해보세요',
+            maxLines: 1,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -158,18 +145,31 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     final vouchers = ref.watch(vouchersProvider);
     final pendingCount = ref.watch(pendingCountProvider);
-    return vouchers.when(
-      data: (v) => pendingCount.when(
-        data: (count) => count == 0 && v.isEmpty
-            ? _buildEmpty(context, ref)
-            : _buildData(context, ref),
-        loading: () => const Loading(),
-        error: (error, stacktrace) =>
-            _buildError(context, ref, error, stacktrace),
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(voucherIdsProvider);
+      },
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: ClampingScrollPhysics(),
+        ),
+        children: [
+          const HomeHeader(),
+          vouchers.when(
+            data: (v) => pendingCount.when(
+              data: (count) => count == 0 && v.isEmpty
+                  ? _buildEmpty(context, ref)
+                  : _buildData(context, ref),
+              loading: () => const Loading(),
+              error: (error, stacktrace) =>
+                  _buildError(context, ref, error, stacktrace),
+            ),
+            loading: () => const Loading(),
+            error: (error, stacktrace) =>
+                _buildError(context, ref, error, stacktrace),
+          ),
+        ],
       ),
-      loading: () => const Loading(),
-      error: (error, stacktrace) =>
-          _buildError(context, ref, error, stacktrace),
     );
   }
 
@@ -181,7 +181,6 @@ class HomeScreen extends ConsumerWidget {
     final pendingCount = ref.watch(pendingCountProvider);
     final filteredVoucher = ref.watch(filteredVouchersProvider);
     final listItems = <Widget>[
-      const HomeHeader(),
       ...brands.when(
         data: (b) => b.isEmpty
             ? []
@@ -231,20 +230,13 @@ class HomeScreen extends ConsumerWidget {
         error: (error, stacktrace) => [],
       ),
     ];
-    return RefreshIndicator(
-      onRefresh: () async {
-        ref.invalidate(voucherIdsProvider);
-      },
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: ClampingScrollPhysics(),
-        ),
-        itemCount: listItems.length,
-        itemBuilder: (context, index) => listItems[index],
-        separatorBuilder: (context, index) {
-          return const SizedBox(height: padding);
-        },
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: listItems
+          .map((i) => [i, const SizedBox(height: padding)])
+          .expand((i) => i)
+          .toList()
+        ..removeLast(),
     );
   }
 
