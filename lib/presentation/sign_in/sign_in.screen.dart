@@ -13,10 +13,13 @@ import 'package:gifthub/domain/entities/auth_token.entity.dart';
 import 'package:gifthub/domain/exceptions/sign_in.exception.dart';
 import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/sign_in/sign_in_with_password.view.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
+  static const raccoonCount = 20;
+
   const SignInScreen({super.key});
 
   @override
@@ -25,6 +28,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   bool isLoading = false;
+  int raccoonCount = SignInScreen.raccoonCount;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Image.asset('assets/icon.png'),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  raccoonCount--;
+                  if (raccoonCount == 0) {
+                    raccoonCount = SignInScreen.raccoonCount;
+                    navigate(SignInWithPasswordView());
+                  } else if (raccoonCount < 5) {
+                    showSnackBar(text: '$raccoonCount회 남았습니다');
+                  }
+                });
+              },
+              child: Image.asset('assets/icon.png'),
+            ),
             loginButton(
               signIn: () => ref.watch(signInWithKakaoCommandProvider)(),
               icon: Image.asset('assets/kakao.png', height: 22),
