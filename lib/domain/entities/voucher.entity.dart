@@ -41,7 +41,7 @@ class Voucher with EquatableMixin {
   bool get isExpired => remainDays < 0;
   bool get aboutToExpire => !isExpired && remainDays < 7;
 
-  String get balanceFormatted => currencyFormat(balance);
+  String get balanceFormatted => currencyFormat(_balance);
   String get expiresAtFormatted {
     final difference = expiresAt.difference(
       DateTime.now().copyWith(
