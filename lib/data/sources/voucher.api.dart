@@ -66,13 +66,15 @@ class VoucherApi {
     final String? productName,
     final String? brandName,
     final int? balance,
+    final bool? isChecked,
   }) async {
     await dio.patch('/vouchers/$id', data: {
-      'barcode': barcode,
-      'expires_at': expiresAt,
-      'product_name': productName,
-      'brand_name': brandName,
-      'balance': balance,
+      if (barcode != null) 'barcode': barcode,
+      if (expiresAt != null) 'expires_at': expiresAt,
+      if (productName != null) 'product_name': productName,
+      if (brandName != null) 'brand_name': brandName,
+      if (balance != null) 'balance': balance,
+      if (isChecked != null) 'is_checked': isChecked,
     });
   }
 

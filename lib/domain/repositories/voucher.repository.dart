@@ -25,6 +25,7 @@ abstract class VoucherRepository {
     DateTime? expiresAt,
     String? productName,
     String? brandName,
+    bool? isChecked,
   });
 
   Future<void> deleteVoucher(int id);

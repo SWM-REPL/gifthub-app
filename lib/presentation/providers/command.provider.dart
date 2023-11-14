@@ -91,8 +91,10 @@ final createVoucherByImageCommandProvider = Provider.family
   );
 });
 
-final updateVoucherCommandProvider = Provider<UpdateVoucherCommand>((ref) {
+final updateVoucherCommandProvider =
+    Provider.family.autoDispose<UpdateVoucherCommand, int>((ref, id) {
   return UpdateVoucherCommand(
+    id,
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
@@ -279,6 +281,7 @@ final checkVoucherCommandProvider =
     Provider.family.autoDispose<CheckVoucherCommand, int>((ref, id) {
   return CheckVoucherCommand(
     id,
+    voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });

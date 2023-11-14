@@ -6,16 +6,17 @@ import 'package:gifthub/domain/commands/command.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
 class UpdateVoucherCommand extends Command {
+  final int id;
   final VoucherRepository _voucherRepository;
 
-  UpdateVoucherCommand({
+  UpdateVoucherCommand(
+    this.id, {
     required VoucherRepository voucherRepository,
     required FirebaseAnalytics analytics,
   })  : _voucherRepository = voucherRepository,
         super('update_voucher', analytics);
 
   Future<void> call({
-    required int id,
     required String barcode,
     int? balance,
     required DateTime expiresAt,

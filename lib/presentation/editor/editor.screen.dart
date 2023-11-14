@@ -147,8 +147,8 @@ class _EditorScreenState extends ConsumerState<EditorScreen> {
                 }
 
                 if (widget.voucherId != null) {
-                  await ref.watch(updateVoucherCommandProvider)(
-                    id: widget.voucherId!,
+                  await ref
+                      .watch(updateVoucherCommandProvider(widget.voucherId!))(
                     barcode: widget.barcodeController.text,
                     balance: int.tryParse(widget.balanceController.text),
                     expiresAt: DateTime.tryParse(

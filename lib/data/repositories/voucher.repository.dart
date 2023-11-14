@@ -58,6 +58,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
     DateTime? expiresAt,
     String? productName,
     String? brandName,
+    bool? isChecked,
   }) async {
     await _voucherApi.updateVoucherById(
       id,
@@ -67,6 +68,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
       productName: productName,
       brandName: brandName,
       balance: balance,
+      isChecked: isChecked,
     );
   }
 
