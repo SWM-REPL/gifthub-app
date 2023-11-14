@@ -85,6 +85,7 @@ class VoucherCard extends ConsumerWidget {
                         Flex(
                           direction: Axis.horizontal,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
                               child: AutoSizeText(
