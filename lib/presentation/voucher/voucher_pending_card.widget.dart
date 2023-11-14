@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/common/voucher_card.widget.dart';
+import 'package:gifthub/presentation/voucher/voucher_card.widget.dart';
 
 class VoucherPendingCard extends StatefulWidget {
   static const double height = VoucherCard.height;

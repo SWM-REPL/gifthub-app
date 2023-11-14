@@ -11,6 +11,7 @@ class VoucherDto extends Voucher {
     required super.balance,
     required super.isAccessible,
     required super.isShared,
+    required super.isChecked,
     super.imageUrl,
   });
 
@@ -20,10 +21,11 @@ class VoucherDto extends Voucher {
       productId: json['product_id'],
       barcode: json['barcode'],
       expiresAt: DateTime.parse(json['expires_at']),
-      price: json['price'],
       balance: json['balance'],
       isAccessible: json['is_accessible'],
       isShared: json['is_shared'],
+      isChecked: json['is_checked'],
+      price: json['price'],
       imageUrl: json.containsKey('image_url') ? json['image_url'] : null,
     );
   }

@@ -29,7 +29,6 @@ import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/sign_up_with_random.command.dart';
 import 'package:gifthub/domain/commands/update_user.command.dart';
-import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
@@ -87,13 +86,6 @@ final createVoucherByImageCommandProvider = Provider.family
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
     imageUri: Uri.parse(path),
-  );
-});
-
-final updateVoucherCommandProvider = Provider<UpdateVoucherCommand>((ref) {
-  return UpdateVoucherCommand(
-    voucherRepository: ref.watch(voucherRepositoryProvider),
-    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 

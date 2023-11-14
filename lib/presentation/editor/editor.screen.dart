@@ -147,16 +147,17 @@ class _EditorScreenState extends ConsumerState<EditorScreen> {
                 }
 
                 if (widget.voucherId != null) {
-                  await ref.watch(updateVoucherCommandProvider)(
-                    id: widget.voucherId!,
-                    barcode: widget.barcodeController.text,
-                    balance: int.tryParse(widget.balanceController.text),
-                    expiresAt: DateTime.tryParse(
-                      widget.expiresAtController.text,
-                    )!,
-                    productName: widget.productNameController.text,
-                    brandName: widget.brandNameController.text,
-                  );
+                  await ref
+                      .watch(voucherProvider(widget.voucherId!).notifier)
+                      .patch(
+                        barcode: widget.barcodeController.text,
+                        balance: int.tryParse(widget.balanceController.text),
+                        expiresAt: DateTime.tryParse(
+                          widget.expiresAtController.text,
+                        )!,
+                        productName: widget.productNameController.text,
+                        brandName: widget.brandNameController.text,
+                      );
                   ref.invalidate(voucherProvider(widget.voucherId!));
                 } else {
                   await ref.watch(createVoucherByValuesCommandProvider)(

@@ -6,8 +6,8 @@ class GiftHubColors {
   static const onPrimary = Color(0xFFFFFFFF);
   static const secondary = Color(0xFF838A9A);
   static const onSecondary = Color(0xFFFFFFFF);
-  static const tertiary = Color(0xFFF3F3F5);
-  static const onTertiary = Color(0xFF000000);
+  static const tertiary = Color(0xFFAE36F7);
+  static const onTertiary = Color(0xFFFFFFFF);
   static const secondaryContainer = Color(0xFFE3E3E5);
   static const error = Color(0xFFF73653);
   static const onError = Color(0xFFFFFFFF);

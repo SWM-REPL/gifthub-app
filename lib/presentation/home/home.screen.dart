@@ -11,8 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
-import 'package:gifthub/presentation/common/voucher_card.widget.dart';
-import 'package:gifthub/presentation/common/voucher_pending_card.widget.dart';
 import 'package:gifthub/presentation/editor/editor.screen.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/presentation/home/home_brands.widget.dart';
@@ -24,6 +22,8 @@ import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/tutorial/tutorial.screen.dart';
+import 'package:gifthub/presentation/voucher/voucher_card.widget.dart';
+import 'package:gifthub/presentation/voucher/voucher_pending_card.widget.dart';
 import 'package:gifthub/utility/navigator.dart';
 
 class HomeScreen extends ConsumerWidget {

@@ -18,13 +18,14 @@ abstract class VoucherRepository {
 
   Future<void> createVoucherByTexts(List<String> texts, String filename);
 
-  Future<void> updateVoucher(
+  Future<Voucher> updateVoucher(
     int id, {
     String? barcode,
     int? balance,
     DateTime? expiresAt,
     String? productName,
     String? brandName,
+    bool? isChecked,
   });
 
   Future<void> deleteVoucher(int id);
