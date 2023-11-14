@@ -62,6 +62,7 @@ class _VoucherScreenState extends ConsumerState<VoucherScreen> {
           content: const Text('아직 라쿤이가 많이 미숙해요!\n등록된 정보가 이미지와 일치하는지 꼭 확인해주세요.'),
           onConfirmPressed: () {},
         );
+        ref.watch(checkVoucherCommandProvider(v.id))();
       }
     });
     return Column(

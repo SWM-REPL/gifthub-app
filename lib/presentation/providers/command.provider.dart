@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/commands/acquire_giftcard.command.dart';
 import 'package:gifthub/domain/commands/allow_expiration_notifications.command.dart';
+import 'package:gifthub/domain/commands/check_voucher.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
 import 'package:gifthub/domain/commands/delete_notification.command.dart';
@@ -270,6 +271,14 @@ final fetchVoucherImageUrlCommandProvider =
   return FetchVoucherImageUrlCommand(
     id: id,
     voucherRepository: ref.watch(voucherRepositoryProvider),
+    analytics: ref.watch(firebaseAnalyticsProvider),
+  );
+});
+
+final checkVoucherCommandProvider =
+    Provider.family.autoDispose<CheckVoucherCommand, int>((ref, id) {
+  return CheckVoucherCommand(
+    id,
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
