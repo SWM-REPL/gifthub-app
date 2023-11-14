@@ -7,15 +7,23 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
+class VoucherNotifier extends FamilyAsyncNotifier<Voucher, int> {
+  @override
+  Future<Voucher> build(int arg) {
+    final voucherRepository = ref.watch(voucherRepositoryProvider);
+    return voucherRepository.getVoucherById(arg);
+  }
+}
+
+final voucherProvider =
+    AsyncNotifierProviderFamily<VoucherNotifier, Voucher, int>(
+  () => VoucherNotifier(),
+);
+
 final voucherIdsProvider = FutureProvider<List<int>>((ref) async {
   final appUser = await ref.watch(appUserProvider.future);
   final voucherRepository = ref.watch(voucherRepositoryProvider);
   return await voucherRepository.getVoucherIds(appUser.id);
-});
-
-final voucherProvider = FutureProvider.family<Voucher, int>((ref, id) async {
-  final voucherRepository = ref.watch(voucherRepositoryProvider);
-  return voucherRepository.getVoucherById(id);
 });
 
 final vouchersProvider = FutureProvider<List<Voucher>>((ref) async {
