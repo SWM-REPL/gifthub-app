@@ -9,8 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 // 🌎 Project imports:
 import 'package:gifthub/constants.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
-import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/providers/config.provider.dart';
+import 'package:gifthub/presentation/voucher/voucher_card.widget.dart';
 
 class EventBanner extends ConsumerWidget {
   const EventBanner({super.key});
