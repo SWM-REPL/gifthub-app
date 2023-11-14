@@ -9,9 +9,32 @@ import 'package:gifthub/presentation/providers/source.provider.dart';
 
 class VoucherNotifier extends FamilyAsyncNotifier<Voucher, int> {
   @override
-  Future<Voucher> build(int arg) {
+  Future<Voucher> build(int arg) async {
     final voucherRepository = ref.watch(voucherRepositoryProvider);
-    return voucherRepository.getVoucherById(arg);
+    return await voucherRepository.getVoucherById(arg);
+  }
+
+  Future<void> patch({
+    String? barcode,
+    int? balance,
+    DateTime? expiresAt,
+    String? productName,
+    String? brandName,
+    bool? isChecked,
+  }) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final voucherRepository = ref.watch(voucherRepositoryProvider);
+      return await voucherRepository.updateVoucher(
+        arg,
+        barcode: barcode,
+        balance: balance,
+        expiresAt: expiresAt,
+        productName: productName,
+        brandName: brandName,
+        isChecked: isChecked,
+      );
+    });
   }
 }
 

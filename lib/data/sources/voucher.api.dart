@@ -59,7 +59,7 @@ class VoucherApi {
     });
   }
 
-  Future<void> updateVoucherById(
+  Future<VoucherDto> updateVoucherById(
     final int id, {
     final String? barcode,
     final String? expiresAt,
@@ -68,7 +68,7 @@ class VoucherApi {
     final int? balance,
     final bool? isChecked,
   }) async {
-    await dio.patch('/vouchers/$id', data: {
+    final response = await dio.patch('/vouchers/$id', data: {
       if (barcode != null) 'barcode': barcode,
       if (expiresAt != null) 'expires_at': expiresAt,
       if (productName != null) 'product_name': productName,
@@ -76,6 +76,7 @@ class VoucherApi {
       if (balance != null) 'balance': balance,
       if (isChecked != null) 'is_checked': isChecked,
     });
+    return VoucherDto.fromJson(response.data);
   }
 
   Future<void> deleteVoucherById(final int id) async {

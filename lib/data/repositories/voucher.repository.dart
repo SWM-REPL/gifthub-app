@@ -51,7 +51,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
   }
 
   @override
-  Future<void> updateVoucher(
+  Future<VoucherDto> updateVoucher(
     int id, {
     String? barcode,
     int? balance,
@@ -60,7 +60,7 @@ class VoucherRepositoryImpl implements VoucherRepository {
     String? brandName,
     bool? isChecked,
   }) async {
-    await _voucherApi.updateVoucherById(
+    return await _voucherApi.updateVoucherById(
       id,
       barcode: barcode,
       expiresAt:

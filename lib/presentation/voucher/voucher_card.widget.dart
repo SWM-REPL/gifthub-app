@@ -94,28 +94,29 @@ class VoucherCard extends ConsumerWidget {
                                 maxLines: 2,
                               ),
                             ),
-                            Container(
-                              width: 42,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'NEW',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiary,
-                                      ),
+                            if (!voucher.isChecked)
+                              Container(
+                                width: 42,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'NEW',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiary,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                         Column(

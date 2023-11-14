@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import 'package:gifthub/domain/commands/acquire_giftcard.command.dart';
 import 'package:gifthub/domain/commands/allow_expiration_notifications.command.dart';
-import 'package:gifthub/domain/commands/check_voucher.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_image.command.dart';
 import 'package:gifthub/domain/commands/create_voucher_by_values.command.dart';
 import 'package:gifthub/domain/commands/delete_notification.command.dart';
@@ -30,7 +29,6 @@ import 'package:gifthub/domain/commands/sign_in_with_password.command.dart';
 import 'package:gifthub/domain/commands/sign_out.command.dart';
 import 'package:gifthub/domain/commands/sign_up_with_random.command.dart';
 import 'package:gifthub/domain/commands/update_user.command.dart';
-import 'package:gifthub/domain/commands/update_voucher.command.dart';
 import 'package:gifthub/domain/commands/use_voucher.command.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
@@ -88,15 +86,6 @@ final createVoucherByImageCommandProvider = Provider.family
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
     imageUri: Uri.parse(path),
-  );
-});
-
-final updateVoucherCommandProvider =
-    Provider.family.autoDispose<UpdateVoucherCommand, int>((ref, id) {
-  return UpdateVoucherCommand(
-    id,
-    voucherRepository: ref.watch(voucherRepositoryProvider),
-    analytics: ref.watch(firebaseAnalyticsProvider),
   );
 });
 
@@ -272,15 +261,6 @@ final fetchVoucherImageUrlCommandProvider =
     Provider.family.autoDispose<FetchVoucherImageUrlCommand, int>((ref, id) {
   return FetchVoucherImageUrlCommand(
     id: id,
-    voucherRepository: ref.watch(voucherRepositoryProvider),
-    analytics: ref.watch(firebaseAnalyticsProvider),
-  );
-});
-
-final checkVoucherCommandProvider =
-    Provider.family.autoDispose<CheckVoucherCommand, int>((ref, id) {
-  return CheckVoucherCommand(
-    id,
     voucherRepository: ref.watch(voucherRepositoryProvider),
     analytics: ref.watch(firebaseAnalyticsProvider),
   );
