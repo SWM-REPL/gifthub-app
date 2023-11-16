@@ -18,7 +18,7 @@ PODS:
   - Firebase/Messaging (10.17.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.17.0)
-  - firebase_analytics (10.6.4):
+  - firebase_analytics (10.7.0):
     - Firebase/Analytics (= 10.17.0)
     - firebase_core
     - Flutter
@@ -180,7 +180,7 @@ PODS:
   - GTMSessionFetcher/Core (2.3.0)
   - image_picker_ios (0.0.1):
     - Flutter
-  - kakao_flutter_sdk_common (1.6.1):
+  - kakao_flutter_sdk_common (1.7.0):
     - Flutter
   - MLImage (1.0.0-beta4)
   - MLKitCommon (9.0.0):
@@ -331,7 +331,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
-  firebase_analytics: 9d609f3c43a71319c9112bb01044729305192417
+  firebase_analytics: d6f520c1030d2c1215851f6e332d39a489a30bd2
   firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
   firebase_crashlytics: 6a564f58db90be49c49d9ac100bc5cc3fcbf8267
   firebase_messaging: 9c697d1ecfe77edf15d995b5048906ffc994c96c
@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
-  kakao_flutter_sdk_common: 7167cfbf5725acf75252af46bb045b9ad99ed6ce
+  kakao_flutter_sdk_common: 5d20368c3526ba5eb2e598f85704d6a23c6c9e9e
   MLImage: 7bb7c4264164ade9bf64f679b40fb29c8f33ee9b
   MLKitCommon: c1b791c3e667091918d91bda4bba69a91011e390
   MLKitTextRecognition: 9ff0c843f2723d31d4bdd0c0d17a0a18382ed23e
