@@ -15,6 +15,8 @@ const _buttonShape = MaterialStatePropertyAll(
 class GiftHubElevatedButtonThemeData extends ElevatedButtonThemeData {
   const GiftHubElevatedButtonThemeData({
     super.style = const ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(GiftHubColors.primary),
+      foregroundColor: MaterialStatePropertyAll(GiftHubColors.onPrimary),
       elevation: MaterialStatePropertyAll(0),
       shape: _buttonShape,
     ),

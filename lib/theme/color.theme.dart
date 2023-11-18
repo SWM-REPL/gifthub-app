@@ -33,5 +33,6 @@ class GiftHubColorScheme extends ColorScheme {
     super.onBackground = GiftHubColors.onBackground,
     super.surface = GiftHubColors.surface,
     super.onSurface = GiftHubColors.onSurface,
+    super.surfaceTint = GiftHubColors.surface,
   });
 }

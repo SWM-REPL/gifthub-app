@@ -59,6 +59,12 @@ class VoucherButtons extends ConsumerWidget {
               padding: MaterialStateProperty.resolveWith(
                 (states) => const EdgeInsets.symmetric(vertical: 16),
               ),
+              side: MaterialStateProperty.resolveWith(
+                (states) => const BorderSide(
+                  color: Colors.grey,
+                  width: 0,
+                ),
+              ),
             ),
           ),
         ),
