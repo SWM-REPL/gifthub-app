@@ -134,6 +134,7 @@ class _AppState extends ConsumerState<App> {
         colorScheme: const GiftHubColorScheme(),
         dividerTheme: GiftHubDividerTheme.data,
         textTheme: GiftHubTextTheme.theme,
+        canvasColor: GiftHubColors.surface,
       ),
       home: const LoadingScreen(),
       onGenerateRoute: (settings) {
