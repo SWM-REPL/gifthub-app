@@ -1,3 +1,6 @@
+// 🎯 Dart imports:
+import 'dart:math';
+
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -8,6 +11,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/domain/exceptions/device_offline.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/common/placeholder_icon.widget.dart';
@@ -26,47 +30,68 @@ import 'package:gifthub/presentation/voucher/voucher_card.widget.dart';
 import 'package:gifthub/presentation/voucher/voucher_pending_card.widget.dart';
 import 'package:gifthub/utility/navigator.dart';
 
-class HomeScreen extends ConsumerWidget {
-  static const double padding = 10;
-
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  static const double padding = GiftHubConstants.padding;
+  double bottomPadding = 0;
+  double rightPadding = 0;
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: _buildAppBar(context, ref),
       body: _buildBody(context, ref),
-      floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        activeIcon: Icons.close,
-        backgroundColor: colorScheme.primary,
-        spacing: padding,
-        children: [
-          SpeedDialChild(
-            onTap: () => showModal(EditorScreen()),
-            backgroundColor: colorScheme.surface,
-            foregroundColor: colorScheme.primary,
-            label: '텍스트로 등록하기',
-            child: const Icon(Icons.notes),
+      floatingActionButton: GestureDetector(
+        onPanUpdate: (details) {
+          setState(() {
+            bottomPadding = max(0, bottomPadding - details.delta.dy);
+            rightPadding = max(0, rightPadding - details.delta.dx);
+          });
+        },
+        child: Padding(
+          padding: EdgeInsets.only(
+            right: rightPadding,
+            bottom: bottomPadding,
           ),
-          SpeedDialChild(
-            onTap: () async {
-              final images = await ImagePicker().pickMultiImage();
-              await Future.wait(images.map(
-                (image) => ref.watch(
-                  createVoucherByImageCommandProvider(image.path),
-                )(),
-              ));
-              ref.invalidate(voucherIdsProvider);
-              ref.invalidate(pendingCountProvider);
-            },
-            backgroundColor: colorScheme.surface,
-            foregroundColor: colorScheme.primary,
-            label: '이미지로 등록하기',
-            child: const Icon(Icons.image),
+          child: SpeedDial(
+            icon: Icons.add,
+            activeIcon: Icons.close,
+            backgroundColor: colorScheme.primary,
+            spacing: padding,
+            children: [
+              SpeedDialChild(
+                onTap: () => showModal(EditorScreen()),
+                backgroundColor: colorScheme.surface,
+                foregroundColor: colorScheme.primary,
+                label: '텍스트로 등록하기',
+                child: const Icon(Icons.notes),
+              ),
+              SpeedDialChild(
+                onTap: () async {
+                  final images = await ImagePicker().pickMultiImage();
+                  await Future.wait(images.map(
+                    (image) => ref.watch(
+                      createVoucherByImageCommandProvider(image.path),
+                    )(),
+                  ));
+                  ref.invalidate(voucherIdsProvider);
+                  ref.invalidate(pendingCountProvider);
+                },
+                backgroundColor: colorScheme.surface,
+                foregroundColor: colorScheme.primary,
+                label: '이미지로 등록하기',
+                child: const Icon(Icons.image),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
