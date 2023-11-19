@@ -8,9 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gifthub/domain/exceptions/unauthorized.exception.dart';
 import 'package:gifthub/presentation/common/loading.widget.dart';
 import 'package:gifthub/presentation/home/home.screen.dart';
-import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
-import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/sign_in/sign_in.screen.dart';
 import 'package:gifthub/utility/navigator.dart';
 
@@ -22,8 +20,6 @@ class LoadingScreen extends ConsumerWidget {
     Future.delayed(Duration.zero, () async {
       final isTokenLoaded = await loadAuthToken(ref);
       if (isTokenLoaded) {
-        await ref.watch(appUserProvider.future);
-        ref.invalidate(voucherIdsProvider);
         navigate(const HomeScreen(), clearStack: true);
       } else {
         navigate(const SignInScreen(), clearStack: true);
