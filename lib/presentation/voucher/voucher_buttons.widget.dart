@@ -194,7 +194,7 @@ class VoucherButtons extends ConsumerWidget {
       );
     } on PlatformException catch (e) {
       if (e.code == 'ACTIVITY_NOT_FOUND') {
-        launchUrl(
+        await launchUrl(
           Uri.parse(
             'https://map.naver.com/p/search/${brand.name}',
           ),
