@@ -122,11 +122,13 @@ class VoucherCard extends ConsumerWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              product.isReusable ? product.priceFormatted : '',
-                              style: textTheme.bodySmall,
-                            ),
-                            const SizedBox(height: padding / 2),
+                            if (product.isReusable) ...[
+                              Text(
+                                product.priceFormatted,
+                                style: textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: padding / 2),
+                            ],
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
