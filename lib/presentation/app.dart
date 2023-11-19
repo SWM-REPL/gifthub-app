@@ -1,5 +1,6 @@
 // 🎯 Dart imports:
 import 'dart:async';
+import 'dart:io';
 
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
@@ -10,12 +11,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // 🌎 Project imports:
+import 'package:gifthub/constants.dart';
 import 'package:gifthub/global_keys.dart';
 import 'package:gifthub/presentation/giftcard/giftcard.screen.dart';
 import 'package:gifthub/presentation/home/home.screen.dart';
 import 'package:gifthub/presentation/home/home.state.dart';
 import 'package:gifthub/presentation/loading/loading.screen.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
+import 'package:gifthub/presentation/providers/config.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
@@ -25,6 +28,7 @@ import 'package:gifthub/theme/card.theme.dart';
 import 'package:gifthub/theme/color.theme.dart';
 import 'package:gifthub/theme/divider.theme.dart';
 import 'package:gifthub/theme/text.theme.dart';
+import 'package:gifthub/utility/show_confirm.dart';
 import 'package:gifthub/utility/show_snack_bar.dart';
 
 class App extends ConsumerStatefulWidget {
@@ -115,6 +119,23 @@ class _AppState extends ConsumerState<App> {
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      final remoteConfig = ref.watch(remoteConfigProvider);
+      remoteConfig.whenData((rConfig) async {
+        if (rConfig.minimalVersion > GiftHubConstants.appVersion) {
+          try {
+            await showConfirm(
+              title: const Text('업데이트 안내'),
+              content: const Text('최신 버전이 출시되었습니다. 업데이트 후 이용해주세요.'),
+              onConfirmPressed: () => exit(0),
+            );
+            exit(0);
+          } catch (error) {
+            exit(0);
+          }
+        }
+      });
+    });
     if (_sharedFiles.isNotEmpty || _sharedText.isNotEmpty) {
       Future.microtask(() async {
         await _processSharedIntents();
