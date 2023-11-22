@@ -173,7 +173,9 @@ class UserInfoScreen extends ConsumerWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  final success = await launchUrl(contactUsUri);
+                  final success = await launchUrl(
+                    Uri.parse(GiftHubConstants.contactUsUri),
+                  );
                   if (!success) {
                     showSnackBar(text: '문의하기 페이지를 열 수 없습니다.');
                   }
