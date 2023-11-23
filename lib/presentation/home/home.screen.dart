@@ -173,6 +173,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(voucherIdsProvider);
+        ref.invalidate(pendingCountProvider);
       },
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(
