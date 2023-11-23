@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class RecognizedTextLine extends TextLine {
-  static const _threshold = 10;
+  static const _threshold = 20;
 
   RecognizedTextLine({
     required super.text,
@@ -30,7 +30,7 @@ class RecognizedTextLine extends TextLine {
   }
 
   RecognizedTextLine merge(RecognizedTextLine other) {
-    final a = (cornerPoints[3].x < other.cornerPoints[3].x) ? this : other;
+    final a = (cornerPoints[3].y < other.cornerPoints[3].y) ? this : other;
     final b = (a == this) ? other : this;
     return RecognizedTextLine(
       text: '${a.text} ${b.text}',
@@ -54,6 +54,11 @@ class RecognizedTextLine extends TextLine {
   bool isSameLine(RecognizedTextLine other) {
     final ymin = cornerPoints.map((p) => p.y).reduce(min);
     final ymax = cornerPoints.map((p) => p.y).reduce(max);
-    return (ymax - ymin) < _threshold;
+
+    final otherYmin = other.cornerPoints.map((p) => p.y).reduce(min);
+    final otherYmax = other.cornerPoints.map((p) => p.y).reduce(max);
+
+    return (otherYmin - ymax).abs() < _threshold ||
+        (otherYmax - ymin).abs() < _threshold;
   }
 }
