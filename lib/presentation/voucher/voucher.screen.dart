@@ -16,7 +16,6 @@ import 'package:gifthub/presentation/voucher/voucher_buttons.widget.dart';
 import 'package:gifthub/utility/format_string.dart';
 import 'package:gifthub/utility/navigator.dart';
 import 'package:gifthub/utility/show_confirm.dart';
-import 'package:gifthub/utility/show_snack_bar.dart';
 
 class VoucherScreen extends ConsumerStatefulWidget {
   final int voucherId;
@@ -56,12 +55,21 @@ class _VoucherScreenState extends ConsumerState<VoucherScreen> {
     final voucher = ref.watch(voucherProvider(widget.voucherId));
     final product = ref.watch(productProvider(widget.productId));
     final brand = ref.watch(brandProvider(widget.brandId));
-    voucher.whenData((v) {
-      if (!v.isAccessible) {
-        showSnackBar(text: '접근할 수 없는 기프티콘입니다.');
-        navigateBack();
-      }
-    });
+    voucher.whenData(
+      (v) => Future.microtask(() async {
+        if (!v.isChecked) {
+          await showConfirm(
+            title: const Text('🦝 미숙한 라쿤이 이슈'),
+            content:
+                const Text('아직 라쿤이가 많이 미숙해요!\n등록된 정보가 이미지와 일치하는지 꼭 확인해주세요.'),
+            onConfirmPressed: () {},
+          );
+          await ref
+              .watch(voucherProvider(v.id).notifier)
+              .patch(isChecked: true);
+        }
+      }),
+    );
     return Column(
       children: [
         Expanded(

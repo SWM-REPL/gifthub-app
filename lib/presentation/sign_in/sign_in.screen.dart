@@ -156,7 +156,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             : MaterialStateProperty.all(backgroundColor),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            side: BorderSide(color: Theme.of(context).dividerColor),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: 0,
+            ),
             borderRadius: BorderRadius.circular(100),
           ),
         ),

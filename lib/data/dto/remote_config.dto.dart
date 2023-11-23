@@ -5,6 +5,7 @@ class RemoteConfigDto extends RemoteConfig {
   RemoteConfigDto({
     required super.events,
     required super.contactUsUrl,
+    required super.minimalVersion,
   });
 
   factory RemoteConfigDto.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class RemoteConfigDto extends RemoteConfig {
           )
           .toList(),
       contactUsUrl: json['cs_href'] as String,
+      minimalVersion: json['minimal_version'] as int,
     );
   }
 }

@@ -7,15 +7,46 @@ import 'package:gifthub/presentation/providers/appuser.provider.dart';
 import 'package:gifthub/presentation/providers/product.provider.dart';
 import 'package:gifthub/presentation/providers/source.provider.dart';
 
+class VoucherNotifier extends FamilyAsyncNotifier<Voucher, int> {
+  @override
+  Future<Voucher> build(int arg) async {
+    final voucherRepository = ref.watch(voucherRepositoryProvider);
+    return await voucherRepository.getVoucherById(arg);
+  }
+
+  Future<void> patch({
+    String? barcode,
+    int? balance,
+    DateTime? expiresAt,
+    String? productName,
+    String? brandName,
+    bool? isChecked,
+  }) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final voucherRepository = ref.watch(voucherRepositoryProvider);
+      return await voucherRepository.updateVoucher(
+        arg,
+        barcode: barcode,
+        balance: balance,
+        expiresAt: expiresAt,
+        productName: productName,
+        brandName: brandName,
+        isChecked: isChecked,
+      );
+    });
+  }
+}
+
+final voucherProvider =
+    AsyncNotifierProviderFamily<VoucherNotifier, Voucher, int>(
+  () => VoucherNotifier(),
+);
+
 final voucherIdsProvider = FutureProvider<List<int>>((ref) async {
   final appUser = await ref.watch(appUserProvider.future);
   final voucherRepository = ref.watch(voucherRepositoryProvider);
   return await voucherRepository.getVoucherIds(appUser.id);
-});
-
-final voucherProvider = FutureProvider.family<Voucher, int>((ref, id) async {
-  final voucherRepository = ref.watch(voucherRepositoryProvider);
-  return voucherRepository.getVoucherById(id);
 });
 
 final vouchersProvider = FutureProvider<List<Voucher>>((ref) async {

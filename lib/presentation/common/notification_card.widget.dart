@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/constants.dart';
-import 'package:gifthub/presentation/common/voucher_card.widget.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/notification.provider.dart';
+import 'package:gifthub/presentation/voucher/voucher_card.widget.dart';
 import 'package:gifthub/utility/format_string.dart';
 
 class NotificationCard extends ConsumerWidget {

@@ -154,7 +154,7 @@ class UserSocialAccountsView extends ConsumerWidget {
               ref.invalidate(appUserProvider);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100),
               ),
@@ -163,7 +163,7 @@ class UserSocialAccountsView extends ConsumerWidget {
               '해지',
               style: TextStyle(
                 fontWeight: FontWeight.w300,
-                color: Theme.of(context).colorScheme.onTertiary,
+                color: Theme.of(context).colorScheme.onSecondary,
               ),
             ),
           )

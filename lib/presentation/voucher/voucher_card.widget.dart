@@ -82,19 +82,53 @@ class VoucherCard extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AutoSizeText(
-                          product.name,
-                          style: textTheme.bodyLarge,
-                          maxLines: 2,
+                        Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: AutoSizeText(
+                                product.name,
+                                style: textTheme.bodyLarge,
+                                maxLines: 2,
+                              ),
+                            ),
+                            if (!voucher.isChecked)
+                              Container(
+                                width: 42,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'NEW',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiary,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              product.isReusable ? product.priceFormatted : '',
-                              style: textTheme.bodySmall,
-                            ),
-                            const SizedBox(height: padding / 2),
+                            if (product.isReusable) ...[
+                              Text(
+                                product.priceFormatted,
+                                style: textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: padding / 2),
+                            ],
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

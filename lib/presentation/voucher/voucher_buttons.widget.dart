@@ -1,13 +1,17 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // 🌎 Project imports:
 import 'package:gifthub/constants.dart';
+import 'package:gifthub/domain/entities/brand.entity.dart';
 import 'package:gifthub/presentation/editor/editor.screen.dart';
+import 'package:gifthub/presentation/providers/brand.provider.dart';
 import 'package:gifthub/presentation/providers/command.provider.dart';
 import 'package:gifthub/presentation/providers/voucher.provider.dart';
 import 'package:gifthub/presentation/voucher/voucher_raw_image.screen.dart';
@@ -31,6 +35,7 @@ class VoucherButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final voucher = ref.watch(voucherProvider(voucherId));
+    final brand = ref.watch(brandProvider(brandId));
     return Column(
       children: [
         SizedBox(
@@ -59,6 +64,12 @@ class VoucherButtons extends ConsumerWidget {
               padding: MaterialStateProperty.resolveWith(
                 (states) => const EdgeInsets.symmetric(vertical: 16),
               ),
+              side: MaterialStateProperty.resolveWith(
+                (states) => const BorderSide(
+                  color: Colors.grey,
+                  width: 0,
+                ),
+              ),
             ),
           ),
         ),
@@ -74,6 +85,28 @@ class VoucherButtons extends ConsumerWidget {
                 ),
                 label: Text(
                   '수정하기',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Colors.grey,
+                      ),
+                ),
+              ),
+              const VerticalDivider(
+                indent: 10,
+                endIndent: 10,
+                thickness: 1,
+              ),
+              TextButton.icon(
+                onPressed: brand.when(
+                  data: (b) => () => _onLocationPressed(b),
+                  loading: () => null,
+                  error: (error, stackTrace) => throw error,
+                ),
+                icon: const Icon(
+                  Icons.map_outlined,
+                  color: Colors.grey,
+                ),
+                label: Text(
+                  '위치보기',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: Colors.grey,
                       ),
@@ -152,6 +185,22 @@ class VoucherButtons extends ConsumerWidget {
         brandId: brandId,
       ),
     );
+  }
+
+  void _onLocationPressed(Brand brand) async {
+    try {
+      await launchUrl(
+        Uri.parse('nmap://search?query=${brand.name}'),
+      );
+    } on PlatformException catch (e) {
+      if (e.code == 'ACTIVITY_NOT_FOUND') {
+        await launchUrl(
+          Uri.parse(
+            'https://map.naver.com/p/search/${brand.name}',
+          ),
+        );
+      }
+    }
   }
 
   void _onSharePressed(WidgetRef ref) async {

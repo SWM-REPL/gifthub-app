@@ -20,15 +20,18 @@ class Event with EquatableMixin {
 class RemoteConfig with EquatableMixin {
   final List<Event> events;
   final String contactUsUrl;
+  final int minimalVersion;
 
   RemoteConfig({
     required this.events,
     required this.contactUsUrl,
+    required this.minimalVersion,
   });
 
   @override
   List<Object?> get props => [
         events,
         contactUsUrl,
+        minimalVersion,
       ];
 }

@@ -40,10 +40,6 @@ import 'package:gifthub/domain/repositories/token.repository.dart';
 import 'package:gifthub/domain/repositories/user.repository.dart';
 import 'package:gifthub/domain/repositories/voucher.repository.dart';
 
-///SECTION - Constants
-
-final contactUsUri = Uri.parse(GiftHubConstants.contactUsUri);
-
 ///!SECTION - Constants
 ///SECTION - Repositories
 

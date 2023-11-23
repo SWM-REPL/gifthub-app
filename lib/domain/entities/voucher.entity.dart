@@ -10,6 +10,7 @@ class Voucher with EquatableMixin {
   final String? barcode;
   final DateTime expiresAt;
   final bool isAccessible;
+  final bool isChecked;
   final bool isShared;
   final int? price;
   final int? _balance;
@@ -21,6 +22,7 @@ class Voucher with EquatableMixin {
     required this.expiresAt,
     required this.price,
     required this.isAccessible,
+    required this.isChecked,
     required this.isShared,
     this.barcode,
     this.imageUrl,
@@ -41,7 +43,7 @@ class Voucher with EquatableMixin {
   bool get isExpired => remainDays < 0;
   bool get aboutToExpire => !isExpired && remainDays < 7;
 
-  String get balanceFormatted => currencyFormat(balance);
+  String get balanceFormatted => currencyFormat(_balance);
   String get expiresAtFormatted {
     final difference = expiresAt.difference(
       DateTime.now().copyWith(

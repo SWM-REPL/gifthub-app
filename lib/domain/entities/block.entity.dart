@@ -4,11 +4,8 @@ import 'dart:math';
 // 📦 Package imports:
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
-// 🌎 Project imports:
-import 'package:gifthub/domain/entities/linear_equation.entity.dart';
-
 class RecognizedTextLine extends TextLine {
-  static const _threshold = 10;
+  static const _threshold = 20;
 
   RecognizedTextLine({
     required super.text,
@@ -33,56 +30,35 @@ class RecognizedTextLine extends TextLine {
   }
 
   RecognizedTextLine merge(RecognizedTextLine other) {
-    final points = [
-      cornerPoints[2],
-      cornerPoints[3],
-      other.cornerPoints[2],
-      other.cornerPoints[3],
-    ];
-    final linearEquation = _linearRegression(points);
-    final isLeft = cornerPoints[3].x < other.cornerPoints[3].x;
-
-    final xmin = min(cornerPoints[0].x, other.cornerPoints[0].x);
-    final xmax = max(cornerPoints[2].x, other.cornerPoints[2].x);
-
+    final a = (cornerPoints[3].y < other.cornerPoints[3].y) ? this : other;
+    final b = (a == this) ? other : this;
     return RecognizedTextLine(
-      text: isLeft ? '$text ${other.text}' : '${other.text} $text',
-      elements: isLeft
-          ? [...elements, ...other.elements]
-          : [...other.elements, ...elements],
-      boundingBox: boundingBox.expandToInclude(other.boundingBox),
-      recognizedLanguages: recognizedLanguages,
-      cornerPoints: [
-        isLeft ? cornerPoints[0] : other.cornerPoints[0],
-        isLeft ? other.cornerPoints[1] : cornerPoints[1],
-        linearEquation.getIntPoint(xmax),
-        linearEquation.getIntPoint(xmin)
+      text: '${a.text} ${b.text}',
+      elements: [
+        ...a.elements,
+        ...b.elements,
       ],
-      angle: atan(linearEquation.m) * 180 / pi,
+      boundingBox: a.boundingBox.expandToInclude(b.boundingBox),
+      recognizedLanguages: a.recognizedLanguages,
+      cornerPoints: [
+        a.cornerPoints[0],
+        a.cornerPoints[1],
+        b.cornerPoints[2],
+        b.cornerPoints[3],
+      ],
+      angle: (b.cornerPoints[2].y - a.cornerPoints[3].y) /
+          (b.cornerPoints[2].x - a.cornerPoints[3].x),
     );
   }
 
   bool isSameLine(RecognizedTextLine other) {
-    final points = [
-      cornerPoints[2],
-      cornerPoints[3],
-      other.cornerPoints[2],
-      other.cornerPoints[3]
-    ];
-    final linearEquation = _linearRegression(points);
-    return points.every((p) => linearEquation.getDistance(p) < _threshold);
-  }
+    final ymin = cornerPoints.map((p) => p.y).reduce(min);
+    final ymax = cornerPoints.map((p) => p.y).reduce(max);
 
-  LinearEquation _linearRegression(List<Point> points) {
-    final n = points.length;
-    final sumX = points.map((e) => e.x).reduce((a, b) => a + b);
-    final sumY = points.map((e) => e.y).reduce((a, b) => a + b);
-    final sumXY = points.map((e) => e.x * e.y).reduce((a, b) => a + b);
-    final sumX2 = points.map((e) => e.x * e.x).reduce((a, b) => a + b);
+    final otherYmin = other.cornerPoints.map((p) => p.y).reduce(min);
+    final otherYmax = other.cornerPoints.map((p) => p.y).reduce(max);
 
-    final m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    final b = (sumY - m * sumX) / n;
-
-    return LinearEquation(m, b);
+    return (otherYmin - ymax).abs() < _threshold ||
+        (otherYmax - ymin).abs() < _threshold;
   }
 }
